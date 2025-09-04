@@ -44,3 +44,44 @@ Esse tema tem como objetivo atender as demandas dos professores, tutores e aluno
 | RF-18 | O sistema deve permitir o administrador atribuir usuários para professor e tutor a uma oficina. | Essencial  |
 | RF-19 | O sistema deve permitir o cadastro de oficina e atribuir um código, nome, descrição e número de aulas previstas. | Essencial  |
 
+
+# 📐 Arquitetura do Projeto e Tecnologias
+
+Para o desenvolvimento do projeto, foram utilizadas as seguintes tecnologias:
+
+1. 🗄️ **Banco de Dados**
+- MySQL
+
+2. 🎨 **Front-End**
+- Angular (HTML, CSS, JavaScript)
+- Node.js
+
+3. ⚙️ **Back-End**
+- Java JDK 17
+- Spring Boot
+
+4. 🧪 **Testes Automatizados**
+- JUnit & Mockito (Back-End)
+- Jest (Front-End)
+- GitHub Actions (CI/CD)
+
+5. 💻 **IDEs**
+- IntelliJ IDEA → Back-End
+- VS Code → Front-End
+
+6. 📦 **Build & Dependências**
+- Maven (Java)
+- npm (Node/Angular)
+
+7. 🔄 **Versionamento**
+- Git & GitHub
+
+8. 📑 **Documentação**
+- Swagger (OpenAPI)
+
+Com a definição das tecnologias e ferramentas utilizadas no projeto, foi possível estruturar a arquitetura do sistema de forma organizada. O diagrama a seguir ilustra a interação do cliente com o sistema: o cliente realiza requisições HTTP para o Front-End (Angular/Node.js), que encaminha essas requisições ao Back-End utilizando autenticação JWT para garantir segurança e autorização. No Back-End, a API processa as requisições através das três camadas principais: Controller, que recebe e valida os dados; Service, que contém a lógica de negócio e processa as informações conforme as regras do sistema; e Repository, que realiza a persistência dos dados no Banco de Dados (MySQL). 
+
+Após o processamento, a resposta é retornada do Back-End para o Front-End, que a apresenta ao cliente, finalizando o fluxo de comunicação. Dessa forma, o diagrama evidencia a arquitetura completa do projeto, mostrando como cada tecnologia e camada se conecta para garantir segurança, integridade dos dados e eficiência no funcionamento do sistema.
+
+![Diagrama da Arquitetura](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/Diagrama%20da%20Arquitetura.jpeg)
+
