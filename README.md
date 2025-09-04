@@ -78,6 +78,7 @@ Para o desenvolvimento do projeto, foram utilizadas as seguintes tecnologias:
 
 8. 📑 **Documentação**
 - Swagger (OpenAPI)
+- Jira
 
 Com a definição das tecnologias e ferramentas utilizadas no projeto, foi possível estruturar a arquitetura do sistema de forma organizada. O diagrama a seguir ilustra a interação do cliente com o sistema: o cliente realiza requisições HTTP para o Front-End (Angular/Node.js), que encaminha essas requisições ao Back-End utilizando autenticação JWT para garantir segurança e autorização. No Back-End, a API processa as requisições através das três camadas principais: Controller, que recebe e valida os dados; Service, que contém a lógica de negócio e processa as informações conforme as regras do sistema; e Repository, que realiza a persistência dos dados no Banco de Dados (MySQL). 
 
@@ -85,3 +86,5 @@ Após o processamento, a resposta é retornada do Back-End para o Front-End, que
 
 ![Diagrama da Arquitetura](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/Diagrama%20da%20Arquitetura.jpeg)
 
+# 🧪 Definição da estratégia de automação de testes do sistema 
+A estratégia de automação de testes foi definida para garantir a qualidade e integridade do sistema em todas as camadas. No Back-End, utilizamos JUnit e Mockito para testes unitários e de integração, enquanto no Front-End, os testes são realizados com Jest. Além disso, todas as execuções de testes são integradas ao GitHub Actions (CI/CD), permitindo que sejam executadas automaticamente a cada alteração no código, garantindo detecção rápida de erros e regressões.
