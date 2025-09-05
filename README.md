@@ -86,5 +86,15 @@ Após o processamento, a resposta é retornada do Back-End para o Front-End, que
 
 ![Diagrama da Arquitetura](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/Diagrama%20da%20Arquitetura.jpeg)
 
-# 🧪 Definição da estratégia de automação de testes do sistema 
+# 🧪 Definição da Estratégia de Automação de Testes do Sistema 
 A estratégia de automação de testes foi definida para garantir a qualidade e integridade do sistema em todas as camadas. No Back-End, utilizamos JUnit e Mockito para testes unitários e de integração, enquanto no Front-End, os testes são realizados com Jest. Além disso, todas as execuções de testes são integradas ao GitHub Actions (CI/CD), permitindo que sejam executadas automaticamente a cada alteração no código, garantindo detecção rápida de erros e regressões.
+
+# ⌛ Cronograma
+Como dito no tópico de tecnologias, para a organização do cronograma e acompanhamento do desenvolvimento pela equipe, foi aplicado a metodologia ágil com o Scrum pelo Jira que contém a possibilidade do uso do Kanban, dividindo as entregas e desenvolvimento por sprints de 2 a 3 semanas cada.
+
+![Cronograma do Jira](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/Backlog%20Jira.png)
+![Quadros do Jira](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/Quadro%20Jira.png)
+
+# 🔨 Outras Ferramentas, Diagramas ou Informações
+- [Diagrama de Caso de Uso](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/Diagrama%20de%20Caso%20de%20Uso.jpeg)
+- [Diagrama de Banco de Dados](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/Diagrama%20de%20BD.jpeg)
