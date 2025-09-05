@@ -98,3 +98,4 @@ Como dito no tópico de tecnologias, para a organização do cronograma e acompa
 # 🔨 Outras Ferramentas, Diagramas ou Informações
 - [Diagrama de Caso de Uso](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/Diagrama%20de%20Caso%20de%20Uso.jpeg)
 - [Diagrama de Banco de Dados](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/Diagrama%20de%20BD.jpeg)
+- [Protótipo do Figma](https://www.figma.com/design/ezQXoiHVso6OpqDL2PMmJZ/Oficina-de-Integra%C3%A7%C3%A3o---Prot%C3%B3tipo-Oficinas?node-id=0-1&p=f&t=CfRI0XLL6l3HAgAm-0)
