@@ -60,5 +60,5 @@ jobs:
         working-directory: frontend
 
       - name: Run frontend tests
-        run: npx ng test --watch=false
+        run: npx ng test --watch=false --karma-config=karma.conf.js
         working-directory: frontend
