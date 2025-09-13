@@ -36,9 +36,11 @@ jobs:
 
       - name: Build backend with Maven
         run: mvn clean install
+        working-directory: backend
 
       - name: Run backend tests
         run: mvn test
+        working-directory: backend
 
   build-frontend:
     name: Build & Test Frontend
