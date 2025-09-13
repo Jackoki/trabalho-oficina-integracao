@@ -95,7 +95,47 @@ Como dito no tópico de tecnologias, para a organização do cronograma e acompa
 ![Cronograma do Jira](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/Backlog%20Jira.png)
 ![Quadros do Jira](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/Quadro%20Jira.png)
 
+
 # 🔨 Outras Ferramentas, Diagramas ou Informações
 - [Diagrama de Caso de Uso](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/Diagrama%20de%20Caso%20de%20Uso.jpeg)
 - [Diagrama de Banco de Dados](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/Diagrama%20de%20BD.jpeg)
 - [Protótipo do Figma](https://www.figma.com/design/ezQXoiHVso6OpqDL2PMmJZ/Oficina-de-Integra%C3%A7%C3%A3o---Prot%C3%B3tipo-Oficinas?node-id=0-1&p=f&t=CfRI0XLL6l3HAgAm-0)
+
+# 🚀 Como Executar
+
+Para rodar o sistema em sua máquina Windows, é necessário ter instalado:
+
+- Git  
+- Node.js (20+)  
+- Maven (3.8+)  
+- MySQL (8+)  
+- Java JDK 17  
+
+---
+
+## 1️⃣ Clonar o repositório
+
+```bash
+git clone https://github.com/Jackoki/trabalho-oficina-integracao.git
+cd trabalho-oficina-integracao
+```
+
+Antes de rodar o backend, é necessário ajustar as configurações do banco de dados no arquivo application.properties, que fica dentro da pasta backend/src/main/resources:
+spring.datasource.url=jdbc:mysql://localhost:3306/seu_banco
+spring.datasource.username=seu_usuario
+spring.datasource.password=sua_senha
+
+Após isso, na parte de backend, instale as dependências:
+cd backend
+mvn clean install      # Compila o projeto
+mvn spring-boot:run    # Roda a aplicação
+A API estará disponível em: http://localhost:8080
+Para os testes do back-end, rode: mvn test
+
+Agora instela as dependências do frontend:
+cd frontend
+npm install
+O frontend estará disponível em: http://localhost:4200
+Para os testes do front-end rode npm test
+
+
