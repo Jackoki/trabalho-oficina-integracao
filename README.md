@@ -111,30 +111,36 @@ Para rodar o sistema em sua máquina Windows, é necessário ter instalado:
 - MySQL (8+)  
 - Java JDK 17  
 
----
-
-## 1️⃣ Clonar o repositório
-
 ```bash
 git clone https://github.com/Jackoki/trabalho-oficina-integracao.git
 cd trabalho-oficina-integracao
 ```
 
 Antes de rodar o backend, é necessário ajustar as configurações do banco de dados no arquivo application.properties, que fica dentro da pasta backend/src/main/resources:
+```bash
 spring.datasource.url=jdbc:mysql://localhost:3306/seu_banco
 spring.datasource.username=seu_usuario
 spring.datasource.password=sua_senha
+```
 
 Após isso, na parte de backend, instale as dependências:
+```bash
 cd backend
-mvn clean install      # Compila o projeto
-mvn spring-boot:run    # Roda a aplicação
+mvn clean install
+mvn spring-boot:run
+```
+
 A API estará disponível em: http://localhost:8080
 Para os testes do back-end, rode: mvn test
 
+
+
 Agora instela as dependências do frontend:
+```bash
 cd frontend
 npm install
+ng serve
+```
 O frontend estará disponível em: http://localhost:4200
 Para os testes do front-end rode npm test
 
