@@ -60,5 +60,5 @@ jobs:
         working-directory: frontend
 
       - name: Run frontend tests
-        run: npm test
+        run: npx ng test --browsers=ChromeHeadless --watch=false --no-sandbox
         working-directory: frontend
