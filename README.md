@@ -43,7 +43,8 @@ Esse tema tem como objetivo atender as demandas dos professores, tutores e aluno
 | RF-17 | O sistema deve permitir o administrador gerenciar todas as oficinas. | Essencial  |
 | RF-18 | O sistema deve permitir o administrador atribuir usuários para professor e tutor a uma oficina. | Essencial  |
 | RF-19 | O sistema deve permitir o cadastro de oficina e atribuir um código, nome, descrição e número de aulas previstas. | Essencial  |
-
+| RF-20 | O sistema deve permitir a criação e gerenciamento de escolas participantes e víncular com os alunos. | Importante  |
+| RF-21 | O sistema deve permitir a visualização das escolas e os alunos participantes das oficinas. | Importante  |
 
 # 📐 Arquitetura do Projeto e Tecnologias
 
