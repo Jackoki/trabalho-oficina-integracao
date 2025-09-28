@@ -22,7 +22,7 @@ public class SchoolController {
     private SchoolService schoolService;
 
     @GetMapping
-    public List<School> getAllUsers() {
+    public List<School> getAllSchools() {
         return schoolService.getAllSchools();
     }
 

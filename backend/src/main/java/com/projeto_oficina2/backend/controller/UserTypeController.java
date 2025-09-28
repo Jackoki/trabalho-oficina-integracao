@@ -22,7 +22,7 @@ public class UserTypeController {
     private UserTypeService userTypeService;
 
     @GetMapping
-    public List<UserType> getAllUsers() {
+    public List<UserType> getAllUsersTypes() {
         return userTypeService.getAllUserTypes();
     }
 
