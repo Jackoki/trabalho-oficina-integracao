@@ -7,5 +7,5 @@ import com.projeto_oficina2.backend.model.Classes;
 
 @Repository
 public interface ClassesRepository extends JpaRepository<Classes, Long> {
-    Classes findById(Long id);
+    
 }

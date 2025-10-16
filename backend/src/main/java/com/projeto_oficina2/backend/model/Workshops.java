@@ -72,11 +72,11 @@ public class Workshops {
         this.is_finished = is_finished; 
     }
 
-    public Long getDescription() { 
+    public String getDescription() { 
         return description; 
     }
 
-    public void setDescription(Long description) { 
+    public void setDescription(String description) { 
         this.description = description; 
     }
 }
