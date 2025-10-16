@@ -9,8 +9,9 @@ public class Classes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private Long id_workshops;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_workshops", nullable = false)
+    private Workshops workshop;
 
     @Column(nullable = false)
     private int class_number;
@@ -23,12 +24,12 @@ public class Classes {
         this.id = id; 
     }
 
-    public Long getIdWorkshops() { 
-        return id_workshops; 
+    public Workshops getWorkshop() { 
+        return workshop; 
     }
 
-    public void setIdWorkshops(Long id_workshops) { 
-        this.id_workshops = id_workshops; 
+    public void setWorkshop(Workshops workshop) { 
+        this.workshop = workshop; 
     }
 
     public int getClassNumber() { 

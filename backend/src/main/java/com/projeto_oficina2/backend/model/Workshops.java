@@ -1,6 +1,7 @@
 package com.projeto_oficina2.backend.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "workshops")
@@ -13,6 +14,9 @@ public class Workshops {
     private String name;
 
     private String code;
+
+    @OneToMany(mappedBy = "workshop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Classes> classes;
 
     private Long number_classes;
 
@@ -42,6 +46,14 @@ public class Workshops {
 
     public void setCode(String code) { 
         this.code = code; 
+    }
+
+    public List<Classes> getClasses() { 
+        return classes; 
+    }
+
+    public void setClasses(List<Classes> classes) { 
+        this.classes = classes; 
     }
 
     public Long getNumberClasses() { 
