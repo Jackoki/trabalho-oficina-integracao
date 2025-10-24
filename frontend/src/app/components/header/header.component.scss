@@ -32,7 +32,7 @@
 
 /* Botões verdes */
 .btn-green {
-  background-color: #28c76f;
+  background-color: #007BCC;
   color: white;
   border: none;
   padding: 8px 18px;
@@ -44,7 +44,7 @@
   transition: background-color 0.2s ease-in-out, transform 0.1s;
 
   &:hover {
-    background-color: #22b164;
+    background-color: #F79335;
     transform: scale(1.03);
   }
 }
