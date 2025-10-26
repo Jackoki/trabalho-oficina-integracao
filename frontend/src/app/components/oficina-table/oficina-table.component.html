@@ -15,4 +15,11 @@
       </app-oficina-row>
     </tbody>
   </table>
+  <app-confirm-dialog
+  [titulo]="'Excluir Oficina'"
+  [mensagem]="'Deseja realmente excluir esta oficina?'"
+  [visivel]="dialogVisivel"
+  (confirmar)="confirmarExclusao()"
+  (cancelar)="cancelarExclusao()"
+></app-confirm-dialog>
 </div>
