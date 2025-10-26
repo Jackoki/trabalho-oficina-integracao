@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Auth, LoginRequest } from '../../services/auth';
+import { Auth, LoginRequest, AuthResponse } from '../../services/auth';
 
 @Component({
   selector: 'app-login',
   imports: [FormsModule, RouterModule, CommonModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrls: ['./login.css']
 })
 export class Login {
   loginData = {
@@ -19,15 +19,10 @@ export class Login {
   isLoading = false;
   loginError = '';
 
-  constructor(
-    private authService: Auth,
-    private router: Router
-  ) {}
+  constructor(private authService: Auth, private router: Router) {}
 
   onAccessCodeInput(event: any) {
-    // Permitir apenas números
     const value = event.target.value.replace(/[^0-9]/g, '');
-    // Limitar a 7 dígitos
     if (value.length <= 7) {
       this.loginData.accessCode = value;
       event.target.value = value;
@@ -48,11 +43,10 @@ export class Login {
     };
 
     this.authService.login(loginRequest).subscribe({
-      next: (response) => {
-        if (response.success) {
-          console.log('Login realizado com sucesso!', response.user);
-          // Redirecionar para dashboard ou página principal
-          // this.router.navigate(['/dashboard']);
+      next: (response: AuthResponse) => { // ← aqui
+        if (response.success && response.user) {
+          localStorage.setItem('user', JSON.stringify(response.user));
+          this.router.navigate(['/home']);
         } else {
           this.loginError = response.message;
         }

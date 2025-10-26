@@ -48,6 +48,26 @@
       </div>
 
       <div class="form-group">
+        <label for="school">Instituição de Ensino</label>
+        <select 
+          id="school" 
+          name="school"
+          [(ngModel)]="registerData.schoolId"
+          #school="ngModel"
+          required
+          class="form-control"
+          [class.error]="school.invalid && (school.touched || formSubmitted)">
+          
+          <option [ngValue]="null" disabled>Selecione sua escola</option>
+          <option *ngFor="let s of schools" [value]="s.id">{{ s.name }}</option>
+        </select>
+        <div class="error-message" *ngIf="school.invalid && (school.touched || formSubmitted)">
+          <span>Selecione uma escola</span>
+        </div>
+      </div>
+
+
+      <div class="form-group">
         <label for="password">Senha</label>
         <input 
           type="password" 
@@ -98,7 +118,6 @@
         type="submit" 
         class="btn-primary"
         [disabled]="registerForm.invalid || !passwordsMatch() || isLoading">
-        <span *ngIf="isLoading">Registrando...</span>
         <span *ngIf="!isLoading">Registrar</span>
       </button>
     </form>

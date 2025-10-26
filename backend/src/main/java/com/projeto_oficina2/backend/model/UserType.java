@@ -3,7 +3,7 @@ package com.projeto_oficina2.backend.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "usertypes")
+@Table(name = "user_types")
 public class UserType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,6 +11,12 @@ public class UserType {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    public UserType() {}
+
+    public UserType(String name) {
+        this.name = name;
+    }
 
     public Long getId() { 
         return id; 

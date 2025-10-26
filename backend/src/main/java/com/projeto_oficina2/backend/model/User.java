@@ -1,6 +1,5 @@
 package com.projeto_oficina2.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.*;
@@ -15,7 +14,7 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String code;
 
     @Column(nullable = false)
@@ -77,4 +76,24 @@ public class User {
     public void setSchool(School school) { 
         this.school = school; 
     }
+
+    public User() {
+    }
+
+    public User(String name, String code, String password) {
+        this.name = name;
+        this.code = code;
+        this.password = password;
+
+        UserType defaultUserType = new UserType();
+        defaultUserType.setId(1L);
+        defaultUserType.setName("Admin");
+        this.userType = defaultUserType;
+
+        School defaultSchool = new School();
+        defaultSchool.setId(1L);
+        defaultSchool.setName("UTFPR-CP");
+        this.school = defaultSchool;
+    }
+
 }

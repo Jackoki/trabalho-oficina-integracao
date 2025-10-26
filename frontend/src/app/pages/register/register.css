@@ -135,7 +135,7 @@ select.form-control option {
 
 /* Mensagens de sucesso */
 .success-message {
-  color: #27ae60;
+  color: #333;
   font-size: 0.9rem;
   margin: 16px 0;
   padding: 12px;
@@ -270,7 +270,7 @@ select.form-control option {
 
 /* Estados de validação visual */
 .form-control:valid:not(:placeholder-shown) {
-  border-color: #27ae60;
+  border-color: #ccc;
 }
 
 .form-control:invalid:not(:placeholder-shown):not(:focus) {

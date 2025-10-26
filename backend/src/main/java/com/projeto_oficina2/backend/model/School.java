@@ -12,6 +12,12 @@ public class School {
     @Column(nullable = false, unique = true)
     private String name;
 
+    public School() {}
+
+    public School(String name) {
+        this.name = name;
+    }
+
     public Long getId() { 
         return id; 
     }

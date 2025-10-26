@@ -1,9 +1,14 @@
 package com.projeto_oficina2.backend.controller;
 
+import com.projeto_oficina2.backend.model.ErrorResponse;
 import com.projeto_oficina2.backend.model.User;
 import com.projeto_oficina2.backend.model.UserType;
 import com.projeto_oficina2.backend.service.UserService;
+
+import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,9 +42,19 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.save(user);
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        try {
+            User savedUser = userService.save(user);
+            return ResponseEntity.ok(savedUser);
+        } 
+        
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));
+        }
     }
+
+
+
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {

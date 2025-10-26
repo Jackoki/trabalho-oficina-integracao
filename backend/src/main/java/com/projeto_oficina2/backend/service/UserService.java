@@ -22,6 +22,10 @@ public class UserService {
     }
 
     public User save(User user) {
+        if (userRepository.findByCode(user.getCode()).isPresent()) {
+            throw new IllegalArgumentException("Código já cadastrado!");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
