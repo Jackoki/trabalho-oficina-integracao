@@ -23,9 +23,16 @@ export interface AuthResponse {
 
 export interface User {
   id: number;
-  fullName: string;
-  accessCode: string;
-  userType: string;
+  name: string;
+  code: string;
+  userType: {
+    id: number;
+    name: string;
+  };
+  school?: {
+    id: number;
+    name: string;
+  };
 }
 
 @Injectable({
@@ -38,7 +45,6 @@ export class Auth {
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private http: HttpClient) {}
-
 
   login(loginData: LoginRequest): Observable<AuthResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -60,7 +66,6 @@ export class Auth {
     );
   }
 
-
   register(registerData: RegisterRequest): Observable<AuthResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<AuthResponse>(
@@ -75,16 +80,13 @@ export class Auth {
     );
   }
 
-
   logout(): Observable<void> {
     return this.http.post<void>(
       `${this.API_BASE_URL}/logout`,
       {},
       { withCredentials: true }
     ).pipe(
-      map(() => {
-        this.currentUserSubject.next(null);
-      }),
+      map(() => this.currentUserSubject.next(null)),
       catchError(error => {
         console.error('Erro no logout:', error);
         this.currentUserSubject.next(null);
