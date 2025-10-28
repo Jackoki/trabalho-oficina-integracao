@@ -4,6 +4,7 @@
   </div>
 
   <div class="actions">
+    <button class="btn-green" *ngIf="isAdmin">Gerenciar Escolas</button>
     <button class="btn-green" *ngIf="isAdmin">Gerenciar Usuários</button>
     <button class="btn-green" *ngIf="isAdmin">Criar Oficina</button>
     <a href="#" class="logout-link" (click)="logout()">
