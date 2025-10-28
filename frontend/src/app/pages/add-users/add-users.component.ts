@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-users',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './add-users.component.html',
   styleUrls: ['./add-users.component.scss']
 })
@@ -14,12 +18,12 @@ export class AddUsersComponent {
   constructor(private router: Router) {}
 
   voltar() {
-    this.router.navigate(['/']); // volta para a home
+    this.router.navigate(['/']);
   }
 
   confirmar() {
     const selecionados = this.usuarios.filter(u => u.selecionado);
     console.log('Usuários confirmados:', selecionados);
-    this.router.navigate(['/']); // redireciona após confirmar
+    this.router.navigate(['/']);
   }
 }

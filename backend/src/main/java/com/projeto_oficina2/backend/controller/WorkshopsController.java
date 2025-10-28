@@ -1,15 +1,8 @@
 package com.projeto_oficina2.backend.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.projeto_oficina2.backend.model.Workshops;
 import com.projeto_oficina2.backend.service.WorkshopsService;
@@ -39,5 +32,10 @@ public class WorkshopsController {
     @DeleteMapping("/{id}")
     public void deleteWorkshops(@PathVariable Long id) {
         workshopsService.deleteWorkshops(id);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Workshops> getWorkshopsByUser(@PathVariable Long userId) {
+        return workshopsService.getWorkshopsByUserId(userId);
     }
 }

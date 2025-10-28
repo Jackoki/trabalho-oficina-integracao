@@ -43,7 +43,7 @@ export class Login {
     };
 
     this.authService.login(loginRequest).subscribe({
-      next: (response: AuthResponse) => { // ← aqui
+      next: (response: AuthResponse) => {
         if (response.success && response.user) {
           localStorage.setItem('user', JSON.stringify(response.user));
           this.router.navigate(['/home']);

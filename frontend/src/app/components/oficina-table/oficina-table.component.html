@@ -5,21 +5,14 @@
         <th>Código</th>
         <th>Oficina</th>
         <th>Aulas</th>
-        <th>Ações</th>
       </tr>
     </thead>
     <tbody>
-      <app-oficina-row
-        *ngFor="let oficina of oficinas"
-        [oficina]="oficina">
-      </app-oficina-row>
+      <tr *ngFor="let oficina of oficinas">
+        <td>{{ oficina.code }}</td>
+        <td>{{ oficina.name }}</td>
+        <td>{{ oficina.numberClasses }}/16</td>
+      </tr>
     </tbody>
   </table>
-  <app-confirm-dialog
-  [titulo]="'Excluir Oficina'"
-  [mensagem]="'Deseja realmente excluir esta oficina?'"
-  [visivel]="dialogVisivel"
-  (confirmar)="confirmarExclusao()"
-  (cancelar)="cancelarExclusao()"
-></app-confirm-dialog>
 </div>
