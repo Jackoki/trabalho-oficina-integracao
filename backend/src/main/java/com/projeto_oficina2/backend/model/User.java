@@ -1,12 +1,14 @@
 package com.projeto_oficina2.backend.model;
 
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,61 +26,39 @@ public class User {
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_users_types", nullable = false)
     private UserType userType;
-    
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_schools", nullable = false)
     private School school;
 
-    public Long getId() { 
-        return id; 
-    }
+    @JsonIgnore
+    @ManyToMany(mappedBy = "users")
+    private List<Workshops> workshops;
 
-    public void setId(Long id) { 
-        this.id = id; 
-    }
+    // Getters e Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getName() { 
-        return name; 
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setName(String name) { 
-        this.name = name; 
-    }
+    public String getCode() { return code; }
+    public void setCode(String code) { this.code = code; }
 
-    public String getCode() { 
-        return code; 
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public void setCode(String code) { 
-        this.code = code; 
-    }
+    public UserType getUserType() { return userType; }
+    public void setUserType(UserType userType) { this.userType = userType; }
 
-    public String getPassword() { 
-        return password; 
-    }
+    public School getSchool() { return school; }
+    public void setSchool(School school) { this.school = school; }
 
-    public void setPassword(String password) { 
-        this.password = password; 
-    }
+    public List<Workshops> getWorkshops() { return workshops; }
+    public void setWorkshops(List<Workshops> workshops) { this.workshops = workshops; }
 
-    public UserType getUserType() { 
-        return userType; 
-    }
-
-    public void setUserType(UserType userType) { 
-        this.userType = userType; 
-    }
-
-    public School getSchool() { 
-        return school; 
-    }
-
-    public void setSchool(School school) { 
-        this.school = school; 
-    }
-
-    public User() {
-    }
+    // Construtores
+    public User() { }
 
     public User(String name, String code, String password) {
         this.name = name;
@@ -95,5 +75,4 @@ public class User {
         defaultSchool.setName("UTFPR-CP");
         this.school = defaultSchool;
     }
-
 }

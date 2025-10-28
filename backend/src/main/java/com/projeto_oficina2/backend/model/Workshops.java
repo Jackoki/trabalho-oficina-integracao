@@ -6,6 +6,7 @@ import java.util.List;
 @Entity
 @Table(name = "workshops")
 public class Workshops {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,68 +16,41 @@ public class Workshops {
 
     private String code;
 
-    @OneToMany(mappedBy = "workshop", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Classes> classes;
-
     private Long number_classes;
 
     private int is_finished;
 
     private String description;
 
-    public Long getId() { 
-        return id; 
-    }
+    @ManyToMany
+    @JoinTable(name = "workshop_users", joinColumns = @JoinColumn(name = "id_workshops"),inverseJoinColumns = @JoinColumn(name = "id_users"))
+    private List<User> users;
 
-    public void setId(Long id) { 
-        this.id = id; 
-    }
+    @OneToMany(mappedBy = "workshop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Classes> classes;
 
-    public String getName() { 
-        return name; 
-    }
+    // Getters e Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setName(String name) { 
-        this.name = name; 
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getCode() { 
-        return code; 
-    }
+    public String getCode() { return code; }
+    public void setCode(String code) { this.code = code; }
 
-    public void setCode(String code) { 
-        this.code = code; 
-    }
+    public Long getNumberClasses() { return number_classes; }
+    public void setNumberClasses(Long number_classes) { this.number_classes = number_classes; }
 
-    public List<Classes> getClasses() { 
-        return classes; 
-    }
+    public int getIsFinished() { return is_finished; }
+    public void setIsFinished(int is_finished) { this.is_finished = is_finished; }
 
-    public void setClasses(List<Classes> classes) { 
-        this.classes = classes; 
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public Long getNumberClasses() { 
-        return number_classes; 
-    }
+    public List<User> getUsers() { return users; }
+    public void setUsers(List<User> users) { this.users = users; }
 
-    public void setNumberClasses(Long number_classes) { 
-        this.number_classes = number_classes; 
-    }
-
-    public int getIsFinished() { 
-        return is_finished; 
-    }
-
-    public void setIsFinished(int is_finished) { 
-        this.is_finished = is_finished; 
-    }
-
-    public String getDescription() { 
-        return description; 
-    }
-
-    public void setDescription(String description) { 
-        this.description = description; 
-    }
+    public List<Classes> getClasses() { return classes; }
+    public void setClasses(List<Classes> classes) { this.classes = classes; }
 }
