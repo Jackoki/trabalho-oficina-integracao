@@ -1,0 +1,23 @@
+<div class="table-container">
+  <h2>Escolas</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let school of schools">
+        <app-school-row [school]="school"></app-school-row>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <app-confirm-dialog
+    [titulo]="'Excluir Escola'"
+    [mensagem]="'Deseja realmente excluir esta escola?'"
+    [visivel]="dialogVisivel"
+    (confirmar)="confirmarExclusao()"
+    (cancelar)="cancelarExclusao()"
+  ></app-confirm-dialog>
+</div>
