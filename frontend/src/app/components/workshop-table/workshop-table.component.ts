@@ -4,14 +4,14 @@ import { WorkshopsService, Workshop } from '../../services/WorkshopsService';
 import { Auth, User } from '../../services/auth';
 
 @Component({
-  selector: 'app-oficina-table',
+  selector: 'app-workshop-table',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './oficina-table.component.html',
-  styleUrls: ['./oficina-table.component.scss']
+  templateUrl: './workshop-table.component.html',
+  styleUrls: ['./workshop-table.component.scss']
 })
-export class OficinaTableComponent implements OnInit {
-  oficinas: Workshop[] = [];
+export class WorkshopTableComponent implements OnInit {
+  workshops: Workshop[] = [];
 
   constructor(private workshopsService: WorkshopsService, private auth: Auth) {}
 
@@ -27,9 +27,30 @@ export class OficinaTableComponent implements OnInit {
   loadWorkshops(userId: number) {
     this.workshopsService.getWorkshopsByUser(userId).subscribe({
       next: (workshops) => {
-        this.oficinas = workshops;
+        this.workshops = workshops;
       },
       error: (err) => console.error('Erro ao carregar workshops:', err)
     });
   }
+
+  viewList(workshop: Workshop) {
+    console.log('Ver lista da oficina:', workshop);
+  }
+
+  viewProfile(workshop: Workshop) {
+    console.log('Ver perfil:', workshop);
+  }
+
+  markComplete(workshop: Workshop) {
+    console.log('Concluir oficina:', workshop);
+  }
+
+  openSettings(workshop: Workshop) {
+    console.log('Abrir configurações:', workshop);
+  }
+
+  viewCertificate(workshop: Workshop) {
+    console.log('Ver certificado:', workshop);
+  }
+
 }

@@ -18,7 +18,7 @@
 }
 
 .user-info {
-  display: flex; /* permite alinhar o ícone e o nome */
+  display: flex;
   align-items: center;
   font-weight: 600;
   font-size: 1rem;
@@ -29,7 +29,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.5rem; /* aumenta o ícone */
+  font-size: 1.5rem;
   color: #333;
 
   &:hover {
@@ -74,7 +74,7 @@
 
   i {
     margin-right: 6px;
-    font-size: 1.2rem; /* aumenta o ícone de logout */
+    font-size: 1.2rem;
   }
 
   &:hover {

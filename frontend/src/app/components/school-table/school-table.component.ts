@@ -10,7 +10,6 @@ import { Auth, User } from '../../services/auth';
   templateUrl: './school-table.component.html',
   styleUrls: ['./school-table.component.scss']
 })
-
 export class SchoolTableComponent implements OnInit {
   schools: School[] = [];
 
@@ -32,5 +31,13 @@ export class SchoolTableComponent implements OnInit {
       },
       error: (err) => console.error('Erro ao carregar escolas:', err)
     });
+  }
+
+  openSettings(school: School) {
+    console.log('Abrir configurações da escola:', school);
+  }
+
+  deleteSchool(school: School) {
+    console.log('Excluir escola:', school);
   }
 }

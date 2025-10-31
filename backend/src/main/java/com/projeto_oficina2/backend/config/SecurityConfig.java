@@ -29,9 +29,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/schools/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                .requestMatchers(HttpMethod.GET, "/users/type/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                .requestMatchers(HttpMethod.GET, "/workshops/user/**").permitAll() // <-- liberado
+                .requestMatchers(HttpMethod.GET, "/workshops/user/**").permitAll()
                 .requestMatchers("/public/**").permitAll()
                 .anyRequest().authenticated()
             )

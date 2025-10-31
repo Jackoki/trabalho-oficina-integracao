@@ -1,14 +1,25 @@
 <div class="table-container">
-  <table>
-    <thead>
-      <tr>
-        <th>Nome</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let school of schools">
-        <td>{{ school.name }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let school of schools" class="school-row">
+          <td>{{ school.name }}</td>
+
+          <div class="action-icons">
+            <button class="icon-button settings" (click)="openSettings(school)" title="Configurações">
+              <i class="fa fa-cog"></i>
+            </button>
+            <button class="icon-button delete" (click)="deleteSchool(school)" title="Excluir">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

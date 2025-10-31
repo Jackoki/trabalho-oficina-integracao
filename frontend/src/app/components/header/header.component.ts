@@ -6,14 +6,15 @@ import { Router, RouterModule} from '@angular/router';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, NgIf, RouterModule], // 👈 adiciona aqui
+  imports: [CommonModule, NgIf, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
+
 export class HeaderComponent implements OnInit {
   userName: string = '';
   isAdmin: boolean = false;
-  isLoggingOut: boolean = false; // 👈 novo estado
+  isLoggingOut: boolean = false;
 
   constructor(private auth: Auth, private router: Router) {}
 

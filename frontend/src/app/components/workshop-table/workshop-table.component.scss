@@ -5,6 +5,11 @@
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.05);
 
+  h2 {
+    margin-bottom: 15px;
+    color: #007bcc;
+  }
+
   .table-wrapper {
     position: relative;
     width: 100%;
@@ -26,7 +31,7 @@
       font-weight: bold;
     }
 
-    .school-row {
+    .workshop-row {
       position: relative;
 
       &:hover {
@@ -35,7 +40,7 @@
 
       .action-icons {
         position: absolute;
-        right: -5px;
+        right: -5px; /* distância à direita da tabela */
         top: 50%;
         transform: translateY(-50%);
         display: flex;
@@ -58,6 +63,27 @@
           transform: scale(1.15);
         }
 
+        &.list {
+          color: #007bcc;
+          &:hover {
+            background-color: rgba(0, 123, 204, 0.1);
+          }
+        }
+
+        &.profile {
+          color: #6c757d;
+          &:hover {
+            background-color: rgba(108, 117, 125, 0.1);
+          }
+        }
+
+        &.check {
+          color: #28a745;
+          &:hover {
+            background-color: rgba(40, 167, 69, 0.1);
+          }
+        }
+
         &.settings {
           color: #ffc107;
           &:hover {
@@ -65,10 +91,10 @@
           }
         }
 
-        &.delete {
-          color: #dc3545;
+        &.certificate {
+          color: #9c27b0;
           &:hover {
-            background-color: rgba(220, 53, 69, 0.1);
+            background-color: rgba(156, 39, 176, 0.1);
           }
         }
       }

@@ -1,4 +1,5 @@
 <div class="table-container">
+  <h2>Oficinas</h2>
   <table>
     <thead>
       <tr>
@@ -8,11 +9,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let oficina of oficinas">
-        <td>{{ oficina.code }}</td>
-        <td>{{ oficina.name }}</td>
-        <td>{{ oficina.numberClasses }}/16</td>
-      </tr>
+      <ng-container *ngFor="let workshop of workshops">
+        <app-workshop-row [oficina]="workshop"></app-workshop-row>
+      </ng-container>
     </tbody>
   </table>
 </div>

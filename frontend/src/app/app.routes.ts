@@ -5,6 +5,7 @@ import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { AuthGuard } from './guards/auth-guard'
 import { SchoolComponent } from './pages/schools/schools.component';
+import { UserComponent } from './pages/users/users.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: 'register', component: Register },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'add-users', component: AddUsersComponent, canActivate: [AuthGuard] },
-  { path: 'schools', component: SchoolComponent, canActivate: [AuthGuard] }
+  { path: 'schools', component: SchoolComponent, canActivate: [AuthGuard] },
+  { path: 'users', component: UserComponent, canActivate: [AuthGuard] }
 ];

@@ -5,6 +5,13 @@
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.05);
 
+  .table-title {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #007bcc;
+  }
+
   .table-wrapper {
     position: relative;
     width: 100%;
@@ -13,11 +20,15 @@
   table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 
     th, td {
-      padding: 10px;
+      padding: 10px 12px;
       text-align: left;
       border-bottom: 1px solid #eee;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     th {
@@ -26,22 +37,29 @@
       font-weight: bold;
     }
 
-    .school-row {
-      position: relative;
+    th:nth-child(1), td:nth-child(1) { width: 40%; }
+    th:nth-child(2), td:nth-child(2) { width: 30%; }
+    th:nth-child(3), td:nth-child(3) { width: 30%; text-align: center; }
+
+    .empty-row {
+      text-align: center;
+      color: #999;
+      font-style: italic;
+      padding: 15px;
+    }
+
+    .user-row {
+      transition: background-color 0.2s ease;
 
       &:hover {
         background-color: #f9f9f9;
       }
 
       .action-icons {
-        position: absolute;
-        right: -5px;
-        top: 50%;
-        transform: translateY(-50%);
         display: flex;
-        gap: 8px;
-        background: white;
-        padding-left: 8px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
       }
 
       .icon-button {
