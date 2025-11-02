@@ -9,6 +9,7 @@ import { UserComponent } from './pages/users/users.component';
 import { EditSchoolsComponent } from './pages/edit-schools/edit-schools.component';
 import { AddWorkshopsComponent } from './pages/add-workshops/add-workshops.component';
 import { EditUserComponent } from './pages/edit-users/edit-users.component';
+import { EditWorkshopsComponent } from './pages/edit-workshops/edit-workshops.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -20,5 +21,7 @@ export const routes: Routes = [
   { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
   { path: 'schools/edit/:id', component: EditSchoolsComponent, canActivate: [AuthGuard] },
   { path: 'users/edit/:id', component: EditUserComponent, canActivate: [AuthGuard] },
-  { path: 'add-workshops', component: AddWorkshopsComponent, canActivate: [AuthGuard] }
+  { path: 'add-workshops', component: AddWorkshopsComponent, canActivate: [AuthGuard] },
+  { path: 'workshops/edit/:id', component: EditWorkshopsComponent }
+
 ];

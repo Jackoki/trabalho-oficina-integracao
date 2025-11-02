@@ -26,4 +26,8 @@ export class WorkshopsService {
   getAllWorkshops(): Observable<Workshop[]> {
     return this.http.get<Workshop[]>(this.API_BASE_URL, { withCredentials: true });
   }
+
+  deleteWorkshop(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.API_BASE_URL}/${id}`, { withCredentials: true });
+  }
 }

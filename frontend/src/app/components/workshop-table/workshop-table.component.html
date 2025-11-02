@@ -6,31 +6,34 @@
           <th>Código</th>
           <th>Oficina</th>
           <th>Aulas</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let workshop of workshops" class="workshop-row">
           <td>{{ workshop.code }}</td>
           <td>{{ workshop.name }}</td>
-          <td>{{ workshop.numberClasses }}/16</td>
-
-          <div class="action-icons">
-            <button class="icon-button list" (click)="viewList(workshop)" title="Lista">
+          <td>0/{{ workshop.numberClasses }}</td>
+          <td class="action-icons">
+            <button class="icon-button list" (click)="viewList(workshop)" title="Chamada">
               <i class="fa fa-list"></i>
             </button>
-            <button class="icon-button profile" (click)="viewProfile(workshop)" title="Perfil">
+            <button class="icon-button profile" (click)="viewProfile(workshop)" title="Usuários">
               <i class="fa fa-user"></i>
-            </button>
-            <button class="icon-button check" (click)="markComplete(workshop)" title="Concluir">
-              <i class="fa fa-check-circle"></i>
             </button>
             <button class="icon-button settings" (click)="openSettings(workshop)" title="Configurações">
               <i class="fa fa-cog"></i>
             </button>
+            <button class="icon-button check" (click)="markComplete(workshop)" title="Concluir">
+              <i class="fa fa-check-circle"></i>
+            </button>
             <button class="icon-button certificate" (click)="viewCertificate(workshop)" title="Certificado">
               <i class="fa fa-certificate"></i>
             </button>
-          </div>
+            <button class="icon-button delete" (click)="deleteWorkshop(workshop)" title="Excluir">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>

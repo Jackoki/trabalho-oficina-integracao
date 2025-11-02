@@ -13,16 +13,19 @@
   .table-wrapper {
     position: relative;
     width: 100%;
+    overflow-x: auto; /* permite rolagem horizontal se necessário */
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 600px; /* opcional para tabelas pequenas */
 
     th, td {
       padding: 10px;
       text-align: left;
       border-bottom: 1px solid #eee;
+      vertical-align: middle;
     }
 
     th {
@@ -32,21 +35,14 @@
     }
 
     .workshop-row {
-      position: relative;
-
       &:hover {
         background-color: #f9f9f9;
       }
 
       .action-icons {
-        position: absolute;
-        right: -5px; /* distância à direita da tabela */
-        top: 50%;
-        transform: translateY(-50%);
         display: flex;
         gap: 8px;
-        background: white;
-        padding-left: 8px;
+        flex-wrap: wrap; /* permite que os ícones quebrem linha se necessário */
       }
 
       .icon-button {
@@ -63,40 +59,12 @@
           transform: scale(1.15);
         }
 
-        &.list {
-          color: #007bcc;
-          &:hover {
-            background-color: rgba(0, 123, 204, 0.1);
-          }
-        }
-
-        &.profile {
-          color: #6c757d;
-          &:hover {
-            background-color: rgba(108, 117, 125, 0.1);
-          }
-        }
-
-        &.check {
-          color: #28a745;
-          &:hover {
-            background-color: rgba(40, 167, 69, 0.1);
-          }
-        }
-
-        &.settings {
-          color: #ffc107;
-          &:hover {
-            background-color: rgba(255, 193, 7, 0.15);
-          }
-        }
-
-        &.certificate {
-          color: #9c27b0;
-          &:hover {
-            background-color: rgba(156, 39, 176, 0.1);
-          }
-        }
+        &.list { color: #007bcc; &:hover { background-color: rgba(0,123,204,0.1); } }
+        &.profile { color: #6c757d; &:hover { background-color: rgba(108,117,125,0.1); } }
+        &.check { color: #28a745; &:hover { background-color: rgba(40,167,69,0.1); } }
+        &.settings { color: #ffc107; &:hover { background-color: rgba(255,193,7,0.15); } }
+        &.certificate { color: #9c27b0; &:hover { background-color: rgba(156,39,176,0.1); } }
+        &.delete { color: #dc3545; &:hover { background-color: rgba(220,53,69,0.1); } }
       }
     }
   }

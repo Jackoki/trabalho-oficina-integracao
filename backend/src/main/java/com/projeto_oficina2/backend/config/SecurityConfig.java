@@ -48,6 +48,7 @@ public class SecurityConfig {
 
                 .requestMatchers(HttpMethod.GET, "/workshops/user/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/workshops").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/workshops/**").hasRole("ADMIN")
                 
                 .requestMatchers("/public/**").permitAll()
                 .anyRequest().authenticated()

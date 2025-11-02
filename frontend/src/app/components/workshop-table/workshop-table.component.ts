@@ -2,18 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WorkshopsService, Workshop } from '../../services/WorkshopsService';
 import { Auth, User } from '../../services/auth';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-workshop-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './workshop-table.component.html',
   styleUrls: ['./workshop-table.component.scss']
 })
 export class WorkshopTableComponent implements OnInit {
   workshops: Workshop[] = [];
 
-  constructor(private workshopsService: WorkshopsService, private auth: Auth) {}
+  constructor(private workshopsService: WorkshopsService, private auth: Auth, private router: Router) {}
 
   ngOnInit(): void {
     this.auth.currentUser$.subscribe({
@@ -46,11 +47,28 @@ export class WorkshopTableComponent implements OnInit {
   }
 
   openSettings(workshop: Workshop) {
-    console.log('Abrir configurações:', workshop);
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/workshops/edit', workshop.id]);
+    });
   }
 
   viewCertificate(workshop: Workshop) {
     console.log('Ver certificado:', workshop);
+  }
+
+  deleteWorkshop(workshop: Workshop) {
+    if (!confirm(`Deseja realmente excluir a oficina "${workshop.code}"?`)) {
+      return;
+    }
+  
+    this.workshopsService.deleteWorkshop(workshop.id).subscribe({
+      next: () => {
+        this.workshops = this.workshops.filter(w => w.id !== workshop.id);
+      },
+      error: (err) => {
+        alert('Erro ao deletar oficina. Tente novamente.');
+      }
+    });
   }
 
 }

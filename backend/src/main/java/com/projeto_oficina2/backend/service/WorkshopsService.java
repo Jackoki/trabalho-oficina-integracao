@@ -30,6 +30,17 @@ public class WorkshopsService {
         return workshopsRepository.save(workshops);
     }
 
+    public Workshops updateWorkshops(Workshops existing, Workshops updated) {
+        existing.setName(updated.getName());
+        existing.setCode(updated.getCode());
+        existing.setNumberClasses(updated.getNumberClasses());
+        existing.setDescription(updated.getDescription());
+        existing.setIsFinished(updated.getIsFinished());
+
+        return workshopsRepository.save(existing);
+    }
+
+
     public void deleteWorkshops(Long id) {
         workshopsRepository.deleteById(id);
     }
