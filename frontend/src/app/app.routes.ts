@@ -6,6 +6,7 @@ import { Register } from './pages/register/register';
 import { AuthGuard } from './guards/auth-guard'
 import { SchoolComponent } from './pages/schools/schools.component';
 import { UserComponent } from './pages/users/users.component';
+import { EditSchoolsComponent } from './pages/edit-schools/edit-schools.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'add-schools', component: AddSchoolsComponent, canActivate: [AuthGuard] },
   { path: 'schools', component: SchoolComponent, canActivate: [AuthGuard] },
-  { path: 'users', component: UserComponent, canActivate: [AuthGuard] }
+  { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
+  { path: 'schools/edit/:id', component: EditSchoolsComponent, canActivate: [AuthGuard] }
 ];

@@ -2,18 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SchoolsService, School } from '../../services/SchoolsService';
 import { Auth, User } from '../../services/auth';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-school-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './school-table.component.html',
   styleUrls: ['./school-table.component.scss']
 })
 export class SchoolTableComponent implements OnInit {
   schools: School[] = [];
 
-  constructor(private schoolsService: SchoolsService, private auth: Auth) {}
+  constructor(private schoolsService: SchoolsService, private auth: Auth, private router: Router) {}
 
   ngOnInit(): void {
     this.auth.currentUser$.subscribe({
@@ -34,8 +35,11 @@ export class SchoolTableComponent implements OnInit {
   }
 
   openSettings(school: School) {
-    console.log('Abrir configurações da escola:', school);
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/schools/edit', school.id]);
+    });
   }
+
 
 deleteSchool(school: School) {
   if (!confirm(`Deseja realmente excluir a escola "${school.name}"?`)) {

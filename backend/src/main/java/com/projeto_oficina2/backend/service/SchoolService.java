@@ -39,4 +39,13 @@ public class SchoolService {
 
         schoolRepository.delete(school);
     }
+
+    public School updateSchool(Long id, School school) {
+        School existingSchool = schoolRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Escola não encontrada"));
+
+        existingSchool.setName(school.getName());
+
+        return schoolRepository.save(existingSchool);
+    }
+
 }
