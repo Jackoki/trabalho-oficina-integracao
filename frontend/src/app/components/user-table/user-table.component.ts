@@ -32,7 +32,19 @@ export class UserTableComponent implements OnInit {
     console.log('Abrir configurações do usuário:', user);
   }
 
-  deleteUser(user: User) {
-    console.log('Excluir usuário:', user);
+  deleteUser(user: User): void {
+    if (!confirm(`Deseja realmente excluir o usuário "${user.name}"?`)) {
+      return;
+    }
+
+    this.usersService.deleteUser(user.id).subscribe({
+      next: () => {
+        this.users = this.users.filter(u => u.id !== user.id);
+      },
+      error: (err) => {
+        console.error('Erro ao deletar usuário:', err);
+        alert('Erro ao deletar usuário. Tente novamente.');
+      }
+    });
   }
 }

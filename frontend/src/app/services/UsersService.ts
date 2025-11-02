@@ -25,4 +25,8 @@ export class UsersService {
   getUsersByType(typeId: number): Observable<User[]> {
     return this.http.get<User[]>(`${this.API_BASE_URL}/type/${typeId}`, { withCredentials: true });
   }
+
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.API_BASE_URL}/${id}`, { withCredentials: true });
+  }
 }
