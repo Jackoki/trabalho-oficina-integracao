@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { AddUsersComponent } from './pages/add-users/add-users.component';
+import { AddSchoolsComponent } from './pages/add-schools/add-schools.component';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { AuthGuard } from './guards/auth-guard'
@@ -12,7 +12,7 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'add-users', component: AddUsersComponent, canActivate: [AuthGuard] },
+  { path: 'add-schools', component: AddSchoolsComponent, canActivate: [AuthGuard] },
   { path: 'schools', component: SchoolComponent, canActivate: [AuthGuard] },
   { path: 'users', component: UserComponent, canActivate: [AuthGuard] }
 ];

@@ -37,7 +37,19 @@ export class SchoolTableComponent implements OnInit {
     console.log('Abrir configurações da escola:', school);
   }
 
-  deleteSchool(school: School) {
-    console.log('Excluir escola:', school);
+deleteSchool(school: School) {
+  if (!confirm(`Deseja realmente excluir a escola "${school.name}"?`)) {
+    return;
   }
+
+  this.schoolsService.deleteSchool(school.id).subscribe({
+    next: () => {
+      this.schools = this.schools.filter(s => s.id !== school.id);
+    },
+    error: (err) => {
+      alert('Erro ao deletar escola. Tente novamente.');
+    }
+  });
+}
+
 }

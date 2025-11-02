@@ -1,0 +1,33 @@
+.table-container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.header-content h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.btn-green {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-green:hover {
+  background-color: #218838;
+}

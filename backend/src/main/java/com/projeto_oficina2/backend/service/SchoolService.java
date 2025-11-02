@@ -7,11 +7,15 @@ import org.springframework.stereotype.Service;
 
 import com.projeto_oficina2.backend.model.School;
 import com.projeto_oficina2.backend.repository.SchoolRepository;
+import com.projeto_oficina2.backend.repository.UserRepository;
 
 @Service
 public class SchoolService {
     @Autowired
     private SchoolRepository schoolRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<School> getAllSchools(){
         return schoolRepository.findAll();
@@ -26,6 +30,13 @@ public class SchoolService {
     }
 
     public void deleteSchool(Long id) {
-        schoolRepository.deleteById(id);
+        School school = schoolRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Escola não encontrada"));
+
+        if (!userRepository.findBySchool(school).isEmpty()) {
+            throw new IllegalArgumentException("Não é possível deletar a escola: existem usuários vinculados.");
+        }
+
+        schoolRepository.delete(school);
     }
 }

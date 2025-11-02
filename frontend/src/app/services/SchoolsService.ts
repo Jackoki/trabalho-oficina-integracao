@@ -19,4 +19,8 @@ export class SchoolsService {
   getAllSchools(): Observable<School[]> {
     return this.http.get<School[]>(this.API_BASE_URL, { withCredentials: true });
   }
+
+  deleteSchool(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.API_BASE_URL}/${id}`, { withCredentials: true });
+  }
 }
