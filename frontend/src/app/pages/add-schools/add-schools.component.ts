@@ -52,12 +52,16 @@ export class AddSchoolsComponent implements OnInit {
 
     const payload = { name: this.newSchoolName.trim() };
 
-    this.http.post('http://localhost:8080/schools', payload).subscribe({
+    this.http.post('http://localhost:8080/schools', payload, { withCredentials: true }).subscribe({
       next: () => {
         this.addSuccess = 'Escola adicionada com sucesso!';
         this.newSchoolName = '';
         this.loadSchools();
         this.isLoading = false;
+
+        setTimeout(() => {
+          this.voltar();
+        }, 1500);
       },
       error: (err) => {
         console.error('Erro ao adicionar escola:', err);

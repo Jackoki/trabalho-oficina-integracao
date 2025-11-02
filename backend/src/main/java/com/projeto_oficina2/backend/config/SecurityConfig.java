@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                 .requestMatchers(HttpMethod.GET, "/workshops/user/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/workshops").hasRole("ADMIN")
                 .requestMatchers("/public/**").permitAll()
                 .anyRequest().authenticated()
             )

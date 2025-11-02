@@ -1,0 +1,95 @@
+.page-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  font-family: sans-serif;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background-color: #fff;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.simple-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+label {
+  width: 130px;
+  text-align: right;
+  font-weight: bold;
+}
+
+input {
+  flex: 1;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.2s ease;
+}
+
+button.voltar {
+  background-color: #6c757d;
+}
+button.voltar:hover {
+  background-color: #5a6268;
+}
+
+button.confirmar {
+  background-color: #28a745;
+}
+button.confirmar:hover {
+  background-color: #218838;
+}
+
+.error {
+  color: #d9534f;
+  font-size: 14px;
+  text-align: center;
+}
+
+.success {
+  color: #28a745;
+  font-size: 14px;
+  text-align: center;
+}
+
+.form-row textarea {
+  flex: 1;
+  min-height: 100px;
+  padding: 8px;
+  resize: vertical;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+

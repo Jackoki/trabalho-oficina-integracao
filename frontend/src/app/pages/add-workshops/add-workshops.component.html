@@ -1,0 +1,37 @@
+<div class="page-container">
+  <h2>Adicionar Workshop</h2>
+
+  <form (ngSubmit)="addWorkshop()" class="simple-form">
+
+    <div class="form-row">
+      <label for="name">Nome:</label>
+      <input type="text" id="name" [(ngModel)]="newWorkshop.name" name="name" placeholder="Digite o nome" required />
+    </div>
+
+    <div class="form-row">
+      <label for="code">Código:</label>
+      <input type="text" id="code" [(ngModel)]="newWorkshop.code" name="code" placeholder="Digite o código" required />
+    </div>
+
+    <div class="form-row">
+      <label for="numberClasses">Número de Aulas:</label>
+      <input type="number" id="numberClasses" [(ngModel)]="newWorkshop.numberClasses" name="numberClasses" placeholder="Digite o número de aulas" required />
+    </div>
+
+    <div class="form-row">
+      <label for="description">Descrição:</label>
+      <textarea id="description" [(ngModel)]="newWorkshop.description" name="description" placeholder="Digite a descrição"></textarea>
+    </div>
+
+    <div *ngIf="addError" class="error">{{ addError }}</div>
+    <div *ngIf="addSuccess" class="success">{{ addSuccess }}</div>
+
+    <div class="buttons">
+      <button type="button" class="voltar" (click)="voltar()">Voltar</button>
+      <button type="submit" class="confirmar" [disabled]="isLoading">
+        {{ isLoading ? 'Adicionando...' : 'Confirmar' }}
+      </button>
+    </div>
+
+  </form>
+</div>

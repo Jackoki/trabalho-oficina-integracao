@@ -10,7 +10,7 @@
   <div class="actions">
     <button class="btn-green" *ngIf="isAdmin" [routerLink]="['/schools']">Gerenciar Escolas</button>
     <button class="btn-green" *ngIf="isAdmin" [routerLink]="['/users']">Gerenciar Usuários</button>
-    <button class="btn-green" *ngIf="isAdmin">Criar Oficina</button>
+    <button class="btn-green" *ngIf="isAdmin" [routerLink]="['/add-workshops']">Criar Oficina</button>
     <a href="#" class="logout-link" (click)="logout()">
       <i class="fa fa-sign-out"></i> Sair
     </a>

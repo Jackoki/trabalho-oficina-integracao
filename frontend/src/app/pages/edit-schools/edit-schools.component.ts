@@ -32,14 +32,12 @@ export class EditSchoolsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Verifica se o usuário está logado e é admin
     const user = this.auth.getCurrentUser();
     if (!user || user.userType.name !== 'Admin') {
       this.router.navigate(['/schools']);
       return;
     }
 
-    // Escuta mudanças nos parâmetros da rota
     this.route.paramMap.subscribe(params => {
       const idParam = params.get('id');
       if (idParam) {
@@ -88,7 +86,9 @@ export class EditSchoolsComponent implements OnInit {
           this.isLoading = false;
         }
       });
-    } else {
+    } 
+    
+    else {
       this.http.post('http://localhost:8080/schools', payload, { withCredentials: true }).subscribe({
         next: () => {
           this.addSuccess = 'Escola adicionada com sucesso!';
