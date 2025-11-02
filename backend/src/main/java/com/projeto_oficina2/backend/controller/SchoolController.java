@@ -43,7 +43,6 @@ public class SchoolController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateSchool(@PathVariable Long id, @RequestBody School school) {
         try {
             School updatedSchool = schoolService.updateSchool(id, school);
@@ -56,7 +55,6 @@ public class SchoolController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public void deleteSchool(@PathVariable Long id) {
         schoolService.deleteSchool(id);
     }

@@ -33,14 +33,22 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/schools/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/schools").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/schools/edit/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/schools/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/schools/**").hasRole("ADMIN")
+
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers(HttpMethod.GET, "/users/type/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.GET, "/usertype").permitAll()
+
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+
                 .requestMatchers(HttpMethod.GET, "/workshops/user/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/workshops").hasRole("ADMIN")
+                
                 .requestMatchers("/public/**").permitAll()
                 .anyRequest().authenticated()
             )

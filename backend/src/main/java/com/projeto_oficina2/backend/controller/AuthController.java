@@ -36,8 +36,7 @@ public class AuthController {
         }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return ResponseEntity.status(401)
-                    .body(new LoginResponse(false, "Senha inválida", null));
+            return ResponseEntity.status(401).body(new LoginResponse(false, "Senha inválida", null));
         }
 
         String token = jwtService.generateToken(user);

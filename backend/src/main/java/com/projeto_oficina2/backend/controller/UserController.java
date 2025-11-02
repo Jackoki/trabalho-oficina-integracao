@@ -53,7 +53,35 @@ public class UserController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        try {
+            Optional<User> existingUserOpt = userService.findById(id);
+            if (existingUserOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Usuário não encontrado"));
+            }
 
+            User existingUser = existingUserOpt.get();
+
+            existingUser.setName(updatedUser.getName());
+            existingUser.setCode(updatedUser.getCode());
+            existingUser.setUserType(updatedUser.getUserType());
+            existingUser.setSchool(updatedUser.getSchool());
+
+            User savedUser = userService.update(existingUser);
+
+            return ResponseEntity.ok(savedUser);
+
+        } 
+        
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));
+        } 
+        
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("Erro ao atualizar usuário: " + e.getMessage()));
+        }
+    }
 
 
     @DeleteMapping("/{id}")

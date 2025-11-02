@@ -30,6 +30,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User update(User user) {
+        Optional<User> other = userRepository.findByCodeExcludingId(user.getCode(), user.getId());
+        if (other.isPresent()) {
+            throw new IllegalArgumentException("Código já cadastrado!");
+        }
+        return userRepository.save(user);
+    }
+
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
@@ -48,6 +56,10 @@ public class UserService {
         }
         
         userRepository.deleteById(id);
+    }
+
+    public Optional<User> findByCodeExcludingId(String code, Long id) {
+        return userRepository.findByCodeExcludingId(code, id);
     }
 
     public List<User> getUsersByUserType(UserType userType) {
