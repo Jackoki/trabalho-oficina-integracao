@@ -45,6 +45,15 @@ public class WorkshopsService {
         workshopsRepository.deleteById(id);
     }
 
+    public Workshops finalizeWorkshop(Long id) {
+        Workshops workshop = workshopsRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Oficina não encontrada"));
+
+        workshop.setIsFinished(1);
+        return workshopsRepository.save(workshop);
+    }
+
+
     public List<Workshops> getWorkshopsByUserId(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 

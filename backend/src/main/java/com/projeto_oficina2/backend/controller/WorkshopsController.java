@@ -56,6 +56,13 @@ public class WorkshopsController {
         workshopsService.deleteWorkshops(id);
     }
 
+    @PutMapping("/{id}/finalize")
+    public ResponseEntity<Void> finalizeWorkshop(@PathVariable Long id) {
+        workshopsService.finalizeWorkshop(id);
+        return ResponseEntity.noContent().build(); // retorna 204 No Content
+    }
+
+
     @GetMapping("/user/{userId}")
     public List<Workshops> getWorkshopsByUser(@PathVariable Long userId) {
         return workshopsService.getWorkshopsByUserId(userId);

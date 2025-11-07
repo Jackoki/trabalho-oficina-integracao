@@ -18,7 +18,7 @@
             <button class="icon-button list" (click)="viewList(workshop)" title="Chamada">
               <i class="fa fa-list"></i>
             </button>
-            <button class="icon-button profile" (click)="viewProfile(workshop)" title="Usuários">
+            <button *ngIf="isProfessor" class="icon-button check" (click)="markComplete(workshop)" title="Concluir">
               <i class="fa fa-user"></i>
             </button>
             <button class="icon-button settings" (click)="openSettings(workshop)" title="Configurações">

@@ -13,13 +13,21 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class WorkshopTableComponent implements OnInit {
   workshops: Workshop[] = [];
+  isProfessor: boolean = false;
 
-  constructor(private workshopsService: WorkshopsService, private auth: Auth, private router: Router) {}
+  constructor(
+    private workshopsService: WorkshopsService,
+    private auth: Auth,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.auth.currentUser$.subscribe({
       next: (user: User | null) => {
-        if (user) this.loadWorkshops(user.id);
+        if (user) {
+          this.isProfessor = user.userType?.id === 2; // ← id 2 = Professor (ajuste se for outro valor)
+          this.loadWorkshops(user.id);
+        }
       },
       error: (err) => console.error('Erro ao obter usuário logado:', err)
     });
@@ -27,10 +35,23 @@ export class WorkshopTableComponent implements OnInit {
 
   loadWorkshops(userId: number) {
     this.workshopsService.getWorkshopsByUser(userId).subscribe({
-      next: (workshops) => {
-        this.workshops = workshops;
-      },
+      next: (workshops) => (this.workshops = workshops),
       error: (err) => console.error('Erro ao carregar workshops:', err)
+    });
+  }
+
+  markComplete(workshop: Workshop) {
+    if (!confirm(`Deseja concluir a oficina "${workshop.name}"?`)) return;
+
+    this.workshopsService.finalizeWorkshop(workshop.id).subscribe({
+      next: () => {
+        workshop.isFinished = 1;
+        alert('Oficina concluída com sucesso!');
+      },
+      error: (err) => {
+        console.error('Erro ao concluir oficina:', err);
+        alert('Erro ao concluir oficina.');
+      }
     });
   }
 
@@ -40,10 +61,6 @@ export class WorkshopTableComponent implements OnInit {
 
   viewProfile(workshop: Workshop) {
     console.log('Ver perfil:', workshop);
-  }
-
-  markComplete(workshop: Workshop) {
-    console.log('Concluir oficina:', workshop);
   }
 
   openSettings(workshop: Workshop) {
@@ -57,18 +74,13 @@ export class WorkshopTableComponent implements OnInit {
   }
 
   deleteWorkshop(workshop: Workshop) {
-    if (!confirm(`Deseja realmente excluir a oficina "${workshop.code}"?`)) {
-      return;
-    }
-  
+    if (!confirm(`Deseja realmente excluir a oficina "${workshop.code}"?`)) return;
+
     this.workshopsService.deleteWorkshop(workshop.id).subscribe({
       next: () => {
         this.workshops = this.workshops.filter(w => w.id !== workshop.id);
       },
-      error: (err) => {
-        alert('Erro ao deletar oficina. Tente novamente.');
-      }
+      error: () => alert('Erro ao deletar oficina. Tente novamente.')
     });
   }
-
 }

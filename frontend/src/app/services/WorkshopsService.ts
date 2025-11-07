@@ -30,4 +30,12 @@ export class WorkshopsService {
   deleteWorkshop(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API_BASE_URL}/${id}`, { withCredentials: true });
   }
+
+  finalizeWorkshop(id: number): Observable<void> {
+    return this.http.put<void>(
+      `${this.API_BASE_URL}/${id}/finalize`,
+      {},
+      { withCredentials: true }
+    );
+  }
 }
