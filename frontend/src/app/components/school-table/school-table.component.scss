@@ -1,0 +1,77 @@
+.table-container {
+  background: white;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+
+  .table-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #f5f5f5;
+      color: #007bcc;
+      font-weight: bold;
+    }
+
+    .school-row {
+      position: relative;
+
+      &:hover {
+        background-color: #f9f9f9;
+      }
+
+      .action-icons {
+        position: absolute;
+        right: -5px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        gap: 8px;
+        background: white;
+        padding-left: 8px;
+      }
+
+      .icon-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 6px;
+        font-size: 1.1rem;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        color: #555;
+
+        &:hover {
+          transform: scale(1.15);
+        }
+
+        &.settings {
+          color: #ffc107;
+          &:hover {
+            background-color: rgba(255, 193, 7, 0.15);
+          }
+        }
+
+        &.delete {
+          color: #dc3545;
+          &:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+          }
+        }
+      }
+    }
+  }
+}
