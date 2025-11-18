@@ -1,13 +1,17 @@
-<!-- header.component.html -->
 <div class="header-content">
   <div class="user-info">
-    Gabriel Kenji Inoue
+    <button class="btn-home" [routerLink]="['/home']" title="Home">
+      <i class="fa fa-home"></i>
+    </button>
+
+    {{ userName || 'Visitante' }}
   </div>
 
   <div class="actions">
-    <button class="btn-green">Gerenciar Usuários</button>
-    <button class="btn-green">Criar Oficina</button>
-    <a href="#" class="logout-link">
+    <button class="btn-green" *ngIf="isAdmin" [routerLink]="['/schools']">Gerenciar Escolas</button>
+    <button class="btn-green" *ngIf="isAdmin" [routerLink]="['/users']">Gerenciar Usuários</button>
+    <button class="btn-green" *ngIf="isAdmin" [routerLink]="['/add-workshops']">Criar Oficina</button>
+    <a href="#" class="logout-link" (click)="logout()">
       <i class="fa fa-sign-out"></i> Sair
     </a>
   </div>

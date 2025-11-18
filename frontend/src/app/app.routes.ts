@@ -1,12 +1,27 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { Login } from './components/login/login';
-import { Register } from './components/register/register';
+import { AddSchoolsComponent } from './pages/add-schools/add-schools.component';
+import { Login } from './pages/login/login';
+import { Register } from './pages/register/register';
+import { AuthGuard } from './guards/auth-guard'
+import { SchoolComponent } from './pages/schools/schools.component';
+import { UserComponent } from './pages/users/users.component';
+import { EditSchoolsComponent } from './pages/edit-schools/edit-schools.component';
+import { AddWorkshopsComponent } from './pages/add-workshops/add-workshops.component';
+import { EditUserComponent } from './pages/edit-users/edit-users.component';
+import { EditWorkshopsComponent } from './pages/edit-workshops/edit-workshops.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: Login },
-  { path: 'register', component: Register }
-];
+  { path: 'register', component: Register },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'add-schools', component: AddSchoolsComponent, canActivate: [AuthGuard] },
+  { path: 'schools', component: SchoolComponent, canActivate: [AuthGuard] },
+  { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
+  { path: 'schools/edit/:id', component: EditSchoolsComponent, canActivate: [AuthGuard] },
+  { path: 'users/edit/:id', component: EditUserComponent, canActivate: [AuthGuard] },
+  { path: 'add-workshops', component: AddWorkshopsComponent, canActivate: [AuthGuard] },
+  { path: 'workshops/edit/:id', component: EditWorkshopsComponent }
 
+];
