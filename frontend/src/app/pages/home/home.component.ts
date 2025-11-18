@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { OficinaTableComponent } from '../../components/oficina-table/oficina-table.component';
+import { WorkshopTableComponent } from '../../components/workshop-table/workshop-table.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [OficinaTableComponent],
+  imports: [WorkshopTableComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })

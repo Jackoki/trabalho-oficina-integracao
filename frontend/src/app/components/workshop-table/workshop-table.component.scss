@@ -1,0 +1,71 @@
+.table-container {
+  background: white;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+
+  h2 {
+    margin-bottom: 15px;
+    color: #007bcc;
+  }
+
+  .table-wrapper {
+    position: relative;
+    width: 100%;
+    overflow-x: auto; /* permite rolagem horizontal se necessário */
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* opcional para tabelas pequenas */
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+      vertical-align: middle;
+    }
+
+    th {
+      background-color: #f5f5f5;
+      color: #007bcc;
+      font-weight: bold;
+    }
+
+    .workshop-row {
+      &:hover {
+        background-color: #f9f9f9;
+      }
+
+      .action-icons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap; /* permite que os ícones quebrem linha se necessário */
+      }
+
+      .icon-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 6px;
+        font-size: 1.1rem;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        color: #555;
+
+        &:hover {
+          transform: scale(1.15);
+        }
+
+        &.list { color: #007bcc; &:hover { background-color: rgba(0,123,204,0.1); } }
+        &.profile { color: #6c757d; &:hover { background-color: rgba(108,117,125,0.1); } }
+        &.check { color: #28a745; &:hover { background-color: rgba(40,167,69,0.1); } }
+        &.settings { color: #ffc107; &:hover { background-color: rgba(255,193,7,0.15); } }
+        &.certificate { color: #9c27b0; &:hover { background-color: rgba(156,39,176,0.1); } }
+        &.delete { color: #dc3545; &:hover { background-color: rgba(220,53,69,0.1); } }
+      }
+    }
+  }
+}
