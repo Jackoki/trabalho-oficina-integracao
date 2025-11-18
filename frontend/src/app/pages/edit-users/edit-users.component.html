@@ -1,0 +1,65 @@
+<div class="page-container">
+  <h2>Editar Usuário</h2>
+
+  <form (ngSubmit)="saveUser()" class="simple-form">
+    <div class="form-row">
+      <label for="name">Nome:</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        [(ngModel)]="userData.name"
+        placeholder="Digite o nome completo"
+        required
+      />
+    </div>
+
+    <div class="form-row">
+      <label for="code">Código:</label>
+      <input
+        type="text"
+        id="code"
+        name="code"
+        [(ngModel)]="userData.code"
+        placeholder="Digite o código de acesso"
+        required
+      />
+    </div>
+
+    <div class="form-row">
+      <label for="userType">Tipo de Usuário:</label>
+      <select
+        id="userType"
+        name="userType"
+        [(ngModel)]="userData.userTypeId"
+        required
+      >
+        <option [ngValue]="null" disabled>Selecione o tipo</option>
+        <option *ngFor="let type of userTypes" [value]="type.id">{{ type.name }}</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label for="school">Instituição:</label>
+      <select
+        id="school"
+        name="school"
+        [(ngModel)]="userData.schoolId"
+        required
+      >
+        <option [ngValue]="null" disabled>Selecione uma escola</option>
+        <option *ngFor="let s of schools" [value]="s.id">{{ s.name }}</option>
+      </select>
+    </div>
+
+    <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+    <div *ngIf="successMsg" class="success">{{ successMsg }}</div>
+
+    <div class="buttons">
+      <button type="button" class="voltar" (click)="voltar()">Voltar</button>
+      <button type="submit" class="confirmar" [disabled]="isLoading">
+        {{ isLoading ? 'Salvando...' : 'Confirmar' }}
+      </button>
+    </div>
+  </form>
+</div>

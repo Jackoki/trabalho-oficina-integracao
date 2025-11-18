@@ -1,0 +1,9 @@
+<div class="table-container">
+  <div class="header-content">
+    <h2>Escolas</h2>
+    <button class="btn-green" *ngIf="isAdmin" [routerLink]="['/add-schools']">Criar Escola</button>
+  </div>
+
+  <app-school-table></app-school-table>
+  <div class="pagination-footer"></div>
+</div>
