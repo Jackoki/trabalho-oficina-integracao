@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
-import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 export interface LoginRequest {
@@ -14,28 +13,16 @@ export interface RegisterRequest {
   accessCode: string;
   password: string;
   schoolId: number;
-  schoolId: number;
 }
 
 export interface AuthResponse {
   success: boolean;
   message: string;
   user?: User;
-  user?: User;
 }
 
 export interface User {
   id: number;
-  name: string;
-  code: string;
-  userType: {
-    id: number;
-    name: string;
-  };
-  school?: {
-    id: number;
-    name: string;
-  };
   name: string;
   code: string;
   userType: {
@@ -52,8 +39,6 @@ export interface User {
   providedIn: 'root'
 })
 export class Auth {
-  private readonly API_BASE_URL = 'http://localhost:8080/auth';
-
   private readonly API_BASE_URL = 'http://localhost:8080/auth';
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
@@ -165,61 +150,46 @@ export class Auth {
   }
 
   isAdministrator(): boolean {
-    return this.hasRole('ADMINISTRADOR');
+    return this.hasRole('Admin');
   }
 
   isProfessor(): boolean {
-    return this.hasRole('PROFESSOR');
+    return this.hasRole('Professor');
   }
 
   isTutor(): boolean {
-    return this.hasRole('TUTOR');
+    return this.hasRole('Tutor');
   }
 
   isAluno(): boolean {
-    return this.hasRole('ALUNO');
+    return this.hasRole('Aluno');
   }
 
-  // --- PERMISSION METHODS FOR WORKSHOP ACTIONS ---
-
-  // Define permissions based on the user's requirements and common sense for an educational platform
-  // Buttons/Actions: Gerenciar Usuários, Fazer Chamada, Finalizar, Ver Certificado, Editar Oficina, Excluir Oficina
-
   canCreateWorkshop(): boolean {
-    // Only ADMINISTRADOR and PROFESSOR can create new workshops
     return this.isAdministrator() || this.isProfessor();
   }
 
   canEditWorkshop(): boolean {
-    // Only ADMINISTRADOR can edit any workshop. PROFESSOR can edit their own (logic for "own" is not implemented here, so we'll stick to ADMINISTRADOR for now for simplicity, or allow PROFESSOR to edit all for mock)
-    // Let's allow ADMINISTRADOR and PROFESSOR to edit for now.
     return this.isAdministrator() || this.isProfessor();
   }
 
   canDeleteWorkshop(): boolean {
-    // Only ADMINISTRADOR can delete a workshop
     return this.isAdministrator();
   }
 
   canManageUsers(): boolean {
-    // ADMINISTRADOR and PROFESSOR can manage users (e.g., enroll students)
     return this.isAdministrator() || this.isProfessor();
   }
 
   canTakeAttendance(): boolean {
-    // ADMINISTRADOR, PROFESSOR, and TUTOR can take attendance
     return this.isAdministrator() || this.isProfessor() || this.isTutor();
   }
 
   canFinalizeWorkshop(): boolean {
-    // ADMINISTRADOR and PROFESSOR can finalize a workshop
     return this.isAdministrator() || this.isProfessor();
   }
 
   canViewCertificate(): boolean {
-    // Only ALUNO can view their certificate
     return this.isAluno();
-  isAuthenticated(): boolean {
-    return this.currentUserSubject.value !== null;
   }
 }

@@ -13,19 +13,20 @@
   .table-wrapper {
     position: relative;
     width: 100%;
-    overflow-x: auto; /* permite rolagem horizontal se necessário */
+    overflow-x: auto;
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 600px; /* opcional para tabelas pequenas */
+    min-width: 600px;
 
     th, td {
       padding: 10px;
       text-align: left;
       border-bottom: 1px solid #eee;
       vertical-align: middle;
+      min-height: 48px;
     }
 
     th {
@@ -35,6 +36,8 @@
     }
 
     .workshop-row {
+      min-height: 48px; 
+      
       &:hover {
         background-color: #f9f9f9;
       }
@@ -42,7 +45,9 @@
       .action-icons {
         display: flex;
         gap: 8px;
-        flex-wrap: wrap; /* permite que os ícones quebrem linha se necessário */
+        flex-wrap: wrap;
+        min-height: 32px; 
+        align-items: center;
       }
 
       .icon-button {

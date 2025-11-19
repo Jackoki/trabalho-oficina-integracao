@@ -17,7 +17,7 @@ export class WorkshopTableComponent implements OnInit {
 
   constructor(
     private workshopsService: WorkshopsService,
-    private auth: Auth,
+    public auth: Auth,
     private router: Router
   ) {}
 
@@ -25,7 +25,7 @@ export class WorkshopTableComponent implements OnInit {
     this.auth.currentUser$.subscribe({
       next: (user: User | null) => {
         if (user) {
-          this.isProfessor = user.userType?.id === 2; // ← id 2 = Professor (ajuste se for outro valor)
+          this.isProfessor = user.userType?.id === 2;
           this.loadWorkshops(user.id);
         }
       },

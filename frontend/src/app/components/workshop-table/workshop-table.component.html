@@ -15,32 +15,26 @@
           <td>{{ workshop.name }}</td>
           <td>0/{{ workshop.numberClasses }}</td>
           <td class="action-icons">
-            <!-- Botão: Fazer Chamada (Lista) -->
             <button *ngIf="auth.canTakeAttendance()" class="icon-button list" (click)="viewList(workshop)" title="Fazer Chamada">
               <i class="fa fa-list"></i>
             </button>
 
-            <!-- Botão: Gerenciar Usuários (Exemplo, pode ser um ícone de usuários) -->
             <button *ngIf="auth.canManageUsers()" class="icon-button user" (click)="viewList(workshop)" title="Gerenciar Usuários">
               <i class="fa fa-users"></i>
             </button>
 
-            <!-- Botão: Editar Oficina (Configurações) -->
             <button *ngIf="auth.canEditWorkshop()" class="icon-button settings" (click)="openSettings(workshop)" title="Editar Oficina">
               <i class="fa fa-cog"></i>
             </button>
 
-            <!-- Botão: Finalizar Oficina -->
             <button *ngIf="auth.canFinalizeWorkshop()" class="icon-button check" (click)="markComplete(workshop)" title="Finalizar Oficina">
               <i class="fa fa-check-circle"></i>
             </button>
 
-            <!-- Botão: Ver Certificado -->
             <button *ngIf="auth.canViewCertificate()" class="icon-button certificate" (click)="viewCertificate(workshop)" title="Ver Certificado">
               <i class="fa fa-certificate"></i>
             </button>
 
-            <!-- Botão: Excluir Oficina -->
             <button *ngIf="auth.canDeleteWorkshop()" class="icon-button delete" (click)="deleteWorkshop(workshop)" title="Excluir Oficina">
               <i class="fa fa-trash"></i>
             </button>
