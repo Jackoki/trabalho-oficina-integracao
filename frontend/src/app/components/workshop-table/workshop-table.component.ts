@@ -41,7 +41,13 @@ export class WorkshopTableComponent implements OnInit {
   }
 
   markComplete(workshop: Workshop) {
-    if (!confirm(`Deseja concluir a oficina "${workshop.name}"?`)) return;
+    if (workshop.isFinished === 1) {
+      alert(`A oficina "${workshop.name}" já foi concluída anteriormente.`);
+      return;
+    }
+
+    if (!confirm(`Deseja concluir a oficina "${workshop.name}"?`)) 
+      return;
 
     this.workshopsService.finalizeWorkshop(workshop.id).subscribe({
       next: () => {
@@ -56,7 +62,7 @@ export class WorkshopTableComponent implements OnInit {
   }
 
   viewList(workshop: Workshop) {
-    console.log('Ver lista da oficina:', workshop);
+    this.router.navigate(['/workshops/workshop-users', workshop.id]); 
   }
 
   viewProfile(workshop: Workshop) {

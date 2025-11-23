@@ -1,6 +1,9 @@
 package com.projeto_oficina2.backend.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,4 +66,12 @@ public class WorkshopsService {
 
         return user.getWorkshops();
     }
+
+    public List<User> getUsersByType(Long workshopId, int typeId) {
+        Workshops workshop = workshopsRepository.findById(workshopId).orElseThrow(() -> new RuntimeException("Workshop não encontrado"));
+
+        return workshop.getUsers().stream().filter(u -> u.getUserType().getId() == typeId).collect(Collectors.toList());
+    }
+
+
 }

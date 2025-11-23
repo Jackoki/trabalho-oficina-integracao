@@ -10,6 +10,7 @@ import { EditSchoolsComponent } from './pages/edit-schools/edit-schools.componen
 import { AddWorkshopsComponent } from './pages/add-workshops/add-workshops.component';
 import { EditUserComponent } from './pages/edit-users/edit-users.component';
 import { EditWorkshopsComponent } from './pages/edit-workshops/edit-workshops.component';
+import { UserWorkshopComponent } from './pages/users-workshops/users-workshop.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -22,6 +23,6 @@ export const routes: Routes = [
   { path: 'schools/edit/:id', component: EditSchoolsComponent, canActivate: [AuthGuard] },
   { path: 'users/edit/:id', component: EditUserComponent, canActivate: [AuthGuard] },
   { path: 'add-workshops', component: AddWorkshopsComponent, canActivate: [AuthGuard] },
-  { path: 'workshops/edit/:id', component: EditWorkshopsComponent }
-
+  { path: 'workshops/edit/:id', component: EditWorkshopsComponent, canActivate: [AuthGuard] },
+  { path: 'workshops/workshop-users/:id', component: UserWorkshopComponent, canActivate: [AuthGuard] }
 ];

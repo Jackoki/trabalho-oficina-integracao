@@ -11,6 +11,17 @@ export interface Workshop {
   description: string;
 }
 
+export interface User {
+  id: number;
+  name: string;
+  code: string;
+
+  userType?: {
+    id: number;
+    name: string;
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,6 +36,12 @@ export class WorkshopsService {
 
   getAllWorkshops(): Observable<Workshop[]> {
     return this.http.get<Workshop[]>(this.API_BASE_URL, { withCredentials: true });
+  }
+
+  getUsersWorkshops(workshopId: number, typeId: number): Observable<User[]> {
+    return this.http.get<User[]>(`${this.API_BASE_URL}/${workshopId}/users/by-type/${typeId}`,
+      { withCredentials: true }
+    );
   }
 
   deleteWorkshop(id: number): Observable<void> {

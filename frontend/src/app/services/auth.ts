@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
+import { Observable, BehaviorSubject, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 export interface LoginRequest {
@@ -44,33 +44,11 @@ export class Auth {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  // MOCK: Change this value to 'ADMINISTRADOR', 'PROFESSOR', 'TUTOR', or 'ALUNO' for testing
-  // The user will be logged in with this role upon calling login() or me()
-  private mockUserType: string = 'ADMINISTRADOR'; 
-
-  constructor(private http: HttpClient) {
-    // MOCK: Attempt to log in a mock user on service initialization for easier testing
-    // In a real app, this would be a call to 'me()' or checking local storage
-    this.mockLoginForTesting(this.mockUserType);
-  }
-
-  private mockLoginForTesting(role: string): void {
-    const mockUser: User = {
-      id: 1,
-      name: `Mock User (${role})`,
-      code: '1234567',
-      userType: {
-        id: 1,
-        name: role,
-      },
-    };
-    this.currentUserSubject.next(mockUser);
-  }
-
-  // --- MOCKED API METHODS ---
+  constructor(private http: HttpClient) {}
 
   login(loginData: LoginRequest): Observable<AuthResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    
     return this.http.post<AuthResponse>(
       `${this.API_BASE_URL}/login`,
       loginData,
@@ -89,11 +67,12 @@ export class Auth {
     );
   }
 
-  register(registerData: RegisterRequest): Observable<AuthResponse> {
+  register(record: RegisterRequest): Observable<AuthResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
     return this.http.post<AuthResponse>(
       `${this.API_BASE_URL}/register`,
-      registerData,
+      record,
       { headers, withCredentials: true }
     ).pipe(
       catchError(error => {
@@ -108,18 +87,18 @@ export class Auth {
       `${this.API_BASE_URL}/logout`,
       {},
       { withCredentials: true }
-    ).pipe(
-      map(() => this.currentUserSubject.next(null)),
-      catchError(error => {
-        console.error('Erro no logout:', error);
-        this.currentUserSubject.next(null);
-        return of();
-      })
     );
   }
 
+  clearCurrentUser(): void {
+    this.currentUserSubject.next(null);
+  }
+
   me(): Observable<User | null> {
-    return this.http.get<User>(`${this.API_BASE_URL}/me`, { withCredentials: true }).pipe(
+    return this.http.get<User>(
+      `${this.API_BASE_URL}/me`,
+      { withCredentials: true }
+    ).pipe(
       map(user => {
         this.currentUserSubject.next(user);
         return user;
@@ -140,13 +119,11 @@ export class Auth {
   }
 
   getCurrentUserRole(): string | null {
-    const user = this.getCurrentUser();
-    return user?.userType?.name || null;
+    return this.getCurrentUser()?.userType?.name || null;
   }
 
   hasRole(role: string): boolean {
-    const currentRole = this.getCurrentUserRole();
-    return currentRole === role;
+    return this.getCurrentUserRole() === role;
   }
 
   isAdministrator(): boolean {

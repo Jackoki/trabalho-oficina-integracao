@@ -1,0 +1,44 @@
+<div class="table-container">
+  <div class="table-header">
+    <h2 class="table-title">{{ title }}</h2>
+    <a class="add-user-link" [routerLink]="['/usuarios/adicionar', typeId]">
+      Adicionar Usuário
+    </a>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Código</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngIf="loading">
+          <td colspan="3" class="empty-row">Carregando usuários...</td>
+        </tr>
+
+        <tr *ngIf="!loading && users.length === 0">
+          <td colspan="3" class="empty-row">Nenhum usuário encontrado</td>
+        </tr>
+
+        <ng-container *ngIf="!loading">
+          <tr *ngFor="let user of users" class="user-row">
+            <td>{{ user.name }}</td>
+            <td>{{ user.code }}</td>
+            <td class="actions-cell">
+              <div class="action-icons">
+                <button class="icon-button delete" title="Excluir">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

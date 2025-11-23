@@ -47,6 +47,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
 
                 .requestMatchers(HttpMethod.GET, "/workshops/user/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/workshops/*/users/by-type/**").hasAnyRole("ADMIN", "PROFESSOR")
                 .requestMatchers(HttpMethod.POST, "/workshops").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/workshops/**").hasRole("ADMIN")
                 

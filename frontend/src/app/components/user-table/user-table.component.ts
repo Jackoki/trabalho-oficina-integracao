@@ -11,6 +11,7 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './user-table.component.html',
   styleUrls: ['./user-table.component.scss']
 })
+
 export class UserTableComponent implements OnInit {
   @Input() title!: string;
   @Input() typeId!: number;

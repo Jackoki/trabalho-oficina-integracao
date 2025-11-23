@@ -1,12 +1,15 @@
 package com.projeto_oficina2.backend.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.projeto_oficina2.backend.model.ErrorResponse;
+import com.projeto_oficina2.backend.model.User;
 import com.projeto_oficina2.backend.model.Workshops;
 import com.projeto_oficina2.backend.service.WorkshopsService;
 
@@ -27,6 +30,12 @@ public class WorkshopsController {
         return workshopsService.getWorkshopsById(id);
     }
 
+    @GetMapping("/{id}/users/by-type/{typeId}")
+    public ResponseEntity<List<User>> getUsersByType(@PathVariable Long id, @PathVariable int typeId) {
+        List<User> users = workshopsService.getUsersByType(id, typeId);
+        return ResponseEntity.ok(users);
+    }
+
     @PostMapping
     public Workshops createWorkshops(@RequestBody Workshops workshops) {
         return workshopsService.createWorkshops(workshops);
@@ -43,9 +52,13 @@ public class WorkshopsController {
             Workshops savedWorkshop = workshopsService.updateWorkshops(existingWorkshop, updatedWorkshop);
             return ResponseEntity.ok(savedWorkshop);
 
-        } catch (IllegalArgumentException e) {
+        } 
+
+        catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));
-        } catch (Exception e) {
+        } 
+        
+        catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("Erro ao atualizar workshop: " + e.getMessage()));
         }
     }
@@ -59,7 +72,7 @@ public class WorkshopsController {
     @PutMapping("/{id}/finalize")
     public ResponseEntity<Void> finalizeWorkshop(@PathVariable Long id) {
         workshopsService.finalizeWorkshop(id);
-        return ResponseEntity.noContent().build(); // retorna 204 No Content
+        return ResponseEntity.noContent().build();
     }
 
 
