@@ -6,6 +6,8 @@ import com.projeto_oficina2.backend.model.UserType;
 import com.projeto_oficina2.backend.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,5 +70,9 @@ public class UserService {
 
     public List<User> getUsersBySchool(School school) {
         return userRepository.findBySchool(school);
+    }
+
+    public Page<User> getUsersByUserType(UserType userType, Pageable pageable) {
+        return userRepository.findByUserType(userType, pageable);
     }
 }

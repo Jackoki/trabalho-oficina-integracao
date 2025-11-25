@@ -4,9 +4,9 @@ import com.projeto_oficina2.backend.model.ErrorResponse;
 import com.projeto_oficina2.backend.model.User;
 import com.projeto_oficina2.backend.model.UserType;
 import com.projeto_oficina2.backend.service.UserService;
-
-import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +37,14 @@ public class UserController {
     }
 
     @GetMapping("/type/{userType}")
-    public List<User> getUsersByType(@PathVariable UserType userType) {
-        return userService.getUsersByUserType(userType);
+    public Page<User> getUsersByType(@PathVariable UserType userType, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        if (page < 0) 
+            page = 0;
+
+        if (size <= 0) 
+            size = 5;
+
+        return userService.getUsersByUserType(userType, PageRequest.of(page, size));
     }
 
     @PostMapping
@@ -62,14 +68,12 @@ public class UserController {
             }
 
             User existingUser = existingUserOpt.get();
-
             existingUser.setName(updatedUser.getName());
             existingUser.setCode(updatedUser.getCode());
             existingUser.setUserType(updatedUser.getUserType());
             existingUser.setSchool(updatedUser.getSchool());
 
             User savedUser = userService.update(existingUser);
-
             return ResponseEntity.ok(savedUser);
 
         } 
@@ -82,7 +86,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("Erro ao atualizar usuário: " + e.getMessage()));
         }
     }
-
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {

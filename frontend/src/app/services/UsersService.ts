@@ -22,8 +22,8 @@ export class UsersService {
   
   constructor(private http: HttpClient) {}
 
-  getUsersByType(typeId: number): Observable<User[]> {
-    return this.http.get<User[]>(`${this.API_BASE_URL}/type/${typeId}`, { withCredentials: true });
+  getUsersByType(typeId: number, page: number, size: number): Observable<any> {
+    return this.http.get<any>(`${this.API_BASE_URL}/type/${typeId}?page=${page}&size=${size}`, { withCredentials: true });
   }
 
   deleteUser(id: number): Observable<void> {

@@ -23,4 +23,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByCodeExcludingId(@Param("code") String code, @Param("id") Long id);
     
     Page<User> findBySchoolAndUserType(School school, UserType userType, Pageable pageable);
+    Page<User> findByUserType(UserType userType, Pageable pageable);
 }

@@ -16,7 +16,10 @@ export class UserTableComponent implements OnInit {
   @Input() title!: string;
   @Input() typeId!: number;
 
-  users: User[] = [];
+  paginatedUsers: User[] = [];
+  pageSize = 5;
+  currentPage = 0;
+  totalPages = 0;
 
   constructor(private usersService: UsersService, private auth: Auth, private router: Router) {}
 
@@ -25,10 +28,20 @@ export class UserTableComponent implements OnInit {
   }
 
   loadUsers() {
-    this.usersService.getUsersByType(this.typeId).subscribe({
-      next: (users) => (this.users = users),
+    this.usersService.getUsersByType(this.typeId, this.currentPage, this.pageSize).subscribe({
+      next: (page) => {
+        this.paginatedUsers = page.content;
+        this.totalPages = page.totalPages;
+        this.currentPage = page.number;
+      },
       error: (err) => console.error(`Erro ao carregar usuários do tipo ${this.title}:`, err)
     });
+  }
+
+  setPage(page: number) {
+    if (page < 0 || page >= this.totalPages) return;
+    this.currentPage = page;
+    this.loadUsers();
   }
 
   openSettings(user: User) {
@@ -38,13 +51,14 @@ export class UserTableComponent implements OnInit {
   }
 
   deleteUser(user: User): void {
-    if (!confirm(`Deseja realmente excluir o usuário "${user.name}"?`)) {
-      return;
-    }
+    if (!confirm(`Deseja realmente excluir o usuário "${user.name}"?`)) return;
 
     this.usersService.deleteUser(user.id).subscribe({
       next: () => {
-        this.users = this.users.filter(u => u.id !== user.id);
+        if (this.paginatedUsers.length === 1 && this.currentPage > 0) {
+          this.currentPage--;
+        }
+        this.loadUsers();
       },
       error: (err) => {
         console.error('Erro ao deletar usuário:', err);
