@@ -1,5 +1,6 @@
 package com.projeto_oficina2.backend.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -11,6 +12,10 @@ import com.projeto_oficina2.backend.model.User;
 import com.projeto_oficina2.backend.model.Workshops;
 import com.projeto_oficina2.backend.repository.UserRepository;
 import com.projeto_oficina2.backend.repository.WorkshopsRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class WorkshopsService {
@@ -57,14 +62,23 @@ public class WorkshopsService {
     }
 
 
-    public List<Workshops> getWorkshopsByUserId(Long userId) {
+    public Page<Workshops> getWorkshopsByUserId(Long userId, int page, int size) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
+        Pageable pageable = PageRequest.of(page, size);
+
         if (user.getUserType().getId() == 1) {
-            return workshopsRepository.findAll();
+            return workshopsRepository.findAll(pageable);
         }
 
-        return user.getWorkshops();
+        List<Workshops> list = user.getWorkshops();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), list.size());
+
+        List<Workshops> paginatedList = start <= end ? list.subList(start, end) : Collections.emptyList();
+
+        return new PageImpl<>(paginatedList, pageable, list.size());
     }
 
     public List<User> getUsersByType(Long workshopId, int typeId) {

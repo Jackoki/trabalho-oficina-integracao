@@ -12,8 +12,16 @@ import { Router, RouterModule } from '@angular/router';
   styleUrls: ['./workshop-table.component.scss']
 })
 export class WorkshopTableComponent implements OnInit {
+  
   workshops: Workshop[] = [];
+
+  // paginação
+  currentPage = 0;
+  pageSize = 10;
+  totalPages = 0;
+
   isProfessor: boolean = false;
+  userId!: number;
 
   constructor(
     private workshopsService: WorkshopsService,
@@ -25,24 +33,37 @@ export class WorkshopTableComponent implements OnInit {
     this.auth.currentUser$.subscribe({
       next: (user: User | null) => {
         if (user) {
+          this.userId = user.id;
           this.isProfessor = user.userType?.id === 2;
-          this.loadWorkshops(user.id);
+          this.loadWorkshops();
         }
       },
       error: (err) => console.error('Erro ao obter usuário logado:', err)
     });
   }
 
-  loadWorkshops(userId: number) {
-    this.workshopsService.getWorkshopsByUser(userId).subscribe({
-      next: (workshops) => (this.workshops = workshops),
-      error: (err) => console.error('Erro ao carregar workshops:', err)
-    });
+  loadWorkshops() {
+    this.workshopsService
+      .getWorkshopsByUserPaginated(this.userId, this.currentPage, this.pageSize)
+      .subscribe({
+        next: (page) => {
+          this.workshops = page.content;
+          this.totalPages = page.totalPages;
+          this.currentPage = page.number; // página atual retornada pelo backend
+        },
+        error: (err) => console.error('Erro ao carregar workshops:', err)
+      });
+  }
+
+  setPage(page: number) {
+    if (page < 0 || page >= this.totalPages) return;
+    this.currentPage = page;
+    this.loadWorkshops();
   }
 
   markComplete(workshop: Workshop) {
     if (workshop.isFinished === 1) {
-      alert(`A oficina "${workshop.name}" já foi concluída anteriormente.`);
+      alert(`A oficina "${workshop.name}" já foi concluída.`);
       return;
     }
 
@@ -54,19 +75,12 @@ export class WorkshopTableComponent implements OnInit {
         workshop.isFinished = 1;
         alert('Oficina concluída com sucesso!');
       },
-      error: (err) => {
-        console.error('Erro ao concluir oficina:', err);
-        alert('Erro ao concluir oficina.');
-      }
+      error: () => alert('Erro ao concluir oficina.')
     });
   }
 
   viewList(workshop: Workshop) {
     this.router.navigate(['/workshops/workshop-users', workshop.id]); 
-  }
-
-  viewProfile(workshop: Workshop) {
-    console.log('Ver perfil:', workshop);
   }
 
   openSettings(workshop: Workshop) {
@@ -80,13 +94,16 @@ export class WorkshopTableComponent implements OnInit {
   }
 
   deleteWorkshop(workshop: Workshop) {
-    if (!confirm(`Deseja realmente excluir a oficina "${workshop.code}"?`)) return;
+    if (!confirm(`Deseja excluir a oficina "${workshop.code}"?`)) return;
 
     this.workshopsService.deleteWorkshop(workshop.id).subscribe({
       next: () => {
-        this.workshops = this.workshops.filter(w => w.id !== workshop.id);
+        if (this.workshops.length === 1 && this.currentPage > 0) {
+          this.currentPage--;
+        }
+        this.loadWorkshops();
       },
-      error: () => alert('Erro ao deletar oficina. Tente novamente.')
+      error: () => alert('Erro ao deletar oficina.')
     });
   }
 }

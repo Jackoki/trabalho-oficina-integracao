@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 import com.projeto_oficina2.backend.model.ErrorResponse;
 import com.projeto_oficina2.backend.model.User;
 import com.projeto_oficina2.backend.model.Workshops;
@@ -75,9 +78,9 @@ public class WorkshopsController {
         return ResponseEntity.noContent().build();
     }
 
-
     @GetMapping("/user/{userId}")
-    public List<Workshops> getWorkshopsByUser(@PathVariable Long userId) {
-        return workshopsService.getWorkshopsByUserId(userId);
+    public Page<Workshops> getWorkshopsByUser(@PathVariable Long userId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return workshopsService.getWorkshopsByUserId(userId, page, size);
     }
+
 }

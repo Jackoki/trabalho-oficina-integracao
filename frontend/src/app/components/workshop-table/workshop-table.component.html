@@ -1,5 +1,6 @@
 <div class="table-container">
   <h2>Oficinas</h2>
+
   <div class="table-wrapper">
     <table>
       <thead>
@@ -10,6 +11,7 @@
           <th>Ações</th>
         </tr>
       </thead>
+
       <tbody>
         <tr *ngFor="let workshop of workshops" class="workshop-row">
           <td>{{ workshop.code }}</td>
@@ -17,33 +19,65 @@
           <td>0/{{ workshop.numberClasses }}</td>
 
           <td class="action-icons">
-          <button *ngIf="auth.canTakeAttendance()" class="icon-button list" (click)="viewList(workshop)" title="Fazer Chamada">
-            <i class="fa fa-list"></i>
-          </button>
 
-          <button *ngIf="auth.canManageUsers()" class="icon-button user" (click)="viewList(workshop)" title="Gerenciar Usuários">
-            <i class="fa fa-users"></i>
-          </button>
+            <button *ngIf="auth.canTakeAttendance()"
+                    class="icon-button list"
+                    (click)="viewList(workshop)"
+                    title="Fazer Chamada">
+              <i class="fa fa-list"></i>
+            </button>
 
-          <button *ngIf="auth.canEditWorkshop()" class="icon-button settings" (click)="openSettings(workshop)" title="Editar Oficina">
-            <i class="fa fa-cog"></i>
-          </button>
+            <button *ngIf="auth.canManageUsers()"
+                    class="icon-button user"
+                    (click)="viewList(workshop)"
+                    title="Gerenciar Usuários">
+              <i class="fa fa-users"></i>
+            </button>
 
-          <button *ngIf="auth.canFinalizeWorkshop()" class="icon-button check" (click)="markComplete(workshop)" title="Finalizar Oficina">
-            <i class="fa fa-check-circle"></i>
-          </button>
+            <button *ngIf="auth.canEditWorkshop()"
+                    class="icon-button settings"
+                    (click)="openSettings(workshop)"
+                    title="Editar Oficina">
+              <i class="fa fa-cog"></i>
+            </button>
 
-          <button *ngIf="auth.canViewCertificate()" class="icon-button certificate" (click)="viewCertificate(workshop)" title="Ver Certificado">
-            <i class="fa fa-certificate"></i>
-          </button>
+            <button *ngIf="auth.canFinalizeWorkshop()"
+                    class="icon-button check"
+                    (click)="markComplete(workshop)"
+                    title="Finalizar Oficina">
+              <i class="fa fa-check-circle"></i>
+            </button>
 
-          <button *ngIf="auth.canDeleteWorkshop()" class="icon-button delete" (click)="deleteWorkshop(workshop)" title="Excluir Oficina">
-            <i class="fa fa-trash"></i>
-          </button>
-        </td>
-        
+            <button *ngIf="auth.canViewCertificate()"
+                    class="icon-button certificate"
+                    (click)="viewCertificate(workshop)"
+                    title="Ver Certificado">
+              <i class="fa fa-certificate"></i>
+            </button>
+
+            <button *ngIf="auth.canDeleteWorkshop()"
+                    class="icon-button delete"
+                    (click)="deleteWorkshop(workshop)"
+                    title="Excluir Oficina">
+              <i class="fa fa-trash"></i>
+            </button>
+
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <div class="pagination-footer" *ngIf="totalPages > 0">
+    <button class="icon-btn" (click)="setPage(currentPage - 1)" [disabled]="currentPage <= 0">
+      <i class="fa fa-chevron-left"></i>
+    </button>
+
+    <span class="page-number">{{ currentPage + 1 }} / {{ totalPages }}</span>
+
+    <button class="icon-btn" (click)="setPage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1">
+      <i class="fa fa-chevron-right"></i>
+    </button>
+  </div>
+
 </div>

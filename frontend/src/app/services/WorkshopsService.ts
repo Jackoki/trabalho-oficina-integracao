@@ -44,6 +44,13 @@ export class WorkshopsService {
     );
   }
 
+  getWorkshopsByUserPaginated(userId: number, page: number, size: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.API_BASE_URL}/user/${userId}?page=${page}&size=${size}`,
+      { withCredentials: true }
+    );
+  }
+
   deleteWorkshop(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API_BASE_URL}/${id}`, { withCredentials: true });
   }
