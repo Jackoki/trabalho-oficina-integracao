@@ -82,4 +82,10 @@ public class WorkshopsController {
         return workshopsService.getWorkshopsByUserId(userId, page, size);
     }
 
+    @DeleteMapping("/{workshopId}/users/{userId}")
+    public ResponseEntity<?> removeUserFromWorkshop(@PathVariable Long workshopId, @PathVariable Long userId) {
+        workshopsService.removeUserFromWorkshop(workshopId, userId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

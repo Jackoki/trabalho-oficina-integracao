@@ -31,7 +31,7 @@
             <td>{{ user.code }}</td>
             <td class="actions-cell">
               <div class="action-icons">
-                <button class="icon-button delete" title="Excluir">
+                <button class="icon-button delete" title="Remover do Workshop" (click)="desvincularUsuario(user.id)">
                   <i class="fa fa-times"></i>
                 </button>
               </div>

@@ -60,4 +60,24 @@ export class UserWorkshopTableComponent implements OnInit, OnChanges {
     this.currentPage = page;
     this.loadUsers();
   }
+
+  desvincularUsuario(userId: number) {
+    if (!confirm("Tem certeza que deseja remover este usuário do workshop?")) {
+      return;
+    }
+
+    this.workshopService.removeUserFromWorkshop(this.workshopId, userId)
+      .subscribe({
+        next: () => {
+          this.paginatedUsers = this.paginatedUsers.filter(u => u.id !== userId);
+
+          this.loadUsers();
+        },
+        error: err => {
+          console.error("Erro ao remover usuário:", err);
+          alert("Erro ao remover usuário.");
+        }
+      });
+  }
+
 }

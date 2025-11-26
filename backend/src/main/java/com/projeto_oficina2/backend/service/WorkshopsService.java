@@ -100,6 +100,17 @@ public class WorkshopsService {
         return new PageImpl<>(paginatedList, pageable, filtered.size());
     }
 
+    public void removeUserFromWorkshop(Long workshopId, Long userId) {
 
+        Workshops workshop = workshopsRepository.findById(workshopId)
+            .orElseThrow(() -> new RuntimeException("Workshop não encontrado"));
+
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        workshop.getUsers().remove(user);
+
+        workshopsRepository.save(workshop);
+    }
 
 }

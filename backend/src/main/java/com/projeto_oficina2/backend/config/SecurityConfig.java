@@ -50,7 +50,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/workshops/*/users/by-type/**").hasAnyRole("ADMIN", "PROFESSOR")
                 .requestMatchers(HttpMethod.POST, "/workshops").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/workshops/**").hasRole("ADMIN")
-                
+                .requestMatchers(HttpMethod.POST, "/workshops/*/users/*").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/workshops/*/users/*").hasRole("ADMIN")
+
                 .requestMatchers("/public/**").permitAll()
                 .anyRequest().authenticated()
             )
@@ -79,4 +81,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
