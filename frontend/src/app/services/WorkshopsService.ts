@@ -38,11 +38,13 @@ export class WorkshopsService {
     return this.http.get<Workshop[]>(this.API_BASE_URL, { withCredentials: true });
   }
 
-  getUsersWorkshops(workshopId: number, typeId: number): Observable<User[]> {
-    return this.http.get<User[]>(`${this.API_BASE_URL}/${workshopId}/users/by-type/${typeId}`,
+  getUsersWorkshops(workshopId: number, typeId: number, page: number, size: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.API_BASE_URL}/${workshopId}/users/by-type/${typeId}?page=${page}&size=${size}`,
       { withCredentials: true }
     );
   }
+
 
   getWorkshopsByUserPaginated(userId: number, page: number, size: number): Observable<any> {
     return this.http.get<any>(

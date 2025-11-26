@@ -81,11 +81,25 @@ public class WorkshopsService {
         return new PageImpl<>(paginatedList, pageable, list.size());
     }
 
-    public List<User> getUsersByType(Long workshopId, int typeId) {
-        Workshops workshop = workshopsRepository.findById(workshopId).orElseThrow(() -> new RuntimeException("Workshop não encontrado"));
+    public Page<User> getUsersByType(Long workshopId, int typeId, int page, int size) {
+        Workshops workshop = workshopsRepository.findById(workshopId)
+            .orElseThrow(() -> new RuntimeException("Workshop não encontrado"));
 
-        return workshop.getUsers().stream().filter(u -> u.getUserType().getId() == typeId).collect(Collectors.toList());
+        List<User> filtered = workshop.getUsers().stream()
+            .filter(u -> u.getUserType().getId() == typeId)
+            .collect(Collectors.toList());
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), filtered.size());
+
+        List<User> paginatedList =
+            start <= end ? filtered.subList(start, end) : Collections.emptyList();
+
+        return new PageImpl<>(paginatedList, pageable, filtered.size());
     }
+
 
 
 }

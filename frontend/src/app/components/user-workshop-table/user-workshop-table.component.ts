@@ -1,9 +1,7 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { User } from '../../services/UsersService';
+import { RouterModule } from '@angular/router';
 import { WorkshopsService } from '../../services/WorkshopsService';
-import { Auth } from '../../services/auth';
-import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-user-workshop-table',
@@ -12,21 +10,27 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './user-workshop-table.component.html',
   styleUrls: ['./user-workshop-table.component.scss']
 })
+
 export class UserWorkshopTableComponent implements OnInit, OnChanges {
   @Input() title!: string;
   @Input() typeId!: number;
   @Input() workshopId!: number;
 
-  loading: boolean = true;
-  users: User[] = [];
+  paginatedUsers: any[] = [];
+  pageSize = 5;
+  currentPage = 0;
+  totalPages = 0;
 
-  constructor(private workshopService: WorkshopsService, private auth: Auth, private router: Router) {}
+  loading = true;
+
+  constructor(private workshopService: WorkshopsService) {}
 
   ngOnInit(): void {}
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes['workshopId'] || changes['typeId']) {
-      if (this.workshopId != null && this.typeId != null) {
+      if (this.workshopId && this.typeId) {
+        this.currentPage = 0;
         this.loadUsers();
       }
     }
@@ -34,15 +38,26 @@ export class UserWorkshopTableComponent implements OnInit, OnChanges {
 
   loadUsers() {
     this.loading = true;
-    this.workshopService.getUsersWorkshops(this.workshopId, this.typeId).subscribe({
-      next: (users) => {
-        this.users = users;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.loading = false;
-      }
-    });
+
+    this.workshopService
+      .getUsersWorkshops(this.workshopId, this.typeId, this.currentPage, this.pageSize)
+      .subscribe({
+        next: (page) => {
+          this.paginatedUsers = page.content;
+          this.totalPages = page.totalPages;
+          this.currentPage = page.number;
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Erro ao carregar usuários da oficina:', err);
+          this.loading = false;
+        }
+      });
+  }
+
+  setPage(page: number) {
+    if (page < 0 || page >= this.totalPages) return;
+    this.currentPage = page;
+    this.loadUsers();
   }
 }

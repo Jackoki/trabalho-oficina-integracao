@@ -34,9 +34,8 @@ public class WorkshopsController {
     }
 
     @GetMapping("/{id}/users/by-type/{typeId}")
-    public ResponseEntity<List<User>> getUsersByType(@PathVariable Long id, @PathVariable int typeId) {
-        List<User> users = workshopsService.getUsersByType(id, typeId);
-        return ResponseEntity.ok(users);
+    public Page<User> getUsersByType(@PathVariable Long id, @PathVariable int typeId, @RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size) {
+        return workshopsService.getUsersByType(id, typeId, page, size);
     }
 
     @PostMapping

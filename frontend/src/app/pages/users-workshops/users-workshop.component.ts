@@ -18,6 +18,5 @@ export class UserWorkshopComponent implements OnInit {
 
   ngOnInit(): void {
     this.workshopId = Number(this.route.snapshot.paramMap.get('id'));
-    console.log("Workshop carregado:", this.workshopId);
   }
 }

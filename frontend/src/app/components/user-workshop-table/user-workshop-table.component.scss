@@ -115,3 +115,33 @@
     }
   }
 }
+
+.pagination-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+
+  .icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    color: #555;
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  .page-number {
+    font-weight: 600;
+    color: #007bcc;
+    min-width: 40px;
+    text-align: center;
+  }
+}
