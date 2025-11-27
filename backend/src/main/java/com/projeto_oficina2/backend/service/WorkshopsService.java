@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.projeto_oficina2.backend.model.User;
+import com.projeto_oficina2.backend.model.UserType;
 import com.projeto_oficina2.backend.model.Workshops;
 import com.projeto_oficina2.backend.repository.UserRepository;
 import com.projeto_oficina2.backend.repository.WorkshopsRepository;
@@ -33,34 +34,6 @@ public class WorkshopsService {
     public Workshops getWorkshopsById(Long id) {
         return workshopsRepository.findById(id).orElse(null);
     }
-
-    public Workshops createWorkshops(Workshops workshops) {
-        return workshopsRepository.save(workshops);
-    }
-
-    public Workshops updateWorkshops(Workshops existing, Workshops updated) {
-        existing.setName(updated.getName());
-        existing.setCode(updated.getCode());
-        existing.setNumberClasses(updated.getNumberClasses());
-        existing.setDescription(updated.getDescription());
-        existing.setIsFinished(updated.getIsFinished());
-
-        return workshopsRepository.save(existing);
-    }
-
-
-    public void deleteWorkshops(Long id) {
-        workshopsRepository.deleteById(id);
-    }
-
-    public Workshops finalizeWorkshop(Long id) {
-        Workshops workshop = workshopsRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Oficina não encontrada"));
-
-        workshop.setIsFinished(1);
-        return workshopsRepository.save(workshop);
-    }
-
 
     public Page<Workshops> getWorkshopsByUserId(Long userId, int page, int size) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
@@ -99,6 +72,49 @@ public class WorkshopsService {
 
         return new PageImpl<>(paginatedList, pageable, filtered.size());
     }
+    
+    public Page<User> getUsersNotLinkedByType(Long workshopId, Long typeId, int page, int size) {
+        Workshops workshop = workshopsRepository.findById(workshopId).orElseThrow(() -> new RuntimeException("Workshop não encontrada"));
+
+        List<Long> linkedIds = workshop.getUsers().stream().map(User::getId).collect(Collectors.toList());
+
+        UserType type = new UserType();
+        type.setId(typeId);
+
+        List<User> filtered = userRepository.findByUserType(type).stream().filter(u -> !linkedIds.contains(u.getId())).collect(Collectors.toList());
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        int start = (int) Math.min((long) pageable.getOffset(), (long) filtered.size());
+        int end = Math.min(start + pageable.getPageSize(), filtered.size());
+
+        List<User> paginated;
+
+        if (start >= end) {
+            paginated = Collections.emptyList();
+        } 
+        
+        else {
+            paginated = filtered.subList(start, end);
+        }
+
+        return new PageImpl<>(paginated, pageable, filtered.size());
+    }
+
+    public Workshops createWorkshops(Workshops workshops) {
+        return workshopsRepository.save(workshops);
+    }
+
+    public void linkUserToWorkshop(Long workshopId, Long userId) {
+        Workshops workshop = workshopsRepository.findById(workshopId).orElseThrow(() -> new RuntimeException("Workshop não encontrado"));
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (!workshop.getUsers().contains(user)) {
+            workshop.getUsers().add(user);
+            workshopsRepository.save(workshop);
+        }
+    }
 
     public void removeUserFromWorkshop(Long workshopId, Long userId) {
 
@@ -112,5 +128,29 @@ public class WorkshopsService {
 
         workshopsRepository.save(workshop);
     }
+
+    public Workshops updateWorkshops(Workshops existing, Workshops updated) {
+        existing.setName(updated.getName());
+        existing.setCode(updated.getCode());
+        existing.setNumberClasses(updated.getNumberClasses());
+        existing.setDescription(updated.getDescription());
+        existing.setIsFinished(updated.getIsFinished());
+
+        return workshopsRepository.save(existing);
+    }
+        
+    public Workshops finalizeWorkshop(Long id) {
+        Workshops workshop = workshopsRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Oficina não encontrada"));
+
+        workshop.setIsFinished(1);
+        return workshopsRepository.save(workshop);
+    }
+
+
+    public void deleteWorkshops(Long id) {
+        workshopsRepository.deleteById(id);
+    }
+
 
 }

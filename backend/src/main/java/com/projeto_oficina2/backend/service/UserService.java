@@ -23,6 +23,35 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public Optional<User> findByCode(String code) {
+        return userRepository.findByCode(code);
+    }
+    
+    public Optional<User> findByCodeExcludingId(String code, Long id) {
+        return userRepository.findByCodeExcludingId(code, id);
+    }
+
+    public List<User> getUsersByUserType(UserType userType) {
+        return userRepository.findByUserType(userType);
+    }
+
+    public List<User> getUsersBySchool(School school) {
+        return userRepository.findBySchool(school);
+    }
+
+    public Page<User> getUsersByUserType(UserType userType, Pageable pageable) {
+        return userRepository.findByUserType(userType, pageable);
+    }
+
     public User save(User user) {
         if (userRepository.findByCode(user.getCode()).isPresent()) {
             throw new IllegalArgumentException("Código já cadastrado!");
@@ -40,39 +69,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    public Optional<User> findByCode(String code) {
-        return userRepository.findByCode(code);
-    }
-
     public void deleteById(Long id) {
         if (!userRepository.existsById(id)) {
             throw new IllegalArgumentException("Usuário não encontrado");
         }
         
         userRepository.deleteById(id);
-    }
-
-    public Optional<User> findByCodeExcludingId(String code, Long id) {
-        return userRepository.findByCodeExcludingId(code, id);
-    }
-
-    public List<User> getUsersByUserType(UserType userType) {
-        return userRepository.findByUserType(userType);
-    }
-
-    public List<User> getUsersBySchool(School school) {
-        return userRepository.findBySchool(school);
-    }
-
-    public Page<User> getUsersByUserType(UserType userType, Pageable pageable) {
-        return userRepository.findByUserType(userType, pageable);
     }
 }

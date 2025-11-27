@@ -71,4 +71,20 @@ export class WorkshopsService {
       { withCredentials: true }
     );
   }
+
+  getUsersNotLinked(workshopId: number, typeId: number, page: number, size: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.API_BASE_URL}/${workshopId}/users/not-linked/${typeId}?page=${page}&size=${size}`,
+      { withCredentials: true }
+    );
+  }
+
+  linkUserToWorkshop(workshopId: number, userId: number): Observable<void> {
+    return this.http.post<void>(
+      `${this.API_BASE_URL}/${workshopId}/users/${userId}/link`,
+      {},
+      { withCredentials: true }
+    );
+  }
+
 }

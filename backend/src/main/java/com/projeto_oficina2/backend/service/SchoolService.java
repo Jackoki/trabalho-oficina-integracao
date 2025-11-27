@@ -28,6 +28,14 @@ public class SchoolService {
     public School createSchool(School school) {
         return schoolRepository.save(school);
     }
+    
+    public School updateSchool(Long id, School school) {
+        School existingSchool = schoolRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Escola não encontrada"));
+
+        existingSchool.setName(school.getName());
+
+        return schoolRepository.save(existingSchool);
+    }
 
     public void deleteSchool(Long id) {
         School school = schoolRepository.findById(id)
@@ -38,14 +46,6 @@ public class SchoolService {
         }
 
         schoolRepository.delete(school);
-    }
-
-    public School updateSchool(Long id, School school) {
-        School existingSchool = schoolRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Escola não encontrada"));
-
-        existingSchool.setName(school.getName());
-
-        return schoolRepository.save(existingSchool);
     }
 
 }

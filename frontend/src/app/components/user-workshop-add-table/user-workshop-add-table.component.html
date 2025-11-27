@@ -1,9 +1,7 @@
 <div class="table-container">
+
   <div class="table-header">
     <h2 class="table-title">{{ title }}</h2>
-    <a class="add-user-link" [routerLink]="['/workshops', workshopId, 'workshop-users', 'add', typeId]">
-      Adicionar Usuário
-    </a>
   </div>
 
   <div class="table-wrapper">
@@ -12,7 +10,7 @@
         <tr>
           <th>Nome</th>
           <th>Código</th>
-          <th>Ações</th>
+          <th>Ação</th>
         </tr>
       </thead>
 
@@ -22,7 +20,7 @@
         </tr>
 
         <tr *ngIf="!loading && paginatedUsers.length === 0">
-          <td colspan="3" class="empty-row">Nenhum usuário encontrado</td>
+          <td colspan="3" class="empty-row">Nenhum usuário disponível</td>
         </tr>
 
         <ng-container *ngIf="!loading">
@@ -30,11 +28,13 @@
             <td>{{ user.name }}</td>
             <td>{{ user.code }}</td>
             <td class="actions-cell">
-              <div class="action-icons">
-                <button class="icon-button delete" title="Remover do Workshop" (click)="desvincularUsuario(user.id)">
-                  <i class="fa fa-times"></i>
-                </button>
-              </div>
+              <button 
+                class="icon-button link" 
+                title="Adicionar à Oficina"
+                (click)="vincularUsuario(user.id)"
+              >
+                <i class="fa fa-plus"></i>
+              </button>
             </td>
           </tr>
         </ng-container>
@@ -43,9 +43,7 @@
   </div>
 
   <div class="pagination-footer" *ngIf="totalPages > 0">
-    <button class="icon-btn"
-            (click)="setPage(currentPage - 1)"
-            [disabled]="currentPage <= 0">
+    <button class="icon-btn" (click)="setPage(currentPage - 1)" [disabled]="currentPage <= 0">
       <i class="fa fa-chevron-left"></i>
     </button>
 

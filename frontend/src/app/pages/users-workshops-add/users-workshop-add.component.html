@@ -1,0 +1,17 @@
+<div class="table-container">
+  <div class="table-header">
+
+    <button class="icon-button voltar" (click)="goBack()" title="Voltar">
+      <i class="fa fa-arrow-left"></i>
+    </button>
+
+    <h2 class="table-title">Adicionar {{ typeName }} à Oficina</h2>
+
+  </div>
+
+  <app-user-workshop-add-table
+    [title]="typeName" 
+    [typeId]="typeId"
+    [workshopId]="workshopId">
+  </app-user-workshop-add-table>
+</div>

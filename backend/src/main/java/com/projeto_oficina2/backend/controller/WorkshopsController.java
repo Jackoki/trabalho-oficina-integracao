@@ -38,9 +38,26 @@ public class WorkshopsController {
         return workshopsService.getUsersByType(id, typeId, page, size);
     }
 
+    @GetMapping("/{id}/users/not-linked/{typeId}")
+    public ResponseEntity<Page<User>> getUsersNotLinked(@PathVariable Long id, @PathVariable Long typeId, @RequestParam int page, @RequestParam int size) {
+        Page<User> users = workshopsService.getUsersNotLinkedByType(id, typeId, page, size);
+        return ResponseEntity.ok(users);
+    }
+    
+    @GetMapping("/user/{userId}")
+    public Page<Workshops> getWorkshopsByUser(@PathVariable Long userId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return workshopsService.getWorkshopsByUserId(userId, page, size);
+    }
+
     @PostMapping
     public Workshops createWorkshops(@RequestBody Workshops workshops) {
         return workshopsService.createWorkshops(workshops);
+    }
+
+    @PostMapping("/{workshopId}/users/{userId}/link")
+    public ResponseEntity<?> linkUserToWorkshop(@PathVariable Long workshopId, @PathVariable Long userId) {
+        workshopsService.linkUserToWorkshop(workshopId, userId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/{id}")
@@ -65,21 +82,10 @@ public class WorkshopsController {
         }
     }
 
-
-    @DeleteMapping("/{id}")
-    public void deleteWorkshops(@PathVariable Long id) {
-        workshopsService.deleteWorkshops(id);
-    }
-
     @PutMapping("/{id}/finalize")
     public ResponseEntity<Void> finalizeWorkshop(@PathVariable Long id) {
         workshopsService.finalizeWorkshop(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/user/{userId}")
-    public Page<Workshops> getWorkshopsByUser(@PathVariable Long userId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        return workshopsService.getWorkshopsByUserId(userId, page, size);
     }
 
     @DeleteMapping("/{workshopId}/users/{userId}")
@@ -87,5 +93,11 @@ public class WorkshopsController {
         workshopsService.removeUserFromWorkshop(workshopId, userId);
         return ResponseEntity.noContent().build();
     }
+    
+    @DeleteMapping("/{id}")
+    public void deleteWorkshops(@PathVariable Long id) {
+        workshopsService.deleteWorkshops(id);
+    }
+
 
 }
