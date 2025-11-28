@@ -1,31 +1,66 @@
 package com.projeto_oficina2.backend.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.projeto_oficina2.backend.model.Classes;
+import com.projeto_oficina2.backend.model.Workshops;
 import com.projeto_oficina2.backend.repository.ClassesRepository;
+import com.projeto_oficina2.backend.repository.WorkshopsRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ClassesService {
-    @Autowired
-    private ClassesRepository classesRepository;
 
-    public List<Classes> getAllClasses(){
+    private final ClassesRepository classesRepository;
+    private final WorkshopsRepository workshopsRepository;
+
+    public ClassesService(ClassesRepository classesRepository, WorkshopsRepository workshopsRepository) {
+        this.classesRepository = classesRepository;
+        this.workshopsRepository = workshopsRepository;
+    }
+
+    public java.util.List<Classes> findAll() {
         return classesRepository.findAll();
     }
 
-    public Classes getClassesById(Long id) {
-        return classesRepository.findById(id).orElse(null);
+    public Page<Classes> paginateByWorkshop(Long workshopId, int page, int size) {
+        if (page < 0) 
+			page = 0;
+		
+        if (size <= 0) 
+			size = 10;
+
+        Workshops workshop = workshopsRepository.findById(workshopId).orElseThrow(() -> new RuntimeException("Workshop não encontrado"));
+
+        Pageable pageable = PageRequest.of(page, size);
+        return classesRepository.findByWorkshop(workshop, pageable);
     }
 
-    public Classes createClasses(Classes classes) {
-        return classesRepository.save(classes);
+    public Classes save(Long workshopId, Integer classNumber) {
+
+        Workshops workshop = workshopsRepository.findById(workshopId).orElseThrow(() -> new RuntimeException("Workshop não encontrado"));
+
+        if (classNumber == null) {
+            throw new IllegalArgumentException("class_number não pode ser nulo");
+        }
+
+        Classes newClass = new Classes();
+        newClass.setClassNumber(classNumber);
+        newClass.setWorkshop(workshop);
+
+        workshop.setNumberClasses(workshop.getNumberClasses() + 1);
+        workshopsRepository.save(workshop);
+
+        return classesRepository.save(newClass);
     }
 
-    public void deleteClasses(Long id) {
-        classesRepository.deleteById(id);
+    public void deleteById(Long classId) {
+        Classes c = classesRepository.findById(classId).orElseThrow(() -> new RuntimeException("Classe não encontrada"));
+
+        Workshops workshop = c.getWorkshop();
+        workshop.setNumberClasses(workshop.getNumberClasses() - 1);
+        workshopsRepository.save(workshop);
+
+        classesRepository.deleteById(classId);
     }
 }

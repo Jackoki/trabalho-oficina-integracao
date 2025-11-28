@@ -1,43 +1,49 @@
 package com.projeto_oficina2.backend.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.projeto_oficina2.backend.model.Classes;
+import com.projeto_oficina2.backend.model.ErrorResponse;
 import com.projeto_oficina2.backend.service.ClassesService;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/classes")
+@RequestMapping("/workshops/{id}/classes")
 public class ClassesController {
-    
-    @Autowired
-    private ClassesService classesService;
 
-    @GetMapping
-    public List<Classes> getAllClasses() {
-        return classesService.getAllClasses();
+    private final ClassesService classesService;
+
+    public ClassesController(ClassesService classesService) {
+        this.classesService = classesService;
     }
 
-    @GetMapping("/{id}")
-    public Classes getClassesById(@PathVariable Long id) {
-        return classesService.getClassesById(id);
+    @GetMapping
+    public Page<Classes> getClasses(@PathVariable("id") Long workshopId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return classesService.paginateByWorkshop(workshopId, page, size);
     }
 
     @PostMapping
-    public Classes createClasses(@RequestBody Classes classes) {
-        return classesService.createClasses(classes);
+    public ResponseEntity<?> createClass(@PathVariable("id") Long workshopId, @RequestParam Integer class_number) {
+        try {
+            Classes saved = classesService.save(workshopId, class_number);
+            return ResponseEntity.ok(saved);
+        } 
+		
+		catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));
+        }
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteClasses(@PathVariable Long id) {
-        classesService.deleteClasses(id);
+    @DeleteMapping("/{classId}")
+    public ResponseEntity<?> deleteClass(@PathVariable("id") Long workshopId, @PathVariable Long classId) {
+        try {
+            classesService.deleteById(classId);
+            return ResponseEntity.ok().build();
+        } 
+		
+		catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse("Erro ao deletar classe: " + e.getMessage()));
+        }
     }
 }

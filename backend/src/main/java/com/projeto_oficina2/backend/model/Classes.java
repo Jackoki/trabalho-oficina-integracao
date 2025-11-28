@@ -1,42 +1,35 @@
 package com.projeto_oficina2.backend.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "classes")
 public class Classes {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "class_number", nullable = false)
+    private Integer classNumber;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_workshops", nullable = false)
     private Workshops workshop;
 
-    @Column(nullable = false)
-    private int class_number;
+    @OneToMany(mappedBy = "classes", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Frequencies> frequencies;
 
-    public Long getId() { 
-        return id; 
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) { 
-        this.id = id; 
-    }
+    public Integer getClassNumber() { return classNumber; }
+    public void setClassNumber(Integer classNumber) { this.classNumber = classNumber; }
 
-    public Workshops getWorkshop() { 
-        return workshop; 
-    }
+    public Workshops getWorkshop() { return workshop; }
+    public void setWorkshop(Workshops workshop) { this.workshop = workshop; }
 
-    public void setWorkshop(Workshops workshop) { 
-        this.workshop = workshop; 
-    }
-
-    public int getClassNumber() { 
-        return class_number; 
-    }
-
-    public void setClassNumber(int class_number) { 
-        this.class_number = class_number; 
-    }
+    public List<Frequencies> getFrequencies() { return frequencies; }
+    public void setFrequencies(List<Frequencies> frequencies) { this.frequencies = frequencies; }
 }
