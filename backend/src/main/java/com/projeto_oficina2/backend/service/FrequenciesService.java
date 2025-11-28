@@ -45,6 +45,39 @@ public class FrequenciesService {
     }
 
     @Transactional
+public void saveRollCall(Long classId, List<RollCallRequest> attendances) {
+    // Busca a aula
+    Classes classeAtual = classesRepository.findById(classId)
+            .orElseThrow(() -> new RuntimeException("Classe não encontrada"));
+
+    Workshops workshop = classeAtual.getWorkshop();
+
+    // Para cada aluno enviado, cria ou atualiza a presença
+    for (RollCallRequest attendance : attendances) {
+        User user = workshop.getUsers().stream()
+                .filter(u -> u.getId().equals(attendance.getUserId()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException(
+                        "Usuário " + attendance.getUserId() + " não pertence a este workshop"
+                ));
+
+        // Cria ou atualiza Frequency
+        Frequencies freq = frequenciesRepository.findByClassesAndUser(classeAtual, user)
+                .orElse(new Frequencies());
+
+        freq.setClasses(classeAtual);
+        freq.setUser(user);
+        freq.setIsPresent(attendance.getIsPresent());
+
+        frequenciesRepository.save(freq);
+
+        // Atualiza a frequência total desse aluno
+        updateFrequenciesStudents(user, workshop);
+    }
+}
+
+
+    @Transactional
     public void updateFrequenciesStudents(User user, Workshops workshop) {
         List<Frequencies> userFrequencies = frequenciesRepository.findByWorkshopAndUser(workshop, user);
 
