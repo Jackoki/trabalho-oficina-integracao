@@ -1,6 +1,7 @@
 package com.projeto_oficina2.backend.controller;
 
 import com.projeto_oficina2.backend.model.Frequencies;
+import com.projeto_oficina2.backend.dto.RollCallRequest;
 import com.projeto_oficina2.backend.model.ErrorResponse;
 import com.projeto_oficina2.backend.service.FrequenciesService;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,18 @@ public class FrequenciesController {
 		
 		catch (Exception e) {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        }
+    }
+
+    @PostMapping("/save-rollcall")
+    public ResponseEntity<?> saveRollCall(@PathVariable Long classId, @RequestBody List<RollCallRequest> attendances) {
+        try {
+            frequenciesService.saveRollCall(classId, attendances);
+            return ResponseEntity.ok().build();
+        }
+        
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse("Erro ao salvar chamada: " + e.getMessage()));
         }
     }
 

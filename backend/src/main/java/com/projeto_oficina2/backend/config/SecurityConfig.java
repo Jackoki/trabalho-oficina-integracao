@@ -55,6 +55,18 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/workshops/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/workshops/*/users/*").hasRole("ADMIN")
 
+                .requestMatchers(HttpMethod.GET, "/workshops/**/classes").permitAll()
+                .requestMatchers(HttpMethod.POST, "/workshops/**/classes").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/workshops/**/classes/**").hasRole("ADMIN")
+                
+                .requestMatchers(HttpMethod.GET, "/workshops/*/frequency/students/**").hasAnyRole("ADMIN", "PROFESSOR")
+
+                .requestMatchers(HttpMethod.GET, "/classes/*/frequencies").hasAnyRole("ADMIN", "PROFESSOR")
+                .requestMatchers(HttpMethod.POST, "/classes/*/frequencies").hasAnyRole("ADMIN", "PROFESSOR")
+                .requestMatchers(HttpMethod.POST, "/classes/*/frequencies/save-rollcall").hasAnyRole("ADMIN", "PROFESSOR")
+                .requestMatchers(HttpMethod.DELETE, "/classes/*/frequencies/**").hasAnyRole("ADMIN", "PROFESSOR")
+
+
                 .requestMatchers("/public/**").permitAll()
                 .anyRequest().authenticated()
             )
