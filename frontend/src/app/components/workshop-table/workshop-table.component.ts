@@ -14,8 +14,8 @@ import { Router, RouterModule } from '@angular/router';
 export class WorkshopTableComponent implements OnInit {
   
   workshops: Workshop[] = [];
+  classesDone: Record<number, number> = {};
 
-  // paginação
   currentPage = 0;
   pageSize = 10;
   totalPages = 0;
@@ -49,7 +49,16 @@ export class WorkshopTableComponent implements OnInit {
         next: (page) => {
           this.workshops = page.content;
           this.totalPages = page.totalPages;
-          this.currentPage = page.number; // página atual retornada pelo backend
+          this.currentPage = page.number;
+
+          this.workshops.forEach(w => {
+            this.workshopsService.getClassesDone(w.id).subscribe({
+              next: (count) => {
+                this.classesDone[w.id] = count;
+              },
+              error: (err) => console.error(`Erro ao contar aulas da oficina ${w.id}`, err)
+            });
+          });
         },
         error: (err) => console.error('Erro ao carregar workshops:', err)
       });
@@ -78,6 +87,12 @@ export class WorkshopTableComponent implements OnInit {
       error: () => alert('Erro ao concluir oficina.')
     });
   }
+  
+
+  viewAttendance(workshop: Workshop) {  
+    this.router.navigate(['workshops', workshop.id, 'classes']);
+  }
+
 
   viewList(workshop: Workshop) {
     this.router.navigate(['/workshops/workshop-users', workshop.id]); 

@@ -87,4 +87,12 @@ export class WorkshopsService {
     );
   }
 
+  getClassesDone(workshopId: number): Observable<number> {
+    return this.http.get<number>(
+      `http://localhost:8080/workshops/${workshopId}/classes/count`,
+      { withCredentials: true }
+    );
+  }
+
+
 }

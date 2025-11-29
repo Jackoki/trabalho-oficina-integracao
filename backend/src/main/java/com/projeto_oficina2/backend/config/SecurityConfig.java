@@ -31,43 +31,41 @@ public class SecurityConfig {
             .cors()
             .and()
             .authorizeHttpRequests(auth -> auth
+
                 .requestMatchers(HttpMethod.GET, "/schools/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/schools").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/schools/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/schools/**").hasRole("ADMIN")
 
-                .requestMatchers(HttpMethod.GET, "/users/type/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 
-                .requestMatchers(HttpMethod.GET, "/usertype").permitAll()
+                .requestMatchers(HttpMethod.GET, "/usertype/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/usertype").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/usertype/**").hasRole("ADMIN")
 
-                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-
-                .requestMatchers(HttpMethod.GET, "/workshops/user/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/workshops/*/users/by-type/**").hasAnyRole("ADMIN", "PROFESSOR")
-                .requestMatchers(HttpMethod.GET, "/workshops/*/users/not-linked/**").hasAnyRole("ADMIN", "PROFESSOR")
+                .requestMatchers(HttpMethod.GET, "/workshops/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/workshops").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/workshops/*/users/*").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/workshops/*/users/*/link").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/workshops/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/workshops/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/workshops/*/users/*/link").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/workshops/*/users/*").hasRole("ADMIN")
 
-                .requestMatchers(HttpMethod.GET, "/workshops/**/classes").permitAll()
-                .requestMatchers(HttpMethod.POST, "/workshops/**/classes").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/workshops/**/classes/**").hasRole("ADMIN")
-                
-                .requestMatchers(HttpMethod.GET, "/workshops/*/frequency/students/**").hasAnyRole("ADMIN", "PROFESSOR")
+                .requestMatchers(HttpMethod.GET, "/workshops/*/classes").hasAnyRole("ADMIN", "PROFESSOR")
+                .requestMatchers(HttpMethod.GET, "/workshops/*/classes/count").hasAnyRole("ADMIN", "PROFESSOR")
+                .requestMatchers(HttpMethod.POST, "/workshops/*/classes").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/workshops/*/classes/*").hasRole("ADMIN")
 
                 .requestMatchers(HttpMethod.GET, "/classes/*/frequencies").hasAnyRole("ADMIN", "PROFESSOR")
                 .requestMatchers(HttpMethod.POST, "/classes/*/frequencies").hasAnyRole("ADMIN", "PROFESSOR")
                 .requestMatchers(HttpMethod.POST, "/classes/*/frequencies/save-rollcall").hasAnyRole("ADMIN", "PROFESSOR")
-                .requestMatchers(HttpMethod.DELETE, "/classes/*/frequencies/**").hasAnyRole("ADMIN", "PROFESSOR")
+                .requestMatchers(HttpMethod.DELETE, "/classes/*/frequencies/*").hasAnyRole("ADMIN", "PROFESSOR")
 
+                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
 
-                .requestMatchers("/public/**").permitAll()
                 .anyRequest().authenticated()
             )
 
@@ -77,6 +75,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

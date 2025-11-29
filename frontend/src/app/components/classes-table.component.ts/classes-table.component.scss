@@ -1,0 +1,133 @@
+.table-container {
+  background: white;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .table-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #007bcc;
+  }
+
+  .add-class-link {
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #181d20;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: 0.2s ease;
+    cursor: pointer;
+  }
+
+  .add-class-link:hover {
+    color: #007bcc;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: left;
+    }
+
+    th {
+      background: #f5f5f5;
+      font-weight: bold;
+      color: #007bcc;
+    }
+
+    .empty-row {
+      text-align: center;
+      color: #999;
+      font-style: italic;
+      padding: 15px;
+    }
+
+    .class-row {
+      transition: background-color 0.2s ease;
+    }
+
+    .class-row:hover {
+      background-color: #f9f9f9;
+    }
+
+    th:nth-child(1), td:nth-child(1) { width: 40%; }
+    th:nth-child(2), td:nth-child(2) { width: 40%; }
+    th:nth-child(3), td:nth-child(3) { width: 20%; text-align: center; }
+  }
+
+  .icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    color: #dc3545;
+    transition: transform 0.2s ease;
+  }
+
+  .icon-button:hover {
+    transform: scale(1.15);
+    background-color: rgba(220, 53, 69, 0.1);
+  }
+
+  .action-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.pagination-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+
+  .icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    color: #555;
+  }
+
+  .icon-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .page-number {
+    font-weight: 600;
+    color: #007bcc;
+    min-width: 40px;
+    text-align: center;
+  }
+}

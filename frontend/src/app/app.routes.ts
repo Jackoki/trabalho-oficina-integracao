@@ -12,6 +12,7 @@ import { EditUserComponent } from './pages/edit-users/edit-users.component';
 import { EditWorkshopsComponent } from './pages/edit-workshops/edit-workshops.component';
 import { UserWorkshopComponent } from './pages/users-workshops/users-workshop.component';
 import { UserWorkshopAddComponent } from './pages/users-workshops-add/users-workshop-add.component';
+import { ClassesPage } from './pages/classes/classes.page';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -26,5 +27,6 @@ export const routes: Routes = [
   { path: 'add-workshops', component: AddWorkshopsComponent, canActivate: [AuthGuard] },
   { path: 'workshops/edit/:id', component: EditWorkshopsComponent, canActivate: [AuthGuard] },
   { path: 'workshops/workshop-users/:id', component: UserWorkshopComponent, canActivate: [AuthGuard] },
-  { path: 'workshops/:id/workshop-users/add/:typeId', component: UserWorkshopAddComponent, canActivate: [AuthGuard] }
+  { path: 'workshops/:id/workshop-users/add/:typeId', component: UserWorkshopAddComponent, canActivate: [AuthGuard] },
+  { path: 'workshops/:id/classes', component: ClassesPage, canActivate: [AuthGuard]}
 ];

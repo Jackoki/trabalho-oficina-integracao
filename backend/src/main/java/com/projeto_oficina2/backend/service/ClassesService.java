@@ -37,6 +37,11 @@ public class ClassesService {
         return classesRepository.findByWorkshop(workshop, pageable);
     }
 
+    public Long countClassesDone(Long workshopId) {
+        return classesRepository.countByWorkshop(workshopId);
+    }
+
+
     public Classes save(Long workshopId, Integer classNumber) {
 
         Workshops workshop = workshopsRepository.findById(workshopId).orElseThrow(() -> new RuntimeException("Workshop não encontrado"));

@@ -23,6 +23,13 @@ public class ClassesController {
         return classesService.paginateByWorkshop(workshopId, page, size);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> countClassesDone(@PathVariable("id") Long workshopId) {
+        Long count = classesService.countClassesDone(workshopId);
+        return ResponseEntity.ok(count);
+    }
+
+
     @PostMapping
     public ResponseEntity<?> createClass(@PathVariable("id") Long workshopId, @RequestParam Integer class_number) {
         try {
