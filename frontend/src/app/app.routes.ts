@@ -1,18 +1,18 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { AddSchoolsComponent } from './pages/add-schools/add-schools.component';
+import { HomeComponent } from './pages/home/home';
+import { AddSchoolsComponent } from './pages/add-schools/add-schools';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { AuthGuard } from './guards/auth-guard'
-import { SchoolComponent } from './pages/schools/schools.component';
-import { UserComponent } from './pages/users/users.component';
-import { EditSchoolsComponent } from './pages/edit-schools/edit-schools.component';
-import { AddWorkshopsComponent } from './pages/add-workshops/add-workshops.component';
-import { EditUserComponent } from './pages/edit-users/edit-users.component';
-import { EditWorkshopsComponent } from './pages/edit-workshops/edit-workshops.component';
-import { UserWorkshopComponent } from './pages/users-workshops/users-workshop.component';
-import { UserWorkshopAddComponent } from './pages/users-workshops-add/users-workshop-add.component';
-import { ClassesPage } from './pages/classes/classes.page';
+import { SchoolComponent } from './pages/schools/schools';
+import { UserComponent } from './pages/users/users';
+import { EditSchoolsComponent } from './pages/edit-schools/edit-schools';
+import { AddWorkshopsComponent } from './pages/add-workshops/add-workshops';
+import { EditUserComponent } from './pages/edit-users/edit-users';
+import { EditWorkshopsComponent } from './pages/edit-workshops/edit-workshops';
+import { UserWorkshopComponent } from './pages/users-workshops/users-workshop';
+import { UserWorkshopAddComponent } from './pages/users-workshops-add/users-workshop-add';
+import { ClassesPage } from './pages/classes/classes';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },

@@ -25,17 +25,18 @@ export interface User {
 @Injectable({
   providedIn: 'root'
 })
+
 export class WorkshopsService {
   private readonly API_BASE_URL = 'http://localhost:8080/workshops';
 
   constructor(private http: HttpClient) {}
 
-  getWorkshopsByUser(userId: number): Observable<Workshop[]> {
-    return this.http.get<Workshop[]>(`${this.API_BASE_URL}/user/${userId}`, { withCredentials: true });
-  }
-
   getAllWorkshops(): Observable<Workshop[]> {
     return this.http.get<Workshop[]>(this.API_BASE_URL, { withCredentials: true });
+  }
+
+  getWorkshopsByUser(userId: number): Observable<Workshop[]> {
+    return this.http.get<Workshop[]>(`${this.API_BASE_URL}/user/${userId}`, { withCredentials: true });
   }
 
   getUsersWorkshops(workshopId: number, typeId: number, page: number, size: number): Observable<any> {
@@ -45,10 +46,39 @@ export class WorkshopsService {
     );
   }
 
-
   getWorkshopsByUserPaginated(userId: number, page: number, size: number): Observable<any> {
     return this.http.get<any>(
       `${this.API_BASE_URL}/user/${userId}?page=${page}&size=${size}`,
+      { withCredentials: true }
+    );
+  }
+
+  getUsersNotLinked(workshopId: number, typeId: number, page: number, size: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.API_BASE_URL}/${workshopId}/users/not-linked/${typeId}?page=${page}&size=${size}`,
+      { withCredentials: true }
+    );
+  }
+
+  getClassesDone(workshopId: number): Observable<number> {
+    return this.http.get<number>(
+      `http://localhost:8080/workshops/${workshopId}/classes/count`,
+      { withCredentials: true }
+    );
+  }
+
+  linkUserToWorkshop(workshopId: number, userId: number): Observable<void> {
+    return this.http.post<void>(
+      `${this.API_BASE_URL}/${workshopId}/users/${userId}/link`,
+      {},
+      { withCredentials: true }
+    );
+  }
+
+  finalizeWorkshop(id: number): Observable<void> {
+    return this.http.put<void>(
+      `${this.API_BASE_URL}/${id}/finalize`,
+      {},
       { withCredentials: true }
     );
   }
@@ -63,36 +93,5 @@ export class WorkshopsService {
       { withCredentials: true }
     );
   }
-
-  finalizeWorkshop(id: number): Observable<void> {
-    return this.http.put<void>(
-      `${this.API_BASE_URL}/${id}/finalize`,
-      {},
-      { withCredentials: true }
-    );
-  }
-
-  getUsersNotLinked(workshopId: number, typeId: number, page: number, size: number): Observable<any> {
-    return this.http.get<any>(
-      `${this.API_BASE_URL}/${workshopId}/users/not-linked/${typeId}?page=${page}&size=${size}`,
-      { withCredentials: true }
-    );
-  }
-
-  linkUserToWorkshop(workshopId: number, userId: number): Observable<void> {
-    return this.http.post<void>(
-      `${this.API_BASE_URL}/${workshopId}/users/${userId}/link`,
-      {},
-      { withCredentials: true }
-    );
-  }
-
-  getClassesDone(workshopId: number): Observable<number> {
-    return this.http.get<number>(
-      `http://localhost:8080/workshops/${workshopId}/classes/count`,
-      { withCredentials: true }
-    );
-  }
-
 
 }
