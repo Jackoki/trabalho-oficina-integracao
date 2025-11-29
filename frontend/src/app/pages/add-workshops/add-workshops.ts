@@ -17,8 +17,8 @@ interface Workshop {
   selector: 'app-add-workshops',
   standalone: true,
   imports: [FormsModule, CommonModule, RouterModule],
-  templateUrl: './add-workshops.component.html',
-  styleUrls: ['./add-workshops.component.scss']
+  templateUrl: './add-workshops.html',
+  styleUrls: ['./add-workshops.scss']
 })
 export class AddWorkshopsComponent {
 

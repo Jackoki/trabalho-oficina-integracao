@@ -7,8 +7,8 @@ import { ClassesTableComponent } from '../../components/classes-table.component.
   selector: 'app-classes-page',
   standalone: true,
   imports: [CommonModule, ClassesTableComponent],
-  templateUrl: './classes.page.html',
-  styleUrls: ['./classes.page.scss']
+  templateUrl: './classes.html',
+  styleUrls: ['./classes.scss']
 })
 
 export class ClassesPage implements OnInit {

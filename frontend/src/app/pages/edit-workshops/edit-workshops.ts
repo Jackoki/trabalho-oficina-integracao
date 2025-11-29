@@ -17,8 +17,8 @@ interface Workshop {
   selector: 'app-edit-workshops',
   standalone: true,
   imports: [FormsModule, CommonModule, RouterModule],
-  templateUrl: './edit-workshops.component.html',
-  styleUrls: ['./edit-workshops.component.scss']
+  templateUrl: './edit-workshops.html',
+  styleUrls: ['./edit-workshops.scss']
 })
 
 export class EditWorkshopsComponent implements OnInit {

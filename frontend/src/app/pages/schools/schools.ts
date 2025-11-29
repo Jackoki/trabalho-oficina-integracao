@@ -8,8 +8,8 @@ import { SchoolTableComponent } from '../../components/school-table/school-table
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, NgIf, RouterModule, SchoolTableComponent],
-  templateUrl: './schools.component.html',
-  styleUrls: ['./schools.component.scss']
+  templateUrl: './schools.html',
+  styleUrls: ['./schools.scss']
 })
 export class SchoolComponent implements OnInit {
   isAdmin: boolean = false;

@@ -6,8 +6,8 @@ import { UserTableComponent } from '../../components/user-table/user-table.compo
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, UserTableComponent],
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  templateUrl: './users.html',
+  styleUrls: ['./users.scss']
 })
 
 export class UserComponent {}

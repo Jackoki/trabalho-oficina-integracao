@@ -26,8 +26,8 @@ interface User {
   selector: 'app-edit-user',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './edit-users.component.html',
-  styleUrls: ['./edit-users.component.scss']
+  templateUrl: './edit-users.html',
+  styleUrls: ['./edit-users.scss']
 })
 
 export class EditUserComponent implements OnInit {

@@ -7,8 +7,8 @@ import { UserWorkshopTableComponent } from '../../components/user-workshop-table
   selector: 'app-users-workshop',
   standalone: true,
   imports: [CommonModule, UserWorkshopTableComponent],
-  templateUrl: './users-workshop.component.html',
-  styleUrls: ['./users-workshop.component.scss']
+  templateUrl: './users-workshop.html',
+  styleUrls: ['./users-workshop.scss']
 })
 
 export class UserWorkshopComponent implements OnInit {

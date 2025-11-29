@@ -13,8 +13,8 @@ interface School {
   selector: 'app-add-schools',
   standalone: true,
   imports: [FormsModule, CommonModule, RouterModule],
-  templateUrl: './add-schools.component.html',
-  styleUrls: ['./add-schools.component.scss']
+  templateUrl: './add-schools.html',
+  styleUrls: ['./add-schools.scss']
 })
 export class AddSchoolsComponent implements OnInit {
 

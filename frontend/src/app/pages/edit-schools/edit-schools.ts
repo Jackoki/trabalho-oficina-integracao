@@ -14,8 +14,8 @@ interface School {
   selector: 'app-edit-schools',
   standalone: true,
   imports: [FormsModule, CommonModule, RouterModule],
-  templateUrl: './edit-schools.component.html',
-  styleUrls: ['./edit-schools.component.scss']
+  templateUrl: './edit-schools.html',
+  styleUrls: ['./edit-schools.scss']
 })
 export class EditSchoolsComponent implements OnInit {
   newSchoolName = '';
