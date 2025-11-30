@@ -19,16 +19,17 @@ export class ClassesService {
       withCredentials: true
     });
   }
-  
-  createClass(workshopId: number, classNumber: number): Observable<ClassItem> {
-    return this.http.post<ClassItem>(
-      `${this.API_BASE_URL}/${workshopId}/classes`,
-      null,
-      {
-        params: { class_number: classNumber },
-        withCredentials: true
-      }
-    );
+
+  countClasses(workshopId: number): Observable<number> {
+    return this.http.get<number>(`${this.API_BASE_URL}/${workshopId}/classes/count`, {
+      withCredentials: true
+    });
+  }
+
+  createClass(workshopId: number): Observable<ClassItem> {
+    return this.http.post<ClassItem>(`${this.API_BASE_URL}/${workshopId}/classes`, null, {
+      withCredentials: true
+    });
   }
 
   deleteClass(workshopId: number, classId: number): Observable<void> {

@@ -7,10 +7,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ClassesRepository extends JpaRepository<Classes, Long> {
+
     Page<Classes> findByWorkshop(Workshops workshop, Pageable pageable);
-    
+
+    @Query("SELECT MAX(c.classNumber) FROM Classes c WHERE c.workshop.id = :workshopId")
+    Integer findMaxClassNumberByWorkshop(@Param("workshopId") Long workshopId);
+
     @Query("SELECT COUNT(c) FROM Classes c WHERE c.workshop.id = :workshopId")
-    Long countByWorkshop(@Param("workshopId") Long workshopId);
+    Long countClassesByWorkshop(@Param("workshopId") Long workshopId);
 }
+

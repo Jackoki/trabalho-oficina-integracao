@@ -1,7 +1,11 @@
 <div class="table-container">
+
   <div class="table-header">
     <h2 class="table-title">Aulas da Oficina</h2>
-    <a *ngIf="auth.canEditWorkshop()" class="add-class-link" (click)="createClassPrompt()">
+
+    <a *ngIf="auth.canEditWorkshop()"
+       class="add-class-link"
+       (click)="createNextClass()">
       Adicionar Aula
     </a>
   </div>
@@ -11,27 +15,32 @@
       <thead>
         <tr>
           <th>Nº Aula</th>
-          <th>Status</th>
           <th *ngIf="auth.canDeleteWorkshop()">Ações</th>
         </tr>
       </thead>
 
       <tbody>
         <tr *ngIf="loading">
-          <td colspan="3" class="empty-row">Carregando aulas...</td>
+          <td [attr.colspan]="auth.canDeleteWorkshop() ? 2 : 1" class="empty-row">
+            Carregando aulas...
+          </td>
         </tr>
 
         <tr *ngIf="!loading && classes.length === 0">
-          <td colspan="3" class="empty-row">Nenhuma aula encontrada</td>
+          <td [attr.colspan]="auth.canDeleteWorkshop() ? 2 : 1" class="empty-row">
+            Nenhuma aula encontrada
+          </td>
         </tr>
 
         <ng-container *ngIf="!loading">
           <tr *ngFor="let clazz of classes" class="class-row">
             <td>{{ clazz.classNumber }}</td>
-            <td>{{ clazz.isFinished ? '✅ Finalizada' : '⏳ Em andamento' }}</td>
+
             <td *ngIf="auth.canDeleteWorkshop()" class="actions-cell">
               <div class="action-icons">
-                <button class="icon-button delete" (click)="deleteClass(clazz)" title="Excluir Aula">
+                <button class="icon-button delete"
+                        (click)="deleteClass(clazz)"
+                        title="Excluir Aula">
                   <i class="fa fa-trash"></i>
                 </button>
               </div>
@@ -42,15 +51,17 @@
     </table>
   </div>
 
-  <div class="pagination-footer" *ngIf="totalPages > 0">
-    <button class="icon-btn" (click)="setPage(currentPage - 1)" [disabled]="currentPage <= 0">
+  <div class="pagination-footer" *ngIf="totalPages >= 1">
+    <button class="icon-btn" (click)="changePage(currentPage - 1)" [disabled]="currentPage <= 0 || totalPages <= 1">
       <i class="fa fa-chevron-left"></i>
     </button>
 
     <span class="page-number">{{ currentPage + 1 }} / {{ totalPages }}</span>
 
-    <button class="icon-btn" (click)="setPage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1">
+    <button class="icon-btn" (click)="changePage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1 || totalPages <= 1">
       <i class="fa fa-chevron-right"></i>
     </button>
   </div>
+
+
 </div>

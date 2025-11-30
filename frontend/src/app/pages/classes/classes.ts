@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { ClassesTableComponent } from '../../components/classes-table.component.ts/classes-table.component';
+import { ClassesTableComponent } from '../../components/classes-table/classes-table.component';
 
 @Component({
   selector: 'app-classes-page',

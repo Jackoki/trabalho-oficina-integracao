@@ -46,17 +46,16 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/usertype").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/usertype/**").hasRole("ADMIN")
 
-                .requestMatchers(HttpMethod.GET, "/workshops/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/workshops").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/workshops/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/workshops/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/workshops/*/users/*/link").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/workshops/*/users/*").hasRole("ADMIN")
-
                 .requestMatchers(HttpMethod.GET, "/workshops/*/classes").hasAnyRole("ADMIN", "PROFESSOR")
                 .requestMatchers(HttpMethod.GET, "/workshops/*/classes/count").hasAnyRole("ADMIN", "PROFESSOR")
                 .requestMatchers(HttpMethod.POST, "/workshops/*/classes").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/workshops/*/classes/*").hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.GET, "/workshops/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/workshops").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/workshops/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/workshops/*/users/*").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/workshops/*/users/*/link").hasRole("ADMIN")
 
                 .requestMatchers(HttpMethod.GET, "/classes/*/frequencies").hasAnyRole("ADMIN", "PROFESSOR")
                 .requestMatchers(HttpMethod.POST, "/classes/*/frequencies").hasAnyRole("ADMIN", "PROFESSOR")

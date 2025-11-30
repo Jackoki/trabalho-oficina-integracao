@@ -1,27 +1,25 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
 import { ClassesService } from '../../services/ClassesService';
 import { Auth } from '../../services/auth';
 
-export interface Class {
+export interface WorkshopClass {
   id: number;
   classNumber: number;
-  isFinished: boolean;
 }
 
 @Component({
   selector: 'app-classes-table',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule],
   templateUrl: './classes-table.component.html',
   styleUrls: ['./classes-table.component.scss']
 })
 
 export class ClassesTableComponent implements OnChanges {
   @Input() workshopId!: number;
-  classes: Class[] = [];
-  
+  classes: WorkshopClass[] = [];
+
   pageSize = 5;
   currentPage = 0;
   totalPages = 0;
@@ -29,7 +27,6 @@ export class ClassesTableComponent implements OnChanges {
 
   constructor(
     private classesService: ClassesService,
-    private router: Router,
     public auth: Auth
   ) {}
 
@@ -58,28 +55,31 @@ export class ClassesTableComponent implements OnChanges {
       });
   }
 
-  setPage(page: number) {
+  changePage(page: number) {
     if (page < 0 || page >= this.totalPages) return;
     this.currentPage = page;
     this.loadClasses();
   }
 
-  createClassPrompt() {
-    const classNumber = Number(prompt('Número da aula:'));
-    if (!classNumber) return;
-
-    this.classesService.createClass(this.workshopId, classNumber).subscribe({
+  createNextClass() {
+    this.classesService.createClass(this.workshopId).subscribe({
       next: () => this.loadClasses(),
       error: () => alert('Erro ao criar aula.')
     });
   }
 
-  deleteClass(clazz: Class) {
+  deleteClass(clazz: WorkshopClass) {
     if (!confirm(`Deseja excluir a aula ${clazz.classNumber}?`)) return;
 
     this.classesService.deleteClass(this.workshopId, clazz.id).subscribe({
-      next: () => this.loadClasses(),
+      next: () => {
+        if (this.classes.length === 1 && this.currentPage === this.totalPages - 1 && this.currentPage > 0) {
+          this.currentPage--;
+        }
+        this.loadClasses();
+      },
       error: () => alert('Erro ao deletar aula.')
     });
   }
+
 }

@@ -3,6 +3,8 @@ package com.projeto_oficina2.backend.model;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "classes")
 public class Classes {
@@ -16,6 +18,7 @@ public class Classes {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_workshops", nullable = false)
+    @JsonBackReference
     private Workshops workshop;
 
     @OneToMany(mappedBy = "classes", cascade = CascadeType.ALL, orphanRemoval = true)
