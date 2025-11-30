@@ -49,13 +49,29 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      text-align: left;
+      vertical-align: middle;
     }
 
     th {
       background: #f5f5f5;
       font-weight: bold;
       color: #007bcc;
+    }
+
+    th.actions-header {
+      text-align: center;
+    }
+
+    th.number-header {
+      text-align: center;
+    }
+
+    td {
+      text-align: left;
+    }
+
+    td.number-cell {
+      text-align: center;
     }
 
     .empty-row {
@@ -75,7 +91,20 @@
 
     th:nth-child(1), td:nth-child(1) { width: 40%; }
     th:nth-child(2), td:nth-child(2) { width: 40%; }
-    th:nth-child(3), td:nth-child(3) { width: 20%; text-align: center; }
+    th:nth-child(3), td:nth-child(3) { width: 20%; }
+  }
+
+  .actions-cell {
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  .action-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 10px;
   }
 
   .icon-button {
@@ -87,18 +116,14 @@
     border-radius: 6px;
     color: #dc3545;
     transition: transform 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .icon-button:hover {
     transform: scale(1.15);
     background-color: rgba(220, 53, 69, 0.1);
-  }
-
-  .action-icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
   }
 }
 

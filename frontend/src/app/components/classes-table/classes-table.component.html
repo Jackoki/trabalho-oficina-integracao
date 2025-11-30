@@ -14,12 +14,13 @@
     <table>
       <thead>
         <tr>
-          <th>Nº Aula</th>
-          <th *ngIf="auth.canDeleteWorkshop()">Ações</th>
+          <th class="number-header">Nº Aula</th>
+          <th *ngIf="auth.canDeleteWorkshop()" class="actions-header">Ações</th>
         </tr>
       </thead>
 
       <tbody>
+
         <tr *ngIf="loading">
           <td [attr.colspan]="auth.canDeleteWorkshop() ? 2 : 1" class="empty-row">
             Carregando aulas...
@@ -34,34 +35,44 @@
 
         <ng-container *ngIf="!loading">
           <tr *ngFor="let clazz of classes" class="class-row">
-            <td>{{ clazz.classNumber }}</td>
+            <td class="number-cell">{{ clazz.classNumber }}</td>
+
 
             <td *ngIf="auth.canDeleteWorkshop()" class="actions-cell">
               <div class="action-icons">
+
                 <button class="icon-button delete"
                         (click)="deleteClass(clazz)"
                         title="Excluir Aula">
                   <i class="fa fa-trash"></i>
                 </button>
+
               </div>
             </td>
+
           </tr>
         </ng-container>
+
       </tbody>
     </table>
   </div>
 
-  <div class="pagination-footer" *ngIf="totalPages >= 1">
-    <button class="icon-btn" (click)="changePage(currentPage - 1)" [disabled]="currentPage <= 0 || totalPages <= 1">
+  <div class="pagination-footer" *ngIf="totalPages > 1">
+
+    <button class="icon-btn"
+            (click)="changePage(currentPage - 1)"
+            [disabled]="currentPage === 0">
       <i class="fa fa-chevron-left"></i>
     </button>
 
     <span class="page-number">{{ currentPage + 1 }} / {{ totalPages }}</span>
 
-    <button class="icon-btn" (click)="changePage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1 || totalPages <= 1">
+    <button class="icon-btn"
+            (click)="changePage(currentPage + 1)"
+            [disabled]="currentPage === totalPages - 1">
       <i class="fa fa-chevron-right"></i>
     </button>
-  </div>
 
+  </div>
 
 </div>

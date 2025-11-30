@@ -47,6 +47,10 @@ public class ClassesService {
         Integer max = classesRepository.findMaxClassNumberByWorkshop(workshopId);
         int nextNumber = (max == null) ? 1 : max + 1;
 
+        if (workshop.getNumberClasses() != null && nextNumber > workshop.getNumberClasses()) {
+            throw new RuntimeException("Número máximo de aulas já atingido");
+        }
+
         Classes newClass = new Classes();
         newClass.setClassNumber(nextNumber);
         newClass.setWorkshop(workshop);
@@ -63,7 +67,11 @@ public class ClassesService {
         Classes c = classesRepository.findById(classId)
             .orElseThrow(() -> new RuntimeException("Aula não encontrada"));
 
-        int removedNumber = c.getClassNumber();
+        Integer max = classesRepository.findMaxClassNumberByWorkshop(workshopId);
+        if (!c.getClassNumber().equals(max)) {
+            throw new RuntimeException("Só é possível deletar a aula mais recente");
+        }
+
         classesRepository.delete(c);
 
         Workshops workshop = workshopsRepository.findById(workshopId)
@@ -74,29 +82,11 @@ public class ClassesService {
         workshopsRepository.save(workshop);
 
         Integer newMax = classesRepository.findMaxClassNumberByWorkshop(workshopId);
-        if (removedNumber > (newMax == null ? 0 : newMax)) {
-            resequenceWorkshopClasses(workshopId);
+        if (newMax == null || newMax == 0) {
+            workshop.setActualNumberClasses(0L);
+            workshopsRepository.save(workshop);
         }
-    }
-
-    private void resequenceWorkshopClasses(Long workshopId) {
-        Workshops workshop = workshopsRepository.findById(workshopId)
-            .orElseThrow(() -> new RuntimeException("Workshop não encontrado"));
-
-        List<Classes> list = new ArrayList<>(
-            classesRepository.findByWorkshop(workshop, Pageable.unpaged()).getContent()
-        );
-        list.sort(Comparator.comparing(Classes::getClassNumber));
-
-        int seq = 1;
-        for (Classes clazz : list) {
-            clazz.setClassNumber(seq++);
-        }
-
-        classesRepository.saveAll(list);
-
-        workshop.setActualNumberClasses((long) list.size());
-        workshopsRepository.save(workshop);
     }
 }
+
 

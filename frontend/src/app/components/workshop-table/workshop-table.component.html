@@ -14,7 +14,7 @@
         <tr *ngFor="let workshop of workshops" class="workshop-row">
           <td>{{ workshop.code }}</td>
           <td>{{ workshop.name }}</td>
-          <td>0/{{ workshop.numberClasses }}</td>
+          <td>{{ workshop.actualNumberClasses }}/{{ workshop.numberClasses }}</td>
 
           <td class="action-icons">
 
