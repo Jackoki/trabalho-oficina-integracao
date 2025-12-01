@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WorkshopsService, User } from '../../services/WorkshopsService';
 import { RollCallService, RollCallRequest } from '../../services/RollCallService';
+import { ClassesService } from '../../services/ClassesService'; // <-- Importar
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -19,8 +20,9 @@ export interface RollCallForm {
 })
 
 export class ClassesRollcallTableComponent implements OnInit {
-  @Input() classId!: number;
+  @Input() classId?: number;
   @Input() workshopId!: number;
+  @Input() isNew = false;
 
   students: User[] = [];
   rollCallForms: RollCallForm[] = [];
@@ -28,11 +30,12 @@ export class ClassesRollcallTableComponent implements OnInit {
 
   constructor(
     private workshopsService: WorkshopsService,
-    private rollCallService: RollCallService
+    private rollCallService: RollCallService,
+    private classesService: ClassesService
   ) {}
 
   ngOnInit(): void {
-    if (!this.classId) return;
+    if (!this.isNew && !this.classId) return; 
     this.loadStudents();
   }
 
@@ -60,6 +63,23 @@ export class ClassesRollcallTableComponent implements OnInit {
   }
 
   saveRollCall() {
+    if (this.isNew) {
+      this.classesService.createClass(this.workshopId).subscribe({
+        next: (newClass: any) => {
+          this.classId = newClass.id;
+          this.isNew = false;
+          this.savePresence();
+        },
+        error: () => alert('Erro ao criar a aula.')
+      });
+    } else {
+      this.savePresence();
+    }
+  }
+
+  private savePresence() {
+    if (!this.classId) return;
+
     const request: RollCallRequest[] = this.rollCallForms.map(f => ({
       userId: f.userId,
       isPresent: f.isPresent

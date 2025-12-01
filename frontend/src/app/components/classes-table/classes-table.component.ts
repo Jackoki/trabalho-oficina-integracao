@@ -64,15 +64,10 @@ export class ClassesTableComponent implements OnChanges {
   }
 
   createNextClass() {
-    this.classesService.createClass(this.workshopId).subscribe({
-      next: (newClass: any) => {
-        this.router.navigate([`/workshops/${this.workshopId}/classes-rollcall/${newClass.id}`]);
-      },
-      error: () => alert('Erro ao criar aula.')
+    this.router.navigate([`/workshops/${this.workshopId}/classes-rollcall/0`], {
+      queryParams: { new: true }
     });
   }
-
-
 
   deleteClass(clazz: WorkshopClass) {
     if (!confirm(`Deseja excluir a aula ${clazz.classNumber}?`)) return;

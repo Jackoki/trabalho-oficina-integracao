@@ -30,5 +30,5 @@ export const routes: Routes = [
   { path: 'workshops/workshop-users/:id', component: UserWorkshopComponent, canActivate: [AuthGuard] },
   { path: 'workshops/:id/workshop-users/add/:typeId', component: UserWorkshopAddComponent, canActivate: [AuthGuard] },
   { path: 'workshops/:id/classes', component: ClassesPage, canActivate: [AuthGuard]},
-  { path: 'workshops/:workshopId/classes-rollcall/:classId', component: ClassesRollcallPage, canActivate: [AuthGuard] }
+  { path: 'workshops/:workshopId/classes-rollcall/:classId?', component: ClassesRollcallPage, canActivate: [AuthGuard] }
 ];

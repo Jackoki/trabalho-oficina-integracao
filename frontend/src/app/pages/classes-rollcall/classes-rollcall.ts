@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClassesRollcallTableComponent } from '../../components/classes-rollcall-table/classes-rollcall-table.component';
 
 @Component({
@@ -12,13 +12,16 @@ import { ClassesRollcallTableComponent } from '../../components/classes-rollcall
 })
 
 export class ClassesRollcallPage implements OnInit {
-  classId!: number;
+  classId?: number;
   workshopId!: number;
+  isNew = false;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    this.classId = Number(this.route.snapshot.paramMap.get('classId'));
     this.workshopId = Number(this.route.snapshot.paramMap.get('workshopId'));
+    const classIdParam = this.route.snapshot.paramMap.get('classId');
+    this.isNew = this.route.snapshot.queryParamMap.get('new') === 'true';
+    this.classId = classIdParam ? Number(classIdParam) : undefined;
   }
 }
