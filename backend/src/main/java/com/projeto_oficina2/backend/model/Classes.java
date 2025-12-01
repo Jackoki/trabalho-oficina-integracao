@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "classes")
@@ -22,6 +23,7 @@ public class Classes {
     private Workshops workshop;
 
     @OneToMany(mappedBy = "classes", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Frequencies> frequencies;
 
     public Long getId() { return id; }

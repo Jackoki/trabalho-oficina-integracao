@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClassesService } from '../../services/ClassesService';
 import { Auth } from '../../services/auth';
+import { Router } from '@angular/router';
 
 export interface WorkshopClass {
   id: number;
@@ -27,7 +28,8 @@ export class ClassesTableComponent implements OnChanges {
 
   constructor(
     private classesService: ClassesService,
-    public auth: Auth
+    public auth: Auth,
+    private router: Router
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -63,10 +65,14 @@ export class ClassesTableComponent implements OnChanges {
 
   createNextClass() {
     this.classesService.createClass(this.workshopId).subscribe({
-      next: () => this.loadClasses(),
+      next: (newClass: any) => {
+        this.router.navigate([`/workshops/${this.workshopId}/classes-rollcall/${newClass.id}`]);
+      },
       error: () => alert('Erro ao criar aula.')
     });
   }
+
+
 
   deleteClass(clazz: WorkshopClass) {
     if (!confirm(`Deseja excluir a aula ${clazz.classNumber}?`)) return;

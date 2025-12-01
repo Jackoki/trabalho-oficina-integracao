@@ -1,0 +1,32 @@
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Presença</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="loading">
+        <td colspan="3" class="empty-row">Carregando alunos...</td>
+      </tr>
+
+      <tr *ngFor="let student of students">
+        <td>{{ student.code }}</td>
+        <td>{{ student.name }}</td>
+        <td class="checkbox-cell">
+          <input type="checkbox" (change)="togglePresence(student.id, $event)">
+        </td>
+      </tr>
+
+      <tr *ngIf="!loading && students.length === 0">
+        <td colspan="3" class="empty-row">Nenhum aluno encontrado</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="save-button-container">
+    <button (click)="saveRollCall()">Salvar Chamada</button>
+  </div>
+</div>
