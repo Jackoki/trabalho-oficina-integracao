@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WorkshopsService, User } from '../../services/WorkshopsService';
 import { RollCallService, RollCallRequest } from '../../services/RollCallService';
-import { ClassesService } from '../../services/ClassesService'; // <-- Importar
+import { ClassesService } from '../../services/ClassesService';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Location } from '@angular/common'; // <-- ADICIONADO
 
 export interface RollCallForm {
   userId: number;
@@ -31,16 +32,22 @@ export class ClassesRollcallTableComponent implements OnInit {
   constructor(
     private workshopsService: WorkshopsService,
     private rollCallService: RollCallService,
-    private classesService: ClassesService
+    private classesService: ClassesService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
-    if (!this.isNew && !this.classId) return; 
+    if (!this.isNew && !this.classId) return;
     this.loadStudents();
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   loadStudents() {
     this.loading = true;
+
     this.workshopsService.getUsersWorkshops(this.workshopId, 2, 0, 100).subscribe({
       next: (page: { content: User[] }) => {
         this.students = page.content;

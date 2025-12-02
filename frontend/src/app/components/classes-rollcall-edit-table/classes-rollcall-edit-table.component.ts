@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { WorkshopsService, User } from '../../services/WorkshopsService';
 import { RollCallService, RollCallRequest } from '../../services/RollCallService';
 import { FrequenciesService } from '../../services/FrequenciesService';
+import { Location } from '@angular/common';
 
 export interface RollCallRow {
   userId: number;
@@ -33,7 +34,8 @@ export class ClassesRollcallEditTableComponent implements OnInit, OnChanges {
   constructor(
     private workshopsService: WorkshopsService,
     private rollCallService: RollCallService,
-    private frequenciesService: FrequenciesService
+    private frequenciesService: FrequenciesService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -94,5 +96,9 @@ export class ClassesRollcallEditTableComponent implements OnInit, OnChanges {
       },
       error: () => alert('Erro ao salvar chamada')
     });
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

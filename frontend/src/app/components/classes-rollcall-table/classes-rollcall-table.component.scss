@@ -1,9 +1,11 @@
 .table-wrapper {
+
   table {
     width: 100%;
     border-collapse: collapse;
 
-    th, td {
+    th,
+    td {
       padding: 10px;
       border-bottom: 1px solid #eee;
       text-align: left;
@@ -37,18 +39,32 @@
     }
   }
 
-  .save-button-container {
+  .buttons-row {
     margin-top: 15px;
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     button {
       padding: 8px 16px;
-      background-color: #007bcc;
-      color: white;
       border: none;
       border-radius: 6px;
+      color: white;
       cursor: pointer;
-      transition: 0.2s ease;
+      font-size: 15px;
+      transition: background-color 0.2s ease;
+    }
+
+    .voltar {
+      background-color: #6c757d;
+
+      &:hover {
+        background-color: #5a6268;
+      }
+    }
+
+    .save-button {
+      background-color: #007bcc;
 
       &:hover {
         background-color: #005fa3;
