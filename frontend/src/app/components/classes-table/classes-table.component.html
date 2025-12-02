@@ -37,9 +37,14 @@
           <tr *ngFor="let clazz of classes" class="class-row">
             <td class="number-cell">{{ clazz.classNumber }}</td>
 
-
             <td *ngIf="auth.canDeleteWorkshop()" class="actions-cell">
               <div class="action-icons">
+
+                <button class="icon-button edit"
+                        (click)="editClass(clazz)"
+                        title="Editar Aula">
+                  <i class="fa fa-cog"></i>
+                </button>
 
                 <button class="icon-button delete"
                         (click)="deleteClass(clazz)"

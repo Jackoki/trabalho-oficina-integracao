@@ -1,5 +1,6 @@
 package com.projeto_oficina2.backend.service;
 
+import com.projeto_oficina2.backend.dto.RollCallDTO;
 import com.projeto_oficina2.backend.dto.RollCallRequest;
 import com.projeto_oficina2.backend.model.*;
 import com.projeto_oficina2.backend.repository.FrequenciesRepository;
@@ -110,6 +111,36 @@ public class FrequenciesService {
         Classes clazz = classesRepository.findById(classId).orElseThrow(() -> new RuntimeException("Classe não encontrada"));
         return frequenciesRepository.findByClasses(clazz);
     }
+
+    public List<RollCallDTO> getRollCallForClass(Long classId) {
+        Classes clazz = classesRepository.findById(classId)
+            .orElseThrow(() -> new RuntimeException("Aula não encontrada"));
+
+        Workshops workshop = clazz.getWorkshop();
+
+        List<User> students = workshop.getUsers()
+            .stream()
+            .filter(u -> u.getUserType().getId() == 2)
+            .toList();
+
+        List<Frequencies> frequencies = frequenciesRepository.findByClasses(clazz);
+
+        return students.stream().map(student -> {
+            Frequencies freq = frequencies.stream()
+                .filter(f -> f.getUser().getId().equals(student.getId()))
+                .findFirst()
+                .orElse(null);
+
+            Boolean present = freq != null && Boolean.TRUE.equals(freq.getIsPresent());
+
+            return new RollCallDTO(
+                student.getId(),
+                student.getName(),
+                present
+            );
+        }).toList();
+    }
+
 
     @Transactional
     public void delete(Long frequencyId) {

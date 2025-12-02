@@ -14,6 +14,7 @@ import { UserWorkshopComponent } from './pages/users-workshops/users-workshop';
 import { UserWorkshopAddComponent } from './pages/users-workshops-add/users-workshop-add';
 import { ClassesPage } from './pages/classes/classes';
 import { ClassesRollcallPage } from './pages/classes-rollcall/classes-rollcall';
+import { ClassesRollcallEdit } from './pages/classes-rollcall-edit/classes-rollcall-edit';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -30,5 +31,6 @@ export const routes: Routes = [
   { path: 'workshops/workshop-users/:id', component: UserWorkshopComponent, canActivate: [AuthGuard] },
   { path: 'workshops/:id/workshop-users/add/:typeId', component: UserWorkshopAddComponent, canActivate: [AuthGuard] },
   { path: 'workshops/:id/classes', component: ClassesPage, canActivate: [AuthGuard]},
-  { path: 'workshops/:workshopId/classes-rollcall/:classId?', component: ClassesRollcallPage, canActivate: [AuthGuard] }
+  { path: 'workshops/:workshopId/classes-rollcall/:classId?', component: ClassesRollcallPage, canActivate: [AuthGuard] },
+  { path: 'workshops/:workshopId/classes-rollcall/edit/:classId', component: ClassesRollcallEdit, canActivate: [AuthGuard] }
 ];
