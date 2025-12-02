@@ -11,7 +11,8 @@ import { SchoolTableComponent } from '../../components/school-table/school-table
   templateUrl: './schools.html',
   styleUrls: ['./schools.scss']
 })
-export class SchoolComponent implements OnInit {
+
+export class Schools implements OnInit {
   isAdmin: boolean = false;
 
   constructor(private auth: Auth) {}

@@ -10,6 +10,7 @@ import { Auth, LoginRequest, AuthResponse } from '../../services/auth';
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
+
 export class Login {
   loginData = {
     accessCode: '',

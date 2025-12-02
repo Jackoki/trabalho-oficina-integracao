@@ -16,7 +16,8 @@ interface School {
   templateUrl: './add-schools.html',
   styleUrls: ['./add-schools.scss']
 })
-export class AddSchoolsComponent implements OnInit {
+
+export class AddSchools implements OnInit {
 
   newSchoolName = '';
   schools: School[] = [];

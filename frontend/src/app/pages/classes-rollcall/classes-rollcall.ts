@@ -11,7 +11,7 @@ import { ClassesRollcallTableComponent } from '../../components/classes-rollcall
   styleUrls: ['./classes-rollcall.scss']
 })
 
-export class ClassesRollcallPage implements OnInit {
+export class ClassesRollcall implements OnInit {
   classId?: number;
   workshopId!: number;
   isNew = false;

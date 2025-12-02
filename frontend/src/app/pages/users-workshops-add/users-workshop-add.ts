@@ -12,7 +12,7 @@ import { UserWorkshopAddTableComponent } from '../../components/user-workshop-ad
   styleUrls: ['./users-workshop-add.scss']
 })
 
-export class UserWorkshopAddComponent implements OnInit {
+export class UsersWorkshopAdd implements OnInit {
   workshopId!: number;
   typeId!: number;
   typeName!: string;
