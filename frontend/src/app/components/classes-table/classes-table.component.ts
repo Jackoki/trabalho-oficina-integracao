@@ -70,13 +70,22 @@ export class ClassesTableComponent implements OnChanges {
   }
 
   deleteClass(clazz: WorkshopClass) {
-    if (!confirm(`Deseja excluir a aula ${clazz.classNumber}?`)) return;
+    if (!confirm(Deseja excluir a aula ${clazz.classNumber}?)) return;
 
     this.classesService.deleteClass(this.workshopId, clazz.id).subscribe({
       next: () => {
+        const lastClassId = this.classes.length > 0 ? this.classes[this.classes.length - 1].id : 0;
+
+        this.classesService.recalculateWorkshopFrequency(lastClassId, this.workshopId)
+          .subscribe({
+            next: () => console.log('Frequências do workshop recalculadas'),
+            error: () => console.warn('Falha ao recalcular frequências')
+          });
+
         if (this.classes.length === 1 && this.currentPage === this.totalPages - 1 && this.currentPage > 0) {
           this.currentPage--;
         }
+
         this.loadClasses();
       },
       error: () => alert('Erro ao deletar aula.')

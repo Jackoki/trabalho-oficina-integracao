@@ -48,6 +48,18 @@ public class FrequenciesController {
         }
     }
 
+    @PostMapping("/recalculate-workshop/{workshopId}")
+    public ResponseEntity<?> recalcWorkshop(@PathVariable Long workshopId) {
+        try {
+            frequenciesService.recalculateWorkshopFrequency(workshopId);
+            return ResponseEntity.ok().build();
+        } 
+
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        }
+    }
+
     @DeleteMapping("/{frequencyId}")
     public ResponseEntity<?> deleteFrequency(@PathVariable Long classId, @PathVariable Long frequencyId) {
 		

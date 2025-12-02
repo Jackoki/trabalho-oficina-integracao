@@ -92,6 +92,20 @@ public class FrequenciesService {
         frequenciesStudentsRepository.save(fs);
     }
 
+    @Transactional
+    public void recalculateWorkshopFrequency(Long workshopId) {
+        Workshops workshop = workshopsRepository.findById(workshopId)
+            .orElseThrow(() -> new RuntimeException("Workshop não encontrado"));
+
+        List<User> students = workshop.getUsers().stream()
+            .filter(u -> u.getUserType().getId() == 2)
+            .toList();
+
+        for (User student : students) {
+            updateFrequenciesStudents(student, workshop);
+        }
+    }
+
     public List<Frequencies> findByClass(Long classId) {
         Classes clazz = classesRepository.findById(classId).orElseThrow(() -> new RuntimeException("Classe não encontrada"));
         return frequenciesRepository.findByClasses(clazz);

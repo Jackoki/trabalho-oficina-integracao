@@ -32,6 +32,12 @@ export class ClassesService {
     });
   }
 
+  recalculateWorkshopFrequency(classId: number, workshopId: number): Observable<void> {
+    return this.http.post<void>(`http://localhost:8080/classes/${classId}/frequencies/recalculate-workshop/${workshopId}`, null, { 
+      withCredentials: true 
+    });
+  }
+
   deleteClass(workshopId: number, classId: number): Observable<void> {
     return this.http.delete<void>(`${this.API_BASE_URL}/${workshopId}/classes/${classId}`, {
       withCredentials: true
