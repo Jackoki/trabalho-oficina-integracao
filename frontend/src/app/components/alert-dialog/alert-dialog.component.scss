@@ -1,0 +1,43 @@
+.alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.alert-box {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  min-width: 300px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+
+.alert-box.error {
+  border-left: 6px solid #e53935;
+}
+
+.alert-box.warning {
+  border-left: 6px solid #fbc02d;
+}
+
+.alert-box.success {
+  border-left: 6px solid #43a047;
+}
+
+.btn-fechar {
+  margin-top: 20px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
