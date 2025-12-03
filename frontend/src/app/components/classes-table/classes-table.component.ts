@@ -16,6 +16,7 @@ export interface WorkshopClass {
   templateUrl: './classes-table.component.html',
   styleUrls: ['./classes-table.component.scss']
 })
+
 export class ClassesTableComponent implements OnChanges {
   @Input() workshopId!: number;
   classes: WorkshopClass[] = [];

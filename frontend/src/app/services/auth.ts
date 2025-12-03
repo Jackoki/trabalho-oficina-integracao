@@ -142,31 +142,20 @@ export class Auth {
     return this.hasRole('Aluno');
   }
 
-  canCreateWorkshop(): boolean {
-    return this.isAdministrator() || this.isProfessor();
+  isAnyone(): boolean {
+    return this.isAdministrator() || this.isProfessor() || this.isTutor() || this.isAluno();
   }
-
-  canEditWorkshop(): boolean {
-    return this.isAdministrator() || this.isProfessor();
-  }
-
-  canDeleteWorkshop(): boolean {
-    return this.isAdministrator();
-  }
-
-  canManageUsers(): boolean {
-    return this.isAdministrator() || this.isProfessor();
-  }
-
-  canTakeAttendance(): boolean {
+  
+  isAdminOrProfessorOrTutor(): boolean {
     return this.isAdministrator() || this.isProfessor() || this.isTutor();
   }
 
-  canFinalizeWorkshop(): boolean {
+  isAdminOrProfessor(): boolean {
     return this.isAdministrator() || this.isProfessor();
   }
 
-  canViewCertificate(): boolean {
-    return this.isAluno();
+  isAdmin(): boolean {
+    return this.isAdministrator();
   }
+
 }

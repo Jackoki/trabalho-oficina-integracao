@@ -21,15 +21,11 @@
           <td>{{ user.code }}</td>
           <td class="actions-cell">
             <div class="action-icons">
-              <button class="icon-button settings"
-                      (click)="openSettings(user)"
-                      title="Configurações">
+              <button class="icon-button settings" (click)="openSettings(user)" title="Configurações">
                 <i class="fa fa-cog"></i>
               </button>
 
-              <button class="icon-button delete"
-                      (click)="deleteUser(user)"
-                      title="Excluir">
+              <button class="icon-button delete" (click)="deleteUser(user)" title="Excluir">
                 <i class="fa fa-trash"></i>
               </button>
             </div>
@@ -40,17 +36,13 @@
   </div>
 
   <div class="pagination-footer" *ngIf="totalPages > 0">
-    <button class="icon-btn" 
-            (click)="setPage(currentPage - 1)" 
-            [disabled]="currentPage <= 0">
+    <button class="icon-btn" (click)="setPage(currentPage - 1)" [disabled]="currentPage <= 0">
       <i class="fa fa-chevron-left"></i>
     </button>
 
     <span class="page-number">{{ currentPage + 1 }} / {{ totalPages }}</span>
 
-    <button class="icon-btn" 
-            (click)="setPage(currentPage + 1)" 
-            [disabled]="currentPage >= totalPages - 1">
+    <button class="icon-btn" (click)="setPage(currentPage + 1)"  [disabled]="currentPage >= totalPages - 1">
       <i class="fa fa-chevron-right"></i>
     </button>
   </div>
