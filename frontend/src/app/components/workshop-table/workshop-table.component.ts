@@ -76,15 +76,31 @@ export class WorkshopTableComponent implements OnInit {
       return;
     }
 
-    if (!confirm(`Deseja concluir a oficina "${workshop.name}"?`)) 
+    // Use local counted classes when available (classesDone) otherwise use the workshop field
+    const done = this.classesDone[workshop.id] ?? workshop.actualNumberClasses ?? 0;
+    const planned = workshop.numberClasses ?? 0;
+
+    if (planned === 0) {
+      alert(`Não há aulas previstas para a oficina "${workshop.name}".`);
       return;
+    }
+
+    if (done !== planned) {
+      alert(`Não é possível concluir a oficina "${workshop.name}".\nAulas previstas: ${planned}, aulas registradas: ${done}.`);
+      return;
+    }
+
+    if (!confirm(`Deseja concluir a oficina "${workshop.name}"?`)) return;
 
     this.workshopsService.finalizeWorkshop(workshop.id).subscribe({
       next: () => {
         workshop.isFinished = 1;
         alert('Oficina concluída com sucesso!');
       },
-      error: () => alert('Erro ao concluir oficina.')
+      error: (err) => {
+        const msg = err?.error?.message || err?.error || err?.statusText || 'Erro ao concluir oficina.';
+        alert(msg);
+      }
     });
   }
   

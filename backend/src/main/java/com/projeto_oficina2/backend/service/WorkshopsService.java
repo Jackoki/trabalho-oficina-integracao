@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.projeto_oficina2.backend.model.User;
 import com.projeto_oficina2.backend.model.UserType;
@@ -17,6 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import jakarta.transaction.Transactional;
+import com.projeto_oficina2.backend.repository.ClassesRepository;
 
 @Service
 public class WorkshopsService {
@@ -26,6 +30,9 @@ public class WorkshopsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ClassesRepository classesRepository;
 
     public List<Workshops> getAllWorkshops() {
         return workshopsRepository.findAll();
@@ -139,9 +146,21 @@ public class WorkshopsService {
         return workshopsRepository.save(existing);
     }
         
+    @Transactional
     public Workshops finalizeWorkshop(Long id) {
         Workshops workshop = workshopsRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Oficina não encontrada"));
+        Long numberClasses = workshop.getNumberClasses();
+        Long realCount = classesRepository.countClassesByWorkshop(id);
+
+        if (numberClasses == null || !numberClasses.equals(realCount)) {
+            String msg = String.format(
+                "Não é possível concluir a oficina: aulas previstas = %s, aulas registradas = %s",
+                numberClasses == null ? "null" : numberClasses.toString(),
+                realCount == null ? "null" : realCount.toString()
+            );
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
+        }
 
         workshop.setIsFinished(1);
         return workshopsRepository.save(workshop);
