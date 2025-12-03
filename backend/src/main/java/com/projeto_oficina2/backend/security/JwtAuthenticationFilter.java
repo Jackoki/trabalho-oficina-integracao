@@ -1,7 +1,6 @@
 package com.projeto_oficina2.backend.security;
 
 import com.projeto_oficina2.backend.service.JwtService;
-import com.projeto_oficina2.backend.security.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -40,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            String username = jwtService.getAccessCode(token);
+            String username = jwtService.extractUsername(token);
 
             var userDetails = userDetailsService.loadUserByUsername(username);
 

@@ -44,7 +44,9 @@ export class Auth {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+      this.initializeUser();
+  }
 
   login(loginData: LoginRequest): Observable<AuthResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -109,6 +111,11 @@ export class Auth {
       })
     );
   }
+
+  private initializeUser() {
+    this.me().subscribe(); 
+  }
+
 
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;

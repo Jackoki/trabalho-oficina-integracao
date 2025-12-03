@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Auth } from '../services/auth';
 
 @Injectable({
@@ -8,28 +8,30 @@ import { Auth } from '../services/auth';
 })
 
 export class AuthGuard implements CanActivate {
-  constructor(private authService: Auth, private router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot
-  ): boolean | UrlTree | Observable<boolean | UrlTree> {
+    constructor(private authService: Auth, private router: Router) {}
 
-    if (!this.authService.isAuthenticated()) {
-      return this.router.parseUrl('/login');
-    }
+  canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
+    return this.authService.me().pipe(
+      map(user => {
+        if (!user) {
+          return this.router.parseUrl('/login');
+        }
 
-    const allowedRoles = route.data['roles'] as Array<string>;
+        const allowedRoles = route.data['roles'] as Array<string>;
 
-    if (!allowedRoles || allowedRoles.length === 0) {
-      return true;
-    }
+        if (!allowedRoles || allowedRoles.length === 0) {
+          return true;
+        }
 
-    const userRole = this.authService.getCurrentUserRole();
+        const userRole = user.userType.name;
 
-    if (!allowedRoles.includes(userRole!)) {
-      return this.router.parseUrl('/home');
-    }
+        if (!allowedRoles.includes(userRole)) {
+          return this.router.parseUrl('/home');
+        }
 
-    return true;
+        return true;
+      })
+    );
   }
 }

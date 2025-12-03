@@ -1,14 +1,15 @@
 package com.projeto_oficina2.backend.service;
 
 import com.projeto_oficina2.backend.model.User;
+import com.projeto_oficina2.backend.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
@@ -16,13 +17,18 @@ import java.util.Date;
 public class JwtService {
 
     private final String SECRET_KEY = "PROJETO_OFICINA_INTEGRACAO_2_QUE_DEVE_SER_LONGA_32_CHARS";
-    private final long EXPIRATION_MS = 24L * 60 * 60 * 1000 * 120;
+    private final long EXPIRATION_MS = 24L * 60 * 60 * 1000 * 120; // 120 dias
 
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    private final UserRepository userRepository;
+
+    public JwtService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    // Gera token JWT
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+    }
+
     public String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getCode())
@@ -41,7 +47,9 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token);
             return true;
-        } catch (Exception e) {
+        } 
+        
+        catch (Exception e) {
             return false;
         }
     }
@@ -54,17 +62,22 @@ public class JwtService {
                 .getBody();
     }
 
-    public String getAccessCode(String token) {
+    public String extractUsername(String token) {
         return getClaims(token).getSubject();
     }
 
+    public User extractUserFromToken(String token) {
+        String code = extractUsername(token);
+        return userRepository.findByCode(code).orElse(null);
+    }
+
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = getAccessCode(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        String username = extractUsername(token);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
-        final Date expiration = getClaims(token).getExpiration();
+        Date expiration = getClaims(token).getExpiration();
         return expiration.before(new Date());
     }
 }
