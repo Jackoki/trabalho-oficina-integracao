@@ -21,7 +21,7 @@ interface Workshop {
   styleUrls: ['./edit-workshops.scss']
 })
 
-export class EditWorkshopsComponent implements OnInit {
+export class EditWorkshops implements OnInit {
 
   newWorkshop: Workshop = {
     name: '',

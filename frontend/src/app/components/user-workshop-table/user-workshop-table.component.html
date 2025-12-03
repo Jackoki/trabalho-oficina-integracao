@@ -43,17 +43,13 @@
   </div>
 
   <div class="pagination-footer" *ngIf="totalPages > 0">
-    <button class="icon-btn"
-            (click)="setPage(currentPage - 1)"
-            [disabled]="currentPage <= 0">
+    <button class="icon-btn" (click)="setPage(currentPage - 1)" [disabled]="currentPage <= 0">
       <i class="fa fa-chevron-left"></i>
     </button>
 
     <span class="page-number">{{ currentPage + 1 }} / {{ totalPages }}</span>
 
-    <button class="icon-btn"
-            (click)="setPage(currentPage + 1)"
-            [disabled]="currentPage >= totalPages - 1">
+    <button class="icon-btn" (click)="setPage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1">
       <i class="fa fa-chevron-right"></i>
     </button>
   </div>

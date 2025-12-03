@@ -1,4 +1,5 @@
 <div class="table-wrapper">
+
   <table>
     <thead>
       <tr>
@@ -7,6 +8,7 @@
         <th>Presença</th>
       </tr>
     </thead>
+
     <tbody>
       <tr *ngIf="loading">
         <td colspan="3" class="empty-row">Carregando alunos...</td>
@@ -26,7 +28,12 @@
     </tbody>
   </table>
 
-  <div class="save-button-container">
-    <button (click)="saveRollCall()">Salvar Chamada</button>
+  <div class="buttons-row">
+    <button class="voltar" (click)="goBack()">Voltar</button>
+
+    <button class="save-button" (click)="saveRollCall()">
+      Salvar Chamada
+    </button>
   </div>
+
 </div>

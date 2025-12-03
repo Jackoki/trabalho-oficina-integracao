@@ -30,7 +30,7 @@ interface User {
   styleUrls: ['./edit-users.scss']
 })
 
-export class EditUserComponent implements OnInit {
+export class EditUsers implements OnInit {
   userId: number | null = null;
 
   userData = {

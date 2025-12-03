@@ -10,4 +10,4 @@ import { UserTableComponent } from '../../components/user-table/user-table.compo
   styleUrls: ['./users.scss']
 })
 
-export class UserComponent {}
+export class Users {}

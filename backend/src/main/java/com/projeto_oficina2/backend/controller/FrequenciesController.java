@@ -1,6 +1,7 @@
 package com.projeto_oficina2.backend.controller;
 
 import com.projeto_oficina2.backend.model.Frequencies;
+import com.projeto_oficina2.backend.dto.RollCallDTO;
 import com.projeto_oficina2.backend.dto.RollCallRequest;
 import com.projeto_oficina2.backend.model.ErrorResponse;
 import com.projeto_oficina2.backend.service.FrequenciesService;
@@ -23,6 +24,12 @@ public class FrequenciesController {
     public List<Frequencies> getFrequencies(@PathVariable Long classId) {
         return frequenciesService.findByClass(classId);
     }
+
+    @GetMapping("/edit")
+    public List<RollCallDTO> getRollCallForEdit(@PathVariable Long classId) {
+        return frequenciesService.getRollCallForClass(classId);
+    }
+
 
     @PostMapping
     public ResponseEntity<?> createOrUpdateFrequency(@PathVariable Long classId, @RequestParam Long userId, @RequestParam Boolean isPresent) {

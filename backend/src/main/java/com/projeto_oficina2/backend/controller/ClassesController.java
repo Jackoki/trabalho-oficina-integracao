@@ -33,10 +33,7 @@ public class ClassesController {
     }
 
     @DeleteMapping("/{classId}")
-    public ResponseEntity<Void> deleteClass(
-        @PathVariable("id") Long workshopId,
-        @PathVariable Long classId
-    ) {
+    public ResponseEntity<Void> deleteClass(@PathVariable("id") Long workshopId, @PathVariable Long classId) {
         classesService.deleteClass(workshopId, classId);
         return ResponseEntity.noContent().build();
     }

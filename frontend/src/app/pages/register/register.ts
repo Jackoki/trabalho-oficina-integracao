@@ -15,6 +15,7 @@ interface School {
   templateUrl: './register.html',
   styleUrls: ['./register.css']
 })
+
 export class Register implements OnInit {
 
   registerData = {

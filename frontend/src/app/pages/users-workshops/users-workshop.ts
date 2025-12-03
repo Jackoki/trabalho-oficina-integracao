@@ -11,7 +11,7 @@ import { UserWorkshopTableComponent } from '../../components/user-workshop-table
   styleUrls: ['./users-workshop.scss']
 })
 
-export class UserWorkshopComponent implements OnInit {
+export class UsersWorkshop implements OnInit {
   workshopId!: number;
 
   constructor(private route: ActivatedRoute) {}

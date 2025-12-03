@@ -1,0 +1,35 @@
+<div class="page-container">
+  <div class="table-wrapper">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Código</th>
+          <th>Presença</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngIf="loading">
+          <td colspan="3" class="empty-row">Carregando...</td>
+        </tr>
+
+        <tr *ngFor="let row of rows">
+          <td>{{ row.userName }}</td>
+          <td>{{ row.userCode }}</td>
+          <td class="checkbox-cell">
+            <input type="checkbox" [(ngModel)]="row.isPresent">
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div class="buttons-row">
+      <button class="voltar" (click)="goBack()">Voltar</button>
+      <button class="save-button" (click)="save()">Salvar Chamada</button>
+    </div>
+  </div>
+</div>

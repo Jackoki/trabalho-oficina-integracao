@@ -36,7 +36,8 @@ public class AuthController {
         }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return ResponseEntity.status(401).body(new LoginResponse(false, "Senha inválida", null));
+            return ResponseEntity.status(401)
+                    .body(new LoginResponse(false, "Senha inválida", null));
         }
 
         String token = jwtService.generateToken(user);
@@ -51,6 +52,19 @@ public class AuthController {
         return ResponseEntity.ok(new LoginResponse(true, "Login realizado com sucesso", user));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<?> me(@CookieValue(name = "ELLPTOKEN", required = false) String token) {
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.status(401).body("Token não encontrado");
+        }
+
+        User user = jwtService.extractUserFromToken(token);
+        if (user == null) {
+            return ResponseEntity.status(401).body("Token inválido");
+        }
+
+        return ResponseEntity.ok(user);
+    }
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {

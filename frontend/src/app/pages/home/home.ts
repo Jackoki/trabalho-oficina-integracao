@@ -8,4 +8,4 @@ import { WorkshopTableComponent } from '../../components/workshop-table/workshop
   templateUrl: './home.html',
   styleUrls: ['./home.scss']
 })
-export class HomeComponent {}
+export class Home {}

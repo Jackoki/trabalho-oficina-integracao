@@ -114,16 +114,28 @@
     padding: 6px;
     font-size: 1.1rem;
     border-radius: 6px;
-    color: #dc3545;
-    transition: transform 0.2s ease;
+    transition: 0.2s ease;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .icon-button:hover {
+  .icon-button.edit {
+    color: #ffc107 !important;
+  }
+
+  .icon-button.edit:hover {
+    background-color: rgba(255, 193, 7, 0.15) !important;
     transform: scale(1.15);
-    background-color: rgba(220, 53, 69, 0.1);
+  }
+
+  .icon-button.delete {
+    color: #dc3545 !important;
+  }
+
+  .icon-button.delete:hover {
+    background-color: rgba(220, 53, 69, 0.15) !important;
+    transform: scale(1.15);
   }
 }
 

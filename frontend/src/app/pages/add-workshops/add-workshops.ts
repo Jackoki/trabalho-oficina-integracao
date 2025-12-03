@@ -20,7 +20,8 @@ interface Workshop {
   templateUrl: './add-workshops.html',
   styleUrls: ['./add-workshops.scss']
 })
-export class AddWorkshopsComponent {
+
+export class AddWorkshops {
 
   newWorkshop: Workshop = {
     name: '',

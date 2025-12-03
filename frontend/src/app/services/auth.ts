@@ -44,7 +44,9 @@ export class Auth {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+      this.initializeUser();
+  }
 
   login(loginData: LoginRequest): Observable<AuthResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -110,6 +112,11 @@ export class Auth {
     );
   }
 
+  private initializeUser() {
+    this.me().subscribe(); 
+  }
+
+
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
@@ -142,31 +149,20 @@ export class Auth {
     return this.hasRole('Aluno');
   }
 
-  canCreateWorkshop(): boolean {
-    return this.isAdministrator() || this.isProfessor();
+  isAnyone(): boolean {
+    return this.isAdministrator() || this.isProfessor() || this.isTutor() || this.isAluno();
   }
-
-  canEditWorkshop(): boolean {
-    return this.isAdministrator() || this.isProfessor();
-  }
-
-  canDeleteWorkshop(): boolean {
-    return this.isAdministrator();
-  }
-
-  canManageUsers(): boolean {
-    return this.isAdministrator() || this.isProfessor();
-  }
-
-  canTakeAttendance(): boolean {
+  
+  isAdminOrProfessorOrTutor(): boolean {
     return this.isAdministrator() || this.isProfessor() || this.isTutor();
   }
 
-  canFinalizeWorkshop(): boolean {
+  isAdminOrProfessor(): boolean {
     return this.isAdministrator() || this.isProfessor();
   }
 
-  canViewCertificate(): boolean {
-    return this.isAluno();
+  isAdmin(): boolean {
+    return this.isAdministrator();
   }
+
 }

@@ -17,7 +17,8 @@ interface School {
   templateUrl: './edit-schools.html',
   styleUrls: ['./edit-schools.scss']
 })
-export class EditSchoolsComponent implements OnInit {
+
+export class EditSchools implements OnInit {
   newSchoolName = '';
   schoolId: number | null = null;
   isLoading = false;

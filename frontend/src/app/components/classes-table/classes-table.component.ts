@@ -69,9 +69,15 @@ export class ClassesTableComponent implements OnChanges {
     });
   }
 
-  deleteClass(clazz: WorkshopClass) {
-    if (!confirm(Deseja excluir a aula ${clazz.classNumber}?)) return;
+  editClass(clazz: WorkshopClass) {
+    this.router.navigate([
+      `/workshops/${this.workshopId}/classes-rollcall/edit/${clazz.id}`
+    ]);
+  }
 
+  deleteClass(clazz: WorkshopClass) {
+    if (!confirm(`Deseja excluir a aula ${clazz.classNumber}?`)) return;
+    
     this.classesService.deleteClass(this.workshopId, clazz.id).subscribe({
       next: () => {
         const lastClassId = this.classes.length > 0 ? this.classes[this.classes.length - 1].id : 0;
@@ -91,5 +97,4 @@ export class ClassesTableComponent implements OnChanges {
       error: () => alert('Erro ao deletar aula.')
     });
   }
-
 }

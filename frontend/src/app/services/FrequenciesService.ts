@@ -7,6 +7,7 @@ export interface Frequency {
   isPresent: boolean;
   userId: number;
   classId: number;
+  user: { id: number; name: string };
 }
 
 @Injectable({
@@ -32,6 +33,12 @@ export class FrequenciesService {
       },
       withCredentials: true
     });
+  }
+
+  recalculateWorkshopFrequency(workshopId: number): Observable<void> {
+    return this.http.post<void>(`http://localhost:8080/workshops/${workshopId}/frequencies/recalculate`, {}, { 
+      withCredentials: true }
+    );
   }
 
   deleteFrequency(classId: number, frequencyId: number): Observable<void> {

@@ -11,7 +11,7 @@ import { ClassesTableComponent } from '../../components/classes-table/classes-ta
   styleUrls: ['./classes.scss']
 })
 
-export class ClassesPage implements OnInit {
+export class Classes implements OnInit {
   workshopId!: number;
 
   constructor(private route: ActivatedRoute) {}

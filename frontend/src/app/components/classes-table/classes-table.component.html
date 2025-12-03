@@ -3,9 +3,7 @@
   <div class="table-header">
     <h2 class="table-title">Aulas da Oficina</h2>
 
-    <a *ngIf="auth.canEditWorkshop()"
-       class="add-class-link"
-       (click)="createNextClass()">
+    <a *ngIf="auth.isAdminOrProfessorOrTutor()" class="add-class-link" (click)="createNextClass()">
       Adicionar Aula
     </a>
   </div>
@@ -15,20 +13,20 @@
       <thead>
         <tr>
           <th class="number-header">Nº Aula</th>
-          <th *ngIf="auth.canDeleteWorkshop()" class="actions-header">Ações</th>
+          <th *ngIf="auth.isAdminOrProfessorOrTutor()" class="actions-header">Ações</th>
         </tr>
       </thead>
 
       <tbody>
 
         <tr *ngIf="loading">
-          <td [attr.colspan]="auth.canDeleteWorkshop() ? 2 : 1" class="empty-row">
+          <td [attr.colspan]="auth.isAdminOrProfessorOrTutor() ? 2 : 1" class="empty-row">
             Carregando aulas...
           </td>
         </tr>
 
         <tr *ngIf="!loading && classes.length === 0">
-          <td [attr.colspan]="auth.canDeleteWorkshop() ? 2 : 1" class="empty-row">
+          <td [attr.colspan]="auth.isAdminOrProfessorOrTutor() ? 2 : 1" class="empty-row">
             Nenhuma aula encontrada
           </td>
         </tr>
@@ -37,16 +35,16 @@
           <tr *ngFor="let clazz of classes" class="class-row">
             <td class="number-cell">{{ clazz.classNumber }}</td>
 
-
-            <td *ngIf="auth.canDeleteWorkshop()" class="actions-cell">
+            <td *ngIf="auth.isAdminOrProfessorOrTutor()" class="actions-cell">
               <div class="action-icons">
 
-                <button class="icon-button delete"
-                        (click)="deleteClass(clazz)"
-                        title="Excluir Aula">
-                  <i class="fa fa-trash"></i>
+                <button class="icon-button edit" (click)="editClass(clazz)" title="Editar Aula">
+                  <i class="fa fa-cog"></i>
                 </button>
 
+                <button class="icon-button delete" (click)="deleteClass(clazz)" title="Excluir Aula">
+                  <i class="fa fa-trash"></i>
+                </button>
               </div>
             </td>
 
@@ -59,17 +57,13 @@
 
   <div class="pagination-footer" *ngIf="totalPages > 1">
 
-    <button class="icon-btn"
-            (click)="changePage(currentPage - 1)"
-            [disabled]="currentPage === 0">
+    <button class="icon-btn" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 0">
       <i class="fa fa-chevron-left"></i>
     </button>
 
     <span class="page-number">{{ currentPage + 1 }} / {{ totalPages }}</span>
 
-    <button class="icon-btn"
-            (click)="changePage(currentPage + 1)"
-            [disabled]="currentPage === totalPages - 1">
+    <button class="icon-btn" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages - 1">
       <i class="fa fa-chevron-right"></i>
     </button>
 
