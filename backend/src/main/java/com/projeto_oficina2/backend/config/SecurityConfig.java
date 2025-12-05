@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
@@ -19,6 +20,10 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
@@ -53,10 +58,10 @@ public class SecurityConfig {
                 
                 .requestMatchers(HttpMethod.GET, "/workshops/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/workshops").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/workshops/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/workshops/**").hasAnyRole("ADMIN", "PROFESSOR")
                 .requestMatchers(HttpMethod.DELETE, "/workshops/*").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/workshops/*/users/*").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/workshops/*/users/*/link").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/workshops/*/users/*").hasAnyRole("ADMIN", "PROFESSOR")
+                .requestMatchers(HttpMethod.POST, "/workshops/*/users/*/link").hasAnyRole("ADMIN", "PROFESSOR")
 
                 .requestMatchers(HttpMethod.GET, "/classes/*/frequencies").hasAnyRole("ADMIN", "PROFESSOR", "TUTOR")
                 .requestMatchers(HttpMethod.POST, "/classes/*/frequencies").hasAnyRole("ADMIN", "PROFESSOR", "TUTOR")
@@ -83,7 +88,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedOrigins(List.of(frontendUrl));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 export interface Workshop {
   id: number;
@@ -27,7 +28,7 @@ export interface User {
   providedIn: 'root'
 })
 export class WorkshopsService {
-  private readonly API_BASE_URL = 'http://localhost:8080/workshops';
+  private readonly API_BASE_URL = `${environment.apiBaseUrl}/workshops`;
 
   constructor(private http: HttpClient) {}
 
@@ -58,7 +59,9 @@ export class WorkshopsService {
   }
 
   getClassesDone(workshopId: number): Observable<number> {
-    return this.http.get<number>(`http://localhost:8080/workshops/${workshopId}/classes/count`, { withCredentials: true });
+    return this.http.get<number>(`${this.API_BASE_URL}/${workshopId}/classes/count`, { 
+      withCredentials: true 
+    });
   }
 
   linkUserToWorkshop(workshopId: number, userId: number): Observable<void> {

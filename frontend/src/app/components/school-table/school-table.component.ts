@@ -91,15 +91,20 @@ export class SchoolTableComponent implements OnInit {
       next: () => {
         this.schools = this.schools.filter(s => s.id !== this.schoolToDelete!.id);
         this.mostrarSucesso('Escola deletada com sucesso!');
+        this.loadSchools();
+
+        this.confirmVisivel = false;
+        this.schoolToDelete = null;
       },
       error: () => {
         this.mostrarErro('Erro ao deletar escola. Tente novamente.');
+
+        this.confirmVisivel = false;
+        this.schoolToDelete = null;
       }
     });
-
-    this.confirmVisivel = false;
-    this.schoolToDelete = null;
   }
+
 
   cancelarDelete() {
     this.confirmVisivel = false;

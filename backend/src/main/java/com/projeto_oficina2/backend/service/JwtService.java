@@ -8,6 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -16,8 +17,9 @@ import java.util.Date;
 @Service
 public class JwtService {
 
+    @Value("${jwt.secret}")
     private final String SECRET_KEY = "PROJETO_OFICINA_INTEGRACAO_2_QUE_DEVE_SER_LONGA_32_CHARS";
-    private final long EXPIRATION_MS = 24L * 60 * 60 * 1000 * 120; // 120 dias
+    private final long EXPIRATION_MS = 24L * 60 * 60 * 1000 * 120;
 
     private final UserRepository userRepository;
 

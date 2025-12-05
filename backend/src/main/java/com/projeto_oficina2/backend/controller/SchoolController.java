@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projeto_oficina2.backend.model.School;
 import com.projeto_oficina2.backend.service.SchoolService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${frontend.url}")
 @RestController
 @RequestMapping("/schools")
 public class SchoolController {

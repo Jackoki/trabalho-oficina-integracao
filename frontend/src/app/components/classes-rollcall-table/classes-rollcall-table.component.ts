@@ -125,6 +125,10 @@ export class ClassesRollcallTableComponent implements OnInit {
     this.rollCallService.saveRollCall(this.classId, request).subscribe({
       next: () => {
         this.mostrarSucesso('Chamada salva com sucesso!');
+
+        setTimeout(() => {
+          this.location.back();
+        }, 3000);
       },
       error: (err) => {
         console.error('Erro ao salvar chamada:', err);

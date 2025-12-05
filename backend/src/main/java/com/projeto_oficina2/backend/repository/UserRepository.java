@@ -15,7 +15,10 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByCode(String code);
     Optional<User> findByName(String name);
-    List<User> findByUserType(UserType userType);
+    
+    @Query("SELECT u FROM User u WHERE u.userType = :userType ORDER BY u.name ASC")
+    List<User> findByUserType(@Param("userType") UserType userType);
+
     List<User> findBySchool(School school);
     List<User> findBySchoolAndUserType(School school, UserType userType);
 
@@ -23,5 +26,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByCodeExcludingId(@Param("code") String code, @Param("id") Long id);
     
     Page<User> findBySchoolAndUserType(School school, UserType userType, Pageable pageable);
-    Page<User> findByUserType(UserType userType, Pageable pageable);
+
+    
+    @Query("SELECT u FROM User u WHERE u.userType = :userType ORDER BY u.name ASC")
+    Page<User> findByUserType(@Param("userType") UserType userType, Pageable pageable);
 }

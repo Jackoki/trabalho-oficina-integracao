@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface ClassItem {
   id: number;
@@ -9,7 +10,8 @@ export interface ClassItem {
 
 @Injectable({ providedIn: 'root' })
 export class ClassesService {
-  private readonly API_BASE_URL = 'http://localhost:8080/workshops';
+  private readonly API_BASE_URL = `${environment.apiBaseUrl}/workshops`;
+  private readonly CLASSES_BASE_URL = `${environment.apiBaseUrl}/classes`;
 
   constructor(private http: HttpClient) {}
 
@@ -33,7 +35,7 @@ export class ClassesService {
   }
 
   recalculateWorkshopFrequency(classId: number, workshopId: number): Observable<void> {
-    return this.http.post<void>(`http://localhost:8080/classes/${classId}/frequencies/recalculate-workshop/${workshopId}`, null, { 
+    return this.http.post<void>(`${this.CLASSES_BASE_URL}/${classId}/frequencies/recalculate-workshop/${workshopId}`, null, { 
       withCredentials: true 
     });
   }

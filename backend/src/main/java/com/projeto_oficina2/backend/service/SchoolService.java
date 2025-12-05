@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import com.projeto_oficina2.backend.model.School;
 import com.projeto_oficina2.backend.repository.SchoolRepository;
@@ -17,8 +18,8 @@ public class SchoolService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<School> getAllSchools(){
-        return schoolRepository.findAll();
+    public List<School> getAllSchools(){    
+        return schoolRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     public School getSchoolById(Long id) {

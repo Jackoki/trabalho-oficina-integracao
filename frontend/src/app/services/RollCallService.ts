@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface RollCallRequest {
   userId: number;
@@ -12,7 +13,7 @@ export interface RollCallRequest {
 })
 
 export class RollCallService {
-  private readonly API_BASE_URL = 'http://localhost:8080/classes';
+  private readonly API_BASE_URL = `${environment.apiBaseUrl}/classes`;
 
   constructor(private http: HttpClient) {}
 

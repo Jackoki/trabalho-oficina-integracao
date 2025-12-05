@@ -127,6 +127,10 @@ export class ClassesRollcallEditTableComponent implements OnInit, OnChanges {
         this.mostrarSucesso('Chamada salva com sucesso!');
 
         this.frequenciesService.recalculateWorkshopFrequency(this.workshopId).subscribe();
+        
+        setTimeout(() => {
+          this.location.back();
+        }, 3000);
       },
       error: () => {
         this.mostrarErro('Erro ao salvar chamada.');

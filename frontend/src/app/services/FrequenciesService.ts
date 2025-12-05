@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Frequency {
   id: number;
@@ -15,7 +16,9 @@ export interface Frequency {
 })
 
 export class FrequenciesService {
-  private readonly API_BASE_URL = 'http://localhost:8080/classes';
+  private readonly API_BASE_URL = `${environment.apiBaseUrl}/classes`;
+  private readonly WORKSHOPS_BASE_URL = `${environment.apiBaseUrl}/workshops`;
+  
 
   constructor(private http: HttpClient) {}
 
@@ -36,9 +39,9 @@ export class FrequenciesService {
   }
 
   recalculateWorkshopFrequency(workshopId: number): Observable<void> {
-    return this.http.post<void>(`http://localhost:8080/workshops/${workshopId}/frequencies/recalculate`, {}, { 
-      withCredentials: true }
-    );
+    return this.http.post<void>(`${this.WORKSHOPS_BASE_URL}/${workshopId}/frequencies/recalculate`, {}, { 
+      withCredentials: true 
+    });
   }
 
   deleteFrequency(classId: number, frequencyId: number): Observable<void> {

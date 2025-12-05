@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import jakarta.transaction.Transactional;
 import com.projeto_oficina2.backend.repository.ClassesRepository;
 
@@ -34,7 +36,7 @@ public class WorkshopsService {
     @Autowired
     private ClassesRepository classesRepository;
 
-    public List<Workshops> getAllWorkshops() {
+    public List<Workshops> getAllWorkshops() {    
         return workshopsRepository.findAll();
     }
 
@@ -67,6 +69,7 @@ public class WorkshopsService {
 
         List<User> filtered = workshop.getUsers().stream()
             .filter(u -> u.getUserType().getId() == typeId)
+            .sorted(Comparator.comparing(User::getName))
             .collect(Collectors.toList());
 
         Pageable pageable = PageRequest.of(page, size);
