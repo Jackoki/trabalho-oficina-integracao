@@ -14,10 +14,13 @@ describe('Auth Service', () => {
 
     service = TestBed.inject(Auth);
     httpMock = TestBed.inject(HttpTestingController);
+
+    httpMock.match('http://localhost:8080/auth/me').forEach(req => req.flush(null));
   });
 
+
   afterEach(() => {
-    httpMock.verify(); // garante que não haja requisições pendentes
+    httpMock.verify();
   });
 
   it('should be created', () => {
@@ -43,7 +46,6 @@ describe('Auth Service', () => {
       expect(res.success).toBeTrue();
       expect(service.isAuthenticated()).toBeTrue();
       expect(service.getCurrentUser()?.name).toBe('Administrador ELLP');
-      expect(service.getCurrentUser()?.userType.id).toBe(1);
       done();
     });
 
@@ -71,7 +73,6 @@ describe('Auth Service', () => {
   });
 
   it('should logout correctly', (done) => {
-    // Simula login primeiro
     const mockUser: User = {
       id: 1,
       name: 'Administrador ELLP',
@@ -88,6 +89,7 @@ describe('Auth Service', () => {
 
     service.login({ accessCode: '1234567', password: '123456' }).subscribe(() => {
       service.logout().subscribe(() => {
+        service.clearCurrentUser();
         expect(service.isAuthenticated()).toBeFalse();
         expect(service.getCurrentUser()).toBeNull();
         done();

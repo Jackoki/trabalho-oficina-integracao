@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface School {
   id: number;
@@ -12,7 +13,7 @@ export interface School {
 })
 
 export class SchoolsService {
-  private readonly API_BASE_URL = 'http://localhost:8080/schools';
+  private readonly API_BASE_URL = `${environment.apiBaseUrl}/schools`;
 
   constructor(private http: HttpClient) {}
 

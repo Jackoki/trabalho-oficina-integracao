@@ -1,0 +1,62 @@
+<div class="table-container">
+  <div class="table-header">
+    <h2 class="table-title">{{ title }}</h2>
+    <a class="add-user-link" [routerLink]="['/workshops', workshopId, 'workshop-users', 'add', typeId]">
+      Adicionar Usuário
+    </a>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Código</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngIf="loading">
+          <td colspan="3" class="empty-row">Carregando usuários...</td>
+        </tr>
+
+        <tr *ngIf="!loading && paginatedUsers.length === 0">
+          <td colspan="3" class="empty-row">Nenhum usuário encontrado</td>
+        </tr>
+
+        <ng-container *ngIf="!loading">
+          <tr *ngFor="let user of paginatedUsers" class="user-row">
+            <td>{{ user.name }}</td>
+            <td>{{ user.code }}</td>
+            <td class="actions-cell">
+              <div class="action-icons">
+                <button class="icon-button delete" title="Remover do Workshop" (click)="desvincularUsuario(user.id)">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-footer" *ngIf="totalPages > 0">
+    <button class="icon-btn" (click)="setPage(currentPage - 1)" [disabled]="currentPage <= 0">
+      <i class="fa fa-chevron-left"></i>
+    </button>
+
+    <span class="page-number">{{ currentPage + 1 }} / {{ totalPages }}</span>
+
+    <button class="icon-btn" (click)="setPage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1">
+      <i class="fa fa-chevron-right"></i>
+    </button>
+  </div>
+
+</div>
+
+<app-alert-dialog  [visivel]="alertVisivel" [titulo]="alertTitulo" [mensagem]="alertMensagem" [tipo]="alertTipo" (fechar)="alertVisivel = false">
+</app-alert-dialog>
+<app-confirm-dialog [visivel]="confirmVisivel" [titulo]="confirmTitulo" [mensagem]="confirmMensagem" (confirmar)="onConfirmar()" (cancelar)="onCancelar()">
+</app-confirm-dialog>

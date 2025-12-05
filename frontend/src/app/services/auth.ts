@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
+import { Observable, BehaviorSubject, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 export interface LoginRequest {
@@ -44,76 +44,78 @@ export class Auth {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  // MOCK: Change this value to 'ADMINISTRADOR', 'PROFESSOR', 'TUTOR', or 'ALUNO' for testing
-  // The user will be logged in with this role upon calling login() or me()
-  private mockUserType: string = 'ADMINISTRADOR'; 
-
   constructor(private http: HttpClient) {
-    // MOCK: Attempt to log in a mock user on service initialization for easier testing
-    // In a real app, this would be a call to 'me()' or checking local storage
-    this.mockLoginForTesting(this.mockUserType);
+      this.initializeUser();
   }
-
-  private mockLoginForTesting(role: string): void {
-    const mockUser: User = {
-      id: 1,
-      name: `Mock User (${role})`,
-      code: '1234567',
-      userType: {
-        id: 1,
-        name: role,
-      },
-    };
-    this.currentUserSubject.next(mockUser);
-  }
-
-  // --- MOCKED API METHODS ---
 
   login(loginData: LoginRequest): Observable<AuthResponse> {
-    // MOCK LOGIN RESPONSE: Simulates successful login with the current mock role
-    this.mockLoginForTesting(this.mockUserType);
-
-    const mockResponse: AuthResponse = {
-      success: true,
-      message: 'Login successful (MOCK)',
-      user: this.currentUserSubject.value!,
-    };
-
-    return of(mockResponse);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    
+    return this.http.post<AuthResponse>(
+      `${this.API_BASE_URL}/login`,
+      loginData,
+      { headers, withCredentials: true }
+    ).pipe(
+      map(response => {
+        if (response.success && response.user) {
+          this.currentUserSubject.next(response.user);
+        }
+        return response;
+      }),
+      catchError(error => {
+        console.error('Erro no login:', error);
+        return throwError(() => ({ success: false, message: 'Erro de conexão. Tente novamente.' }));
+      })
+    );
   }
 
-  register(registerData: RegisterRequest): Observable<AuthResponse> {
-    // MOCK REGISTER RESPONSE: New registrations are always 'ALUNO'
-    const mockUser: User = {
-      id: 2,
-      name: registerData.fullName,
-      code: registerData.accessCode,
-      userType: {
-        id: 4,
-        name: 'ALUNO',
-      },
-    };
+  register(record: RegisterRequest): Observable<AuthResponse> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    const mockResponse: AuthResponse = {
-      success: true,
-      message: 'Registro successful (MOCK)',
-      user: mockUser,
-    };
-
-    return of(mockResponse);
+    return this.http.post<AuthResponse>(
+      `${this.API_BASE_URL}/register`,
+      record,
+      { headers, withCredentials: true }
+    ).pipe(
+      catchError(error => {
+        console.error('Erro no registro:', error);
+        return throwError(() => ({ success: false, message: 'Erro de conexão. Tente novamente.' }));
+      })
+    );
   }
 
   logout(): Observable<void> {
+    return this.http.post<void>(
+      `${this.API_BASE_URL}/logout`,
+      {},
+      { withCredentials: true }
+    );
+  }
+
+  clearCurrentUser(): void {
     this.currentUserSubject.next(null);
-    return of(undefined); // MOCK LOGOUT
   }
 
   me(): Observable<User | null> {
-    // MOCK ME RESPONSE: Returns the currently logged-in mock user
-    return of(this.currentUserSubject.value);
+    return this.http.get<User>(
+      `${this.API_BASE_URL}/me`,
+      { withCredentials: true }
+    ).pipe(
+      map(user => {
+        this.currentUserSubject.next(user);
+        return user;
+      }),
+      catchError(() => {
+        this.currentUserSubject.next(null);
+        return of(null);
+      })
+    );
   }
 
-  // --- HELPER METHODS FOR ROLE-BASED ACCESS CONTROL ---
+  private initializeUser() {
+    this.me().subscribe(); 
+  }
+
 
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
@@ -124,69 +126,43 @@ export class Auth {
   }
 
   getCurrentUserRole(): string | null {
-    const user = this.getCurrentUser();
-    return user?.userType?.name || null;
+    return this.getCurrentUser()?.userType?.name || null;
   }
 
   hasRole(role: string): boolean {
-    const currentRole = this.getCurrentUserRole();
-    return currentRole === role;
+    return this.getCurrentUserRole() === role;
   }
 
   isAdministrator(): boolean {
-    return this.hasRole('ADMINISTRADOR');
+    return this.hasRole('Admin');
   }
 
   isProfessor(): boolean {
-    return this.hasRole('PROFESSOR');
+    return this.hasRole('Professor');
   }
 
   isTutor(): boolean {
-    return this.hasRole('TUTOR');
+    return this.hasRole('Tutor');
   }
 
   isAluno(): boolean {
-    return this.hasRole('ALUNO');
+    return this.hasRole('Aluno');
   }
 
-  // --- PERMISSION METHODS FOR WORKSHOP ACTIONS ---
-
-  // Define permissions based on the user's requirements and common sense for an educational platform
-  // Buttons/Actions: Gerenciar Usuários, Fazer Chamada, Finalizar, Ver Certificado, Editar Oficina, Excluir Oficina
-
-  canCreateWorkshop(): boolean {
-    // Only ADMINISTRADOR and PROFESSOR can create new workshops
-    return this.isAdministrator() || this.isProfessor();
+  isAnyone(): boolean {
+    return this.isAdministrator() || this.isProfessor() || this.isTutor() || this.isAluno();
   }
-
-  canEditWorkshop(): boolean {
-    // Only ADMINISTRADOR can edit any workshop. PROFESSOR can edit their own (logic for "own" is not implemented here, so we'll stick to ADMINISTRADOR for now for simplicity, or allow PROFESSOR to edit all for mock)
-    // Let's allow ADMINISTRADOR and PROFESSOR to edit for now.
-    return this.isAdministrator() || this.isProfessor();
-  }
-
-  canDeleteWorkshop(): boolean {
-    // Only ADMINISTRADOR can delete a workshop
-    return this.isAdministrator();
-  }
-
-  canManageUsers(): boolean {
-    // ADMINISTRADOR and PROFESSOR can manage users (e.g., enroll students)
-    return this.isAdministrator() || this.isProfessor();
-  }
-
-  canTakeAttendance(): boolean {
-    // ADMINISTRADOR, PROFESSOR, and TUTOR can take attendance
+  
+  isAdminOrProfessorOrTutor(): boolean {
     return this.isAdministrator() || this.isProfessor() || this.isTutor();
   }
 
-  canFinalizeWorkshop(): boolean {
-    // ADMINISTRADOR and PROFESSOR can finalize a workshop
+  isAdminOrProfessor(): boolean {
     return this.isAdministrator() || this.isProfessor();
   }
 
-  canViewCertificate(): boolean {
-    // Only ALUNO can view their certificate
-    return this.isAluno();
+  isAdmin(): boolean {
+    return this.isAdministrator();
   }
+
 }

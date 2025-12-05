@@ -1,0 +1,76 @@
+.table-wrapper {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f5f5f5;
+      color: #007bcc;
+      font-weight: bold;
+
+      &:nth-child(3) {
+        text-align: center;
+      }
+    }
+
+    .checkbox-cell {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      input[type="checkbox"] {
+        margin: 0;
+        transform: scale(1.2);
+      }
+    }
+
+    .empty-row {
+      text-align: center;
+      color: #999;
+      font-style: italic;
+    }
+  }
+
+  /* ----------------------------- */
+  /* Botões alinhados lado a lado  */
+  /* ----------------------------- */
+  .buttons-row {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background-color 0.2s ease;
+    }
+
+    .voltar {
+      background-color: #6c757d;
+
+      &:hover {
+        background-color: #5a6268;
+      }
+    }
+
+    .save-button {
+      background-color: #007bcc;
+
+      &:hover {
+        background-color: #005fa3;
+      }
+    }
+  }
+}

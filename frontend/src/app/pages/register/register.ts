@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { AlertDialogComponent } from '../../components/alert-dialog/alert-dialog.component';
 
 interface School {
   id: number;
@@ -11,10 +12,11 @@ interface School {
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, RouterModule, CommonModule],
+  imports: [FormsModule, RouterModule, CommonModule, AlertDialogComponent],
   templateUrl: './register.html',
   styleUrls: ['./register.css']
 })
+
 export class Register implements OnInit {
 
   registerData = {
@@ -27,9 +29,12 @@ export class Register implements OnInit {
 
   schools: School[] = [];
   isLoading = false;
-  registerError = '';
-  registerSuccess = '';
   formSubmitted = false;
+
+  alertVisivel = false;
+  alertMensagem = '';
+  alertTipo: 'success' | 'error' | 'warning' = 'error';
+  alertTitulo = 'Erro';
 
   constructor(
     private router: Router,
@@ -38,6 +43,27 @@ export class Register implements OnInit {
 
   ngOnInit(): void {
     this.loadSchools();
+  }
+
+  mostrarErro(msg: string) {
+    this.alertTitulo = 'Erro';
+    this.alertTipo = 'error';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
+
+  mostrarSucesso(msg: string) {
+    this.alertTitulo = 'Sucesso';
+    this.alertTipo = 'success';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
+
+  mostrarAviso(msg: string) {
+    this.alertTitulo = 'Atenção';
+    this.alertTipo = 'warning';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
   }
 
   loadSchools(): void {
@@ -66,24 +92,23 @@ export class Register implements OnInit {
 
     if (this.isLoading || !this.passwordsMatch()) return;
     if (!this.registerData.schoolId) {
-      this.registerError = 'Selecione uma escola';
+      this.mostrarAviso('Selecione uma instituição de ensino.');
       return;
     }
 
     this.isLoading = true;
-    this.registerError = '';
-    this.registerSuccess = '';
 
     const payload = {
-      fullName: this.registerData.fullName,
-      accessCode: this.registerData.accessCode,
+      name: this.registerData.fullName,
+      code: this.registerData.accessCode,
       password: this.registerData.password,
-      schoolId: this.registerData.schoolId
+      userType: { id: 2 },
+      school: { id: this.registerData.schoolId }
     };
 
-  this.http.post('http://localhost:8080/auth/register', payload).subscribe({
+  this.http.post('http://localhost:8080/users', payload).subscribe({
     next: () => {
-      this.registerSuccess = 'Usuário registrado com sucesso!';
+      this.mostrarSucesso('Usuário registrado com sucesso!');
 
       setTimeout(() => {
         this.router.navigate(['/login']);
@@ -91,13 +116,13 @@ export class Register implements OnInit {
 
       this.isLoading = false;
     },
-
+    
     error: (err) => {
       console.error('Erro no registro:', err);
       if (err.error?.error) {
-        this.registerError = err.error.error;
+        this.mostrarErro(err.error.error);
       } else {
-        this.registerError = 'Erro ao registrar usuário. Tente novamente.';
+        this.mostrarErro('Erro ao registrar usuário. Tente novamente.');
       }
       this.isLoading = false;
     }

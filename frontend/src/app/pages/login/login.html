@@ -47,10 +47,6 @@
         </div>
       </div>
 
-      <div class="error-message" *ngIf="loginError">
-        {{ loginError }}
-      </div>
-
       <button 
         type="submit" 
         class="btn-primary"
@@ -67,3 +63,11 @@
     </div>
   </div>
 </div>
+
+<app-alert-dialog  
+  [visivel]="alertVisivel"
+  [titulo]="alertTitulo"
+  [mensagem]="alertMensagem"
+  [tipo]="alertTipo"
+  (fechar)="alertVisivel = false">
+</app-alert-dialog>

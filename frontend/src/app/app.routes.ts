@@ -1,27 +1,42 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { AddSchoolsComponent } from './pages/add-schools/add-schools.component';
+import { Home } from './pages/home/home';
+import { AddSchools } from './pages/add-schools/add-schools';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { AuthGuard } from './guards/auth-guard'
-import { SchoolComponent } from './pages/schools/schools.component';
-import { UserComponent } from './pages/users/users.component';
-import { EditSchoolsComponent } from './pages/edit-schools/edit-schools.component';
-import { AddWorkshopsComponent } from './pages/add-workshops/add-workshops.component';
-import { EditUserComponent } from './pages/edit-users/edit-users.component';
-import { EditWorkshopsComponent } from './pages/edit-workshops/edit-workshops.component';
+import { Schools } from './pages/schools/schools';
+import { Users } from './pages/users/users';
+import { EditSchools } from './pages/edit-schools/edit-schools';
+import { AddWorkshops } from './pages/add-workshops/add-workshops';
+import { EditUsers } from './pages/edit-users/edit-users';
+import { EditWorkshops } from './pages/edit-workshops/edit-workshops';
+import { UsersWorkshop } from './pages/users-workshops/users-workshop';
+import { UsersWorkshopAdd } from './pages/users-workshops-add/users-workshop-add';
+import { Classes } from './pages/classes/classes';
+import { ClassesRollcall } from './pages/classes-rollcall/classes-rollcall';
+import { ClassesRollcallEdit } from './pages/classes-rollcall-edit/classes-rollcall-edit';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
+
   { path: 'login', component: Login },
   { path: 'register', component: Register },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'add-schools', component: AddSchoolsComponent, canActivate: [AuthGuard] },
-  { path: 'schools', component: SchoolComponent, canActivate: [AuthGuard] },
-  { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
-  { path: 'schools/edit/:id', component: EditSchoolsComponent, canActivate: [AuthGuard] },
-  { path: 'users/edit/:id', component: EditUserComponent, canActivate: [AuthGuard] },
-  { path: 'add-workshops', component: AddWorkshopsComponent, canActivate: [AuthGuard] },
-  { path: 'workshops/edit/:id', component: EditWorkshopsComponent }
+  { path: 'home', component: Home, canActivate: [AuthGuard], data: { roles: ['Admin', 'Professor', 'Tutor', 'Aluno'] } },
 
+  { path: 'schools', component: Schools, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
+  { path: 'add-schools', component: AddSchools, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
+  { path: 'schools/edit/:id', component: EditSchools, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
+
+  { path: 'users', component: Users, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
+  { path: 'users/edit/:id', component: EditUsers, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
+
+  { path: 'add-workshops', component: AddWorkshops, canActivate: [AuthGuard], data: { roles: ['Admin'] } },
+  { path: 'workshops/edit/:id', component: EditWorkshops, canActivate: [AuthGuard], data: { roles: ['Admin', 'Professor'] } },
+
+  { path: 'workshops/workshop-users/:id', component: UsersWorkshop, canActivate: [AuthGuard], data: { roles: ['Admin', 'Professor'] } },
+  { path: 'workshops/:id/workshop-users/add/:typeId', component: UsersWorkshopAdd, canActivate: [AuthGuard], data: { roles: ['Admin', 'Professor'] } },
+
+  { path: 'workshops/:id/classes', component: Classes, canActivate: [AuthGuard], data: { roles: ['Admin', 'Professor', 'Tutor'] } },
+  { path: 'workshops/:workshopId/classes-rollcall/:classId?', component: ClassesRollcall, canActivate: [AuthGuard], data: { roles: ['Admin', 'Professor', 'Tutor'] }},
+  { path: 'workshops/:workshopId/classes-rollcall/edit/:classId', component: ClassesRollcallEdit, canActivate: [AuthGuard], data: { roles: ['Admin', 'Professor', 'Tutor'] }}
 ];

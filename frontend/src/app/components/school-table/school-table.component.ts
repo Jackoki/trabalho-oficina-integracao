@@ -3,18 +3,34 @@ import { CommonModule } from '@angular/common';
 import { SchoolsService, School } from '../../services/SchoolsService';
 import { Auth, User } from '../../services/auth';
 import { Router, RouterModule } from '@angular/router';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-school-table',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, AlertDialogComponent, ConfirmDialogComponent],
   templateUrl: './school-table.component.html',
   styleUrls: ['./school-table.component.scss']
 })
+
 export class SchoolTableComponent implements OnInit {
+
   schools: School[] = [];
 
-  constructor(private schoolsService: SchoolsService, private auth: Auth, private router: Router) {}
+  alertVisivel = false;
+  alertMensagem = '';
+  alertTitulo = '';
+  alertTipo: 'success' | 'error' | 'warning' = 'error';
+
+  confirmVisivel = false;
+  schoolToDelete: School | null = null;
+
+  constructor(
+    private schoolsService: SchoolsService,
+    private auth: Auth,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.auth.currentUser$.subscribe({
@@ -30,8 +46,31 @@ export class SchoolTableComponent implements OnInit {
       next: (schools) => {
         this.schools = schools;
       },
-      error: (err) => console.error('Erro ao carregar escolas:', err)
+      error: () => {
+        this.mostrarErro('Erro ao carregar escolas.');
+      }
     });
+  }
+
+  mostrarErro(msg: string) {
+    this.alertTitulo = 'Erro';
+    this.alertTipo = 'error';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
+
+  mostrarSucesso(msg: string) {
+    this.alertTitulo = 'Sucesso';
+    this.alertTipo = 'success';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
+
+  mostrarAviso(msg: string) {
+    this.alertTitulo = 'Atenção';
+    this.alertTipo = 'warning';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
   }
 
   openSettings(school: School) {
@@ -40,20 +79,35 @@ export class SchoolTableComponent implements OnInit {
     });
   }
 
-
   deleteSchool(school: School) {
-    if (!confirm(`Deseja realmente excluir a escola "${school.name}"?`)) {
-      return;
-    }
+    this.schoolToDelete = school;
+    this.confirmVisivel = true;
+  }
 
-    this.schoolsService.deleteSchool(school.id).subscribe({
+  confirmarDelete() {
+    if (!this.schoolToDelete) return;
+
+    this.schoolsService.deleteSchool(this.schoolToDelete.id).subscribe({
       next: () => {
-        this.schools = this.schools.filter(s => s.id !== school.id);
+        this.schools = this.schools.filter(s => s.id !== this.schoolToDelete!.id);
+        this.mostrarSucesso('Escola deletada com sucesso!');
+        this.loadSchools();
+
+        this.confirmVisivel = false;
+        this.schoolToDelete = null;
       },
-      error: (err) => {
-        alert('Erro ao deletar escola. Tente novamente.');
+      error: () => {
+        this.mostrarErro('Erro ao deletar escola. Tente novamente.');
+
+        this.confirmVisivel = false;
+        this.schoolToDelete = null;
       }
     });
   }
 
+
+  cancelarDelete() {
+    this.confirmVisivel = false;
+    this.schoolToDelete = null;
+  }
 }

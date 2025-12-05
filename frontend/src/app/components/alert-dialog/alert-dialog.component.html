@@ -1,0 +1,8 @@
+<div class="alert-overlay" *ngIf="visivel">
+  <div class="alert-box" [ngClass]="tipo">
+    <h3>{{ titulo }}</h3>
+    <p>{{ mensagem }}</p>
+
+    <button class="btn-fechar" (click)="fecharAlerta()">Fechar</button>
+  </div>
+</div>

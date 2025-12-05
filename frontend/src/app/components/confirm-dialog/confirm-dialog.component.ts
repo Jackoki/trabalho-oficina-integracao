@@ -18,11 +18,9 @@ export class ConfirmDialogComponent {
 
   onConfirmar() {
     this.confirmar.emit();
-    this.visivel = false;
   }
 
   onCancelar() {
     this.cancelar.emit();
-    this.visivel = false;
   }
 }

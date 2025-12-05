@@ -1,43 +1,106 @@
 package com.projeto_oficina2.backend.config;
 
+import com.projeto_oficina2.backend.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
+            .cors()
+            .and()
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/public/**").permitAll()
+
+                .requestMatchers(HttpMethod.GET, "/schools/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/schools").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/schools/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/schools/**").hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.GET, "/usertype/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/usertype").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/usertype/**").hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.GET, "/workshops/*/classes").hasAnyRole("ADMIN", "PROFESSOR", "TUTOR")
+                .requestMatchers(HttpMethod.GET, "/workshops/*/classes/count").hasAnyRole("ADMIN", "PROFESSOR", "TUTOR")
+                .requestMatchers(HttpMethod.POST, "/workshops/*/classes").hasAnyRole("ADMIN", "PROFESSOR", "TUTOR")
+                .requestMatchers(HttpMethod.DELETE, "/workshops/*/classes/*").hasAnyRole("ADMIN", "PROFESSOR", "TUTOR")
+                
+                .requestMatchers(HttpMethod.GET, "/workshops/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/workshops").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/workshops/**").hasAnyRole("ADMIN", "PROFESSOR")
+                .requestMatchers(HttpMethod.DELETE, "/workshops/*").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/workshops/*/users/*").hasAnyRole("ADMIN", "PROFESSOR")
+                .requestMatchers(HttpMethod.POST, "/workshops/*/users/*/link").hasAnyRole("ADMIN", "PROFESSOR")
+
+                .requestMatchers(HttpMethod.GET, "/classes/*/frequencies").hasAnyRole("ADMIN", "PROFESSOR", "TUTOR")
+                .requestMatchers(HttpMethod.POST, "/classes/*/frequencies").hasAnyRole("ADMIN", "PROFESSOR", "TUTOR")
+                .requestMatchers(HttpMethod.POST, "/classes/*/frequencies/save-rollcall").hasAnyRole("ADMIN", "PROFESSOR", "TUTOR")
+                .requestMatchers(HttpMethod.POST, "/classes/*/frequencies/recalculate-workshop/").hasAnyRole("ADMIN", "PROFESSOR", "TUTOR")
+                .requestMatchers(HttpMethod.POST, "/workshops/*/frequencies/recalculate").hasAnyRole("ADMIN", "PROFESSOR", "TUTOR")
+                .requestMatchers(HttpMethod.DELETE, "/classes/*/frequencies/*").hasAnyRole("ADMIN", "PROFESSOR", "TUTOR")
+
+                .requestMatchers(HttpMethod.GET, "/auth/me").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+
                 .anyRequest().authenticated()
             )
-            .httpBasic();
+
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .formLogin().disable()
+            .httpBasic().disable();
+
         return http.build();
     }
 
+
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of(frontendUrl));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-        UserDetails user = User.builder()
-            .username("user")
-            .password(encoder.encode("123"))
-            .roles("USER")
-            .build();
-        return new InMemoryUserDetailsManager(user);
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
+
 }

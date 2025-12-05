@@ -1,0 +1,34 @@
+<div class="page-container">
+  <h2>Adicionar Escola</h2>
+
+  <form (ngSubmit)="addSchool()" class="simple-form">
+    
+    <div class="form-row">
+      <label for="nomeEscola">Nome da Escola:</label>
+      <input
+        type="text"
+        id="nomeEscola"
+        name="nomeEscola"
+        [(ngModel)]="newSchoolName"
+        placeholder="Digite o nome da escola"
+        required
+      />
+    </div>
+
+    <div class="buttons">
+      <button type="button" class="voltar" (click)="voltar()">Voltar</button>
+      <button type="submit" class="confirmar" [disabled]="isLoading">
+        {{ isLoading ? 'Adicionando...' : 'Confirmar' }}
+      </button>
+    </div>
+    
+  </form>
+</div>
+
+<app-alert-dialog
+  [visivel]="alertVisivel"
+  [titulo]="alertTitulo"
+  [mensagem]="alertMensagem"
+  [tipo]="alertTipo"
+  (fechar)="alertVisivel = false">
+</app-alert-dialog>

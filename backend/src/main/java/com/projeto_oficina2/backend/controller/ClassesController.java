@@ -1,43 +1,41 @@
 package com.projeto_oficina2.backend.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.projeto_oficina2.backend.model.Classes;
 import com.projeto_oficina2.backend.service.ClassesService;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/classes")
+@RequestMapping("/workshops/{id}/classes")
 public class ClassesController {
-    
-    @Autowired
-    private ClassesService classesService;
 
-    @GetMapping
-    public List<Classes> getAllClasses() {
-        return classesService.getAllClasses();
+    private final ClassesService classesService;
+
+    public ClassesController(ClassesService classesService) {
+        this.classesService = classesService;
     }
 
-    @GetMapping("/{id}")
-    public Classes getClassesById(@PathVariable Long id) {
-        return classesService.getClassesById(id);
+    @GetMapping
+    public ResponseEntity<Page<Classes>> getClasses(@PathVariable("id") Long workshopId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok(classesService.paginateByWorkshop(workshopId, page, size));
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> countClasses(@PathVariable("id") Long workshopId) {
+        return ResponseEntity.ok(classesService.countClassesDone(workshopId));
     }
 
     @PostMapping
-    public Classes createClasses(@RequestBody Classes classes) {
-        return classesService.createClasses(classes);
+    public ResponseEntity<Classes> createClass(@PathVariable("id") Long workshopId) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(classesService.createNextClass(workshopId));
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteClasses(@PathVariable Long id) {
-        classesService.deleteClasses(id);
+    @DeleteMapping("/{classId}")
+    public ResponseEntity<Void> deleteClass(@PathVariable("id") Long workshopId, @PathVariable Long classId) {
+        classesService.deleteClass(workshopId, classId);
+        return ResponseEntity.noContent().build();
     }
 }
+

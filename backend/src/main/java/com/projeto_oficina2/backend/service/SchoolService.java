@@ -4,17 +4,22 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import com.projeto_oficina2.backend.model.School;
 import com.projeto_oficina2.backend.repository.SchoolRepository;
+import com.projeto_oficina2.backend.repository.UserRepository;
 
 @Service
 public class SchoolService {
     @Autowired
     private SchoolRepository schoolRepository;
 
-    public List<School> getAllSchools(){
-        return schoolRepository.findAll();
+    @Autowired
+    private UserRepository userRepository;
+
+    public List<School> getAllSchools(){    
+        return schoolRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     public School getSchoolById(Long id) {
@@ -24,8 +29,20 @@ public class SchoolService {
     public School createSchool(School school) {
         return schoolRepository.save(school);
     }
+    
+    public School updateSchool(Long id, School school) {
+        School existingSchool = schoolRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Escola não encontrada"));
+
+        existingSchool.setName(school.getName());
+
+        return schoolRepository.save(existingSchool);
+    }
 
     public void deleteSchool(Long id) {
-        schoolRepository.deleteById(id);
+        School school = schoolRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Escola não encontrada"));
+
+        schoolRepository.delete(school);
     }
+
 }

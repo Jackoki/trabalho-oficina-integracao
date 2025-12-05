@@ -1,0 +1,23 @@
+<div class="table-container">
+  <h2>Usuários da Oficina</h2>
+    <app-user-workshop-table 
+    *ngIf="workshopId"
+    title="Alunos" 
+    [typeId]="2"
+    [workshopId]="workshopId">
+    </app-user-workshop-table>
+
+    <app-user-workshop-table 
+    *ngIf="workshopId"
+    title="Professores"
+    [typeId]="3"
+    [workshopId]="workshopId">
+    </app-user-workshop-table>
+
+    <app-user-workshop-table 
+    *ngIf="workshopId"
+    title="Tutores"
+    [typeId]="4"
+    [workshopId]="workshopId">
+    </app-user-workshop-table>
+</div>
