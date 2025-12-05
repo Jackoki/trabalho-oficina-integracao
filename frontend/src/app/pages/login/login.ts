@@ -7,7 +7,7 @@ import { AlertDialogComponent } from '../../components/alert-dialog/alert-dialog
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, RouterModule, CommonModule],
+  imports: [FormsModule, RouterModule, CommonModule, AlertDialogComponent],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
@@ -71,9 +71,10 @@ export class Login {
         }
         this.isLoading = false;
       },
-      error: (error) => {
-        console.error('Erro no login:', error);
-        this.mostrarErro('Erro de conexão. Tente novamente.');
+      error: (error) => {  
+        const msg = error.error?.message || error.error?.Message || 'Erro de conexão. Tente novamente.';
+        this.mostrarErro(msg);
+
         this.isLoading = false;
       }
     });

@@ -12,7 +12,7 @@ interface School {
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, RouterModule, CommonModule],
+  imports: [FormsModule, RouterModule, CommonModule, AlertDialogComponent],
   templateUrl: './register.html',
   styleUrls: ['./register.css']
 })
@@ -45,7 +45,7 @@ export class Register implements OnInit {
     this.loadSchools();
   }
 
-mostrarErro(msg: string) {
+  mostrarErro(msg: string) {
     this.alertTitulo = 'Erro';
     this.alertTipo = 'error';
     this.alertMensagem = msg;

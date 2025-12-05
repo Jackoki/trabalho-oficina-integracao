@@ -5,7 +5,8 @@ import { RollCallService, RollCallRequest } from '../../services/RollCallService
 import { ClassesService } from '../../services/ClassesService';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Location } from '@angular/common'; // <-- ADICIONADO
+import { Location } from '@angular/common';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 export interface RollCallForm {
   userId: number;
@@ -15,12 +16,12 @@ export interface RollCallForm {
 @Component({
   selector: 'app-classes-rollcall-table',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, AlertDialogComponent],
   templateUrl: './classes-rollcall-table.component.html',
   styleUrls: ['./classes-rollcall-table.component.scss']
 })
-
 export class ClassesRollcallTableComponent implements OnInit {
+
   @Input() classId?: number;
   @Input() workshopId!: number;
   @Input() isNew = false;
@@ -28,6 +29,32 @@ export class ClassesRollcallTableComponent implements OnInit {
   students: User[] = [];
   rollCallForms: RollCallForm[] = [];
   loading = true;
+
+  alertVisivel = false;
+  alertMensagem = '';
+  alertTitulo = '';
+  alertTipo: 'success' | 'error' | 'warning' = 'error';
+
+  mostrarErro(msg: string) {
+    this.alertTitulo = 'Erro';
+    this.alertTipo = 'error';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
+
+  mostrarAviso(msg: string) {
+    this.alertTitulo = 'Atenção';
+    this.alertTipo = 'warning';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
+
+  mostrarSucesso(msg: string) {
+    this.alertTitulo = 'Sucesso';
+    this.alertTipo = 'success';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
 
   constructor(
     private workshopsService: WorkshopsService,
@@ -50,15 +77,18 @@ export class ClassesRollcallTableComponent implements OnInit {
 
     this.workshopsService.getUsersWorkshops(this.workshopId, 2, 0, 100).subscribe({
       next: (page: { content: User[] }) => {
-        this.students = page.content;
+        this.students = page.content ?? [];
+
         this.rollCallForms = this.students.map(s => ({
           userId: s.id,
           isPresent: false
         }));
+
         this.loading = false;
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error('Erro ao carregar alunos:', err);
+        this.mostrarErro('Erro ao carregar lista de alunos.');
         this.loading = false;
       }
     });
@@ -77,7 +107,7 @@ export class ClassesRollcallTableComponent implements OnInit {
           this.isNew = false;
           this.savePresence();
         },
-        error: () => alert('Erro ao criar a aula.')
+        error: () => this.mostrarErro('Erro ao criar a aula.')
       });
     } else {
       this.savePresence();
@@ -93,10 +123,12 @@ export class ClassesRollcallTableComponent implements OnInit {
     }));
 
     this.rollCallService.saveRollCall(this.classId, request).subscribe({
-      next: () => alert('Chamada salva com sucesso!'),
+      next: () => {
+        this.mostrarSucesso('Chamada salva com sucesso!');
+      },
       error: (err) => {
         console.error('Erro ao salvar chamada:', err);
-        alert('Erro ao salvar chamada');
+        this.mostrarErro('Erro ao salvar chamada.');
       }
     });
   }

@@ -1,5 +1,7 @@
 package com.projeto_oficina2.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -22,6 +24,7 @@ public class FrequenciesStudents {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_workshops", nullable = false)
+    @JsonBackReference
     private Workshops workshop;
 
 

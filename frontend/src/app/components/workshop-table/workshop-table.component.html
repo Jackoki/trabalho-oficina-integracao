@@ -59,3 +59,10 @@
   </div>
 
 </div>
+
+
+<app-alert-dialog [visivel]="alertVisivel" [titulo]="alertTitulo" [mensagem]="alertMensagem" [tipo]="alertTipo" (fechar)="alertVisivel = false">
+</app-alert-dialog>
+
+<app-confirm-dialog [visivel]="confirmVisivel" [titulo]="confirmTitulo" [mensagem]="confirmMensagem" (confirmar)="confirmarAcao()" (cancelar)="cancelarConfirmacao()">
+</app-confirm-dialog>

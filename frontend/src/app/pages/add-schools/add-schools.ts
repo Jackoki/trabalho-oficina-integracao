@@ -13,7 +13,7 @@ interface School {
 @Component({
   selector: 'app-add-schools',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, AlertDialogComponent],
   templateUrl: './add-schools.html',
   styleUrls: ['./add-schools.scss']
 })

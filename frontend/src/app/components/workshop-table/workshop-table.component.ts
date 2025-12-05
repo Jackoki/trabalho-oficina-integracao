@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { WorkshopsService, Workshop } from '../../services/WorkshopsService';
 import { Auth, User } from '../../services/auth';
 import { Router, RouterModule } from '@angular/router';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-workshop-table',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, AlertDialogComponent, ConfirmDialogComponent],
   templateUrl: './workshop-table.component.html',
   styleUrls: ['./workshop-table.component.scss']
 })
@@ -22,6 +24,18 @@ export class WorkshopTableComponent implements OnInit {
 
   isProfessor: boolean = false;
   userId!: number;
+
+  // ALERTA
+  alertVisivel = false;
+  alertTitulo = '';
+  alertMensagem = '';
+  alertTipo: 'success' | 'error' | 'warning' = 'error';
+
+  // CONFIRMAÇÃO
+  confirmVisivel = false;
+  confirmTitulo = '';
+  confirmMensagem = '';
+  confirmAcao: (() => void) | null = null;
 
   constructor(
     private workshopsService: WorkshopsService,
@@ -42,6 +56,44 @@ export class WorkshopTableComponent implements OnInit {
     });
   }
 
+  mostrarErro(msg: string) {
+    this.alertTitulo = 'Erro';
+    this.alertTipo = 'error';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
+
+  mostrarAviso(msg: string) {
+    this.alertTitulo = 'Atenção';
+    this.alertTipo = 'warning';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
+
+  mostrarSucesso(msg: string) {
+    this.alertTitulo = 'Sucesso';
+    this.alertTipo = 'success';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
+
+  abrirConfirmacao(titulo: string, mensagem: string, acao: () => void) {
+    this.confirmTitulo = titulo;
+    this.confirmMensagem = mensagem;
+    this.confirmAcao = acao;
+    this.confirmVisivel = true;
+  }
+
+  confirmarAcao() {
+    if (this.confirmAcao) this.confirmAcao();
+    this.confirmVisivel = false;
+  }
+
+  cancelarConfirmacao() {
+    this.confirmVisivel = false;
+  }
+
+
   loadWorkshops() {
     this.workshopsService
       .getWorkshopsByUserPaginated(this.userId, this.currentPage, this.pageSize)
@@ -60,7 +112,7 @@ export class WorkshopTableComponent implements OnInit {
             });
           });
         },
-        error: (err) => console.error('Erro ao carregar workshops:', err)
+        error: () => this.mostrarErro('Erro ao carregar oficinas.')
       });
   }
 
@@ -72,43 +124,45 @@ export class WorkshopTableComponent implements OnInit {
 
   markComplete(workshop: Workshop) {
     if (workshop.isFinished === 1) {
-      alert(`A oficina "${workshop.name}" já foi concluída.`);
+      this.mostrarAviso(`A oficina "${workshop.name}" já foi concluída.`);
       return;
     }
 
-    // Use local counted classes when available (classesDone) otherwise use the workshop field
     const done = this.classesDone[workshop.id] ?? workshop.actualNumberClasses ?? 0;
     const planned = workshop.numberClasses ?? 0;
 
     if (planned === 0) {
-      alert(`Não há aulas previstas para a oficina "${workshop.name}".`);
+      this.mostrarErro(`A oficina "${workshop.name}" não possui aulas previstas.`);
       return;
     }
 
     if (done !== planned) {
-      alert(`Não é possível concluir a oficina "${workshop.name}".\nAulas previstas: ${planned}, aulas registradas: ${done}.`);
+      this.mostrarErro(`Não é possível concluir a oficina "${workshop.name}".  Aulas previstas: ${planned}, aulas registradas: ${done}.`);
       return;
     }
 
-    if (!confirm(`Deseja concluir a oficina "${workshop.name}"?`)) return;
-
-    this.workshopsService.finalizeWorkshop(workshop.id).subscribe({
-      next: () => {
-        workshop.isFinished = 1;
-        alert('Oficina concluída com sucesso!');
-      },
-      error: (err) => {
-        const msg = err?.error?.message || err?.error || err?.statusText || 'Erro ao concluir oficina.';
-        alert(msg);
+    this.abrirConfirmacao(
+      'Concluir Oficina',
+      `Deseja realmente concluir a oficina "${workshop.name}"?`,
+      () => {
+        this.workshopsService.finalizeWorkshop(workshop.id).subscribe({
+          next: () => {
+            workshop.isFinished = 1;
+            this.mostrarSucesso('Oficina concluída com sucesso!');
+          },
+          error: (err) => {
+            const msg = err?.error?.message || err?.statusText || 'Erro ao concluir oficina.';
+            this.mostrarErro(msg);
+          }
+        });
       }
-    });
+    );
   }
-  
+
 
   viewAttendance(workshop: Workshop) {  
     this.router.navigate(['workshops', workshop.id, 'classes']);
   }
-
 
   viewList(workshop: Workshop) {
     this.router.navigate(['/workshops/workshop-users', workshop.id]); 
@@ -124,17 +178,23 @@ export class WorkshopTableComponent implements OnInit {
     console.log('Ver certificado:', workshop);
   }
 
-  deleteWorkshop(workshop: Workshop) {
-    if (!confirm(`Deseja excluir a oficina "${workshop.code}"?`)) return;
 
-    this.workshopsService.deleteWorkshop(workshop.id).subscribe({
-      next: () => {
-        if (this.workshops.length === 1 && this.currentPage > 0) {
-          this.currentPage--;
-        }
-        this.loadWorkshops();
-      },
-      error: () => alert('Erro ao deletar oficina.')
-    });
+  deleteWorkshop(workshop: Workshop) {
+    this.abrirConfirmacao(
+      'Excluir Oficina',
+      `Deseja realmente excluir a oficina "${workshop.code}"?`,
+      () => {
+        this.workshopsService.deleteWorkshop(workshop.id).subscribe({
+          next: () => {
+            if (this.workshops.length === 1 && this.currentPage > 0) {
+              this.currentPage--;
+            }
+            this.loadWorkshops();
+            this.mostrarSucesso('Oficina excluída com sucesso!');
+          },
+          error: () => this.mostrarErro('Erro ao deletar oficina.')
+        });
+      }
+    );
   }
 }

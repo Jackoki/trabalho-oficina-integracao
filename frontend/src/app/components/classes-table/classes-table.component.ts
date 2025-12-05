@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ClassesService } from '../../services/ClassesService';
 import { Auth } from '../../services/auth';
 import { Router } from '@angular/router';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+
 
 export interface WorkshopClass {
   id: number;
@@ -12,7 +15,7 @@ export interface WorkshopClass {
 @Component({
   selector: 'app-classes-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AlertDialogComponent, ConfirmDialogComponent],
   templateUrl: './classes-table.component.html',
   styleUrls: ['./classes-table.component.scss']
 })
@@ -25,6 +28,14 @@ export class ClassesTableComponent implements OnChanges {
   currentPage = 0;
   totalPages = 0;
   loading = true;
+
+  confirmVisible = false;
+  alertVisible = false;
+  alertType: 'success' | 'error' | 'warning' = 'error';
+
+  alertTitle = '';
+  alertMessage = '';
+  classToDelete: WorkshopClass | null = null;
 
   constructor(
     private classesService: ClassesService,
@@ -50,8 +61,8 @@ export class ClassesTableComponent implements OnChanges {
           this.currentPage = page.number;
           this.loading = false;
         },
-        error: (err) => {
-          console.error('Erro ao carregar aulas:', err);
+        error: (err) => {          
+          this.showAlert('Erro', 'Erro ao carregar as aulas.', 'error');
           this.loading = false;
         }
       });
@@ -76,25 +87,58 @@ export class ClassesTableComponent implements OnChanges {
   }
 
   deleteClass(clazz: WorkshopClass) {
-    if (!confirm(`Deseja excluir a aula ${clazz.classNumber}?`)) return;
-    
-    this.classesService.deleteClass(this.workshopId, clazz.id).subscribe({
-      next: () => {
-        const lastClassId = this.classes.length > 0 ? this.classes[this.classes.length - 1].id : 0;
+    this.classToDelete = clazz;
+    this.confirmVisible = true;
+  }
 
-        this.classesService.recalculateWorkshopFrequency(lastClassId, this.workshopId)
-          .subscribe({
-            next: () => console.log('Frequências do workshop recalculadas'),
-            error: () => console.warn('Falha ao recalcular frequências')
-          });
+  onConfirmDelete() {
+    if (!this.classToDelete) return;
 
-        if (this.classes.length === 1 && this.currentPage === this.totalPages - 1 && this.currentPage > 0) {
-          this.currentPage--;
+    this.classesService
+      .deleteClass(this.workshopId, this.classToDelete.id)
+      .subscribe({
+        next: () => {
+
+          const lastClassId =
+            this.classes.length > 0
+              ? this.classes[this.classes.length - 1].id
+              : 0;
+
+          this.classesService
+            .recalculateWorkshopFrequency(lastClassId, this.workshopId)
+            .subscribe({
+              next: () => console.log('Frequências recalculadas'),
+              error: () => console.warn('Falha ao recalcular frequências')
+            });
+
+          if (
+            this.classes.length === 1 &&
+            this.currentPage === this.totalPages - 1 &&
+            this.currentPage > 0
+          ) {
+            this.currentPage--;
+          }
+
+          this.loadClasses();
+        },
+        error: () => {
+          this.showAlert('Erro', 'Erro ao deletar aula.', 'error');
         }
+      });
 
-        this.loadClasses();
-      },
-      error: () => alert('Erro ao deletar aula.')
-    });
+    this.confirmVisible = false;
+    this.classToDelete = null;
+  }
+
+  onCancelDelete() {
+    this.confirmVisible = false;
+    this.classToDelete = null;
+  }
+
+  showAlert(title: string, message: string, type: 'success' | 'error' | 'warning') {
+    this.alertTitle = title;
+    this.alertMessage = message;
+    this.alertType = type;
+    this.alertVisible = true;
   }
 }

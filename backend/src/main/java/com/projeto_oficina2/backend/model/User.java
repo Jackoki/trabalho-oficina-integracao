@@ -1,6 +1,10 @@
 package com.projeto_oficina2.backend.model;
 
 import java.util.List;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -28,12 +32,22 @@ public class User {
     private UserType userType;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_schools", nullable = false)
+    @JoinColumn(name = "id_schools", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private School school;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
     private List<Workshops> workshops;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Frequencies> frequencies;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<FrequenciesStudents> frequenciesStudents;
+
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

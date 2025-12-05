@@ -34,6 +34,9 @@ public class Workshops {
     @JsonManagedReference
     private List<Classes> classes;
 
+    @OneToMany(mappedBy = "workshop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FrequenciesStudents> frequenciesStudents;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

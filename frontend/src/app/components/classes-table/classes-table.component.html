@@ -70,3 +70,9 @@
   </div>
 
 </div>
+
+<app-alert-dialog [visivel]="alertVisible" [titulo]="alertTitle" [mensagem]="alertMessage" [tipo]="alertType" (fechar)="alertVisible = false">
+</app-alert-dialog>
+
+<app-confirm-dialog [visivel]="confirmVisible" titulo="Excluir Aula" mensagem="Tem certeza que deseja excluir esta aula?" (confirmar)="onConfirmDelete()" (cancelar)="onCancelDelete()">
+</app-confirm-dialog>

@@ -5,6 +5,7 @@ import { WorkshopsService, User } from '../../services/WorkshopsService';
 import { RollCallService, RollCallRequest } from '../../services/RollCallService';
 import { FrequenciesService } from '../../services/FrequenciesService';
 import { Location } from '@angular/common';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 export interface RollCallRow {
   userId: number;
@@ -14,15 +15,13 @@ export interface RollCallRow {
   frequencyId?: number;
 }
 
-
 @Component({
   selector: 'app-classes-rollcall-edit-table',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AlertDialogComponent],
   templateUrl: './classes-rollcall-edit-table.component.html',
   styleUrls: ['./classes-rollcall-edit-table.component.scss']
 })
-
 export class ClassesRollcallEditTableComponent implements OnInit, OnChanges {
 
   @Input() classId!: number;
@@ -31,12 +30,38 @@ export class ClassesRollcallEditTableComponent implements OnInit, OnChanges {
   rows: RollCallRow[] = [];
   loading = true;
 
+  alertVisivel = false;
+  alertMensagem = '';
+  alertTitulo = '';
+  alertTipo: 'success' | 'error' | 'warning' = 'error';
+
   constructor(
     private workshopsService: WorkshopsService,
     private rollCallService: RollCallService,
     private frequenciesService: FrequenciesService,
     private location: Location
   ) {}
+
+  mostrarErro(msg: string) {
+    this.alertTitulo = 'Erro';
+    this.alertTipo = 'error';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
+
+  mostrarAviso(msg: string) {
+    this.alertTitulo = 'Atenção';
+    this.alertTipo = 'warning';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
+
+  mostrarSucesso(msg: string) {
+    this.alertTitulo = 'Sucesso';
+    this.alertTipo = 'success';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
 
   ngOnInit(): void {
     this.loadData();
@@ -51,35 +76,44 @@ export class ClassesRollcallEditTableComponent implements OnInit, OnChanges {
 
     this.loading = true;
 
-  this.frequenciesService.getFrequenciesByClass(this.classId).subscribe({
-    next: (freqs) => {
+    this.frequenciesService.getFrequenciesByClass(this.classId).subscribe({
+      next: (freqs) => {
 
-      const frequencies = (freqs ?? []).map(f => ({
-        id: f.id,
-        isPresent: f.isPresent,
-        userId: f.user.id
-      }));
+        const frequencies = (freqs ?? []).map(f => ({
+          id: f.id,
+          isPresent: f.isPresent,
+          userId: f.user.id
+        }));
 
+        this.workshopsService.getUsersWorkshops(this.workshopId, 2, 0, 100).subscribe({
+          next: (page: { content: User[] }) => {
+            const students = page.content ?? [];
 
-      this.workshopsService.getUsersWorkshops(this.workshopId, 2, 0, 100).subscribe({
-        next: (page: { content: User[] }) => {
-          const students = page.content ?? [];
+            this.rows = students.map(s => {
+              const f = frequencies.find(fr => fr.userId === s.id);
+              return {
+                userId: s.id,
+                userName: s.name,
+                userCode: s.code,
+                isPresent: f?.isPresent ?? false,
+                frequencyId: f?.id
+              };
+            });
 
-          this.rows = students.map(s => {
-            const f = frequencies.find(fr => fr.userId === s.id);
-            return {
-              userId: s.id,
-              userName: s.name,
-              userCode: s.code,
-              isPresent: f?.isPresent ?? false,
-              frequencyId: f?.id
-            };
-          });
+            this.loading = false;
+          },
+          error: () => {
+            this.loading = false;
+            this.mostrarErro('Erro ao carregar alunos da oficina.');
+          }
+        });
 
-          this.loading = false;
-        }});
-     }}
-    );
+      },
+      error: () => {
+        this.loading = false;
+        this.mostrarErro('Erro ao carregar frequências desta aula.');
+      }
+    });
   }
 
   save() {
@@ -90,11 +124,13 @@ export class ClassesRollcallEditTableComponent implements OnInit, OnChanges {
 
     this.rollCallService.saveRollCall(this.classId, request).subscribe({
       next: () => {
-        alert('Chamada salva com sucesso!');
+        this.mostrarSucesso('Chamada salva com sucesso!');
 
         this.frequenciesService.recalculateWorkshopFrequency(this.workshopId).subscribe();
       },
-      error: () => alert('Erro ao salvar chamada')
+      error: () => {
+        this.mostrarErro('Erro ao salvar chamada.');
+      }
     });
   }
 

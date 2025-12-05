@@ -47,3 +47,10 @@
     </button>
   </div>
 </div>
+
+
+<app-alert-dialog [visivel]="alertVisivel" [titulo]="alertTitulo" [mensagem]="alertMensagem" [tipo]="alertTipo" (fechar)="alertVisivel = false">
+</app-alert-dialog>
+
+<app-confirm-dialog [visivel]="confirmVisivel" titulo="Excluir Usuário" [mensagem]="'Deseja realmente excluir o usuário ' + (userToDelete?.name || '') + '?'" (confirmar)="confirmarDelete()" (cancelar)="cancelarDelete()">
+</app-confirm-dialog>

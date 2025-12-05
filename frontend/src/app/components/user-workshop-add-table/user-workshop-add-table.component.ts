@@ -2,11 +2,13 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { WorkshopsService } from '../../services/WorkshopsService';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-user-workshop-add-table',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, AlertDialogComponent, ConfirmDialogComponent],
   templateUrl: './user-workshop-add-table.component.html',
   styleUrls: ['./user-workshop-add-table.component.scss']
 })
@@ -24,6 +26,16 @@ export class UserWorkshopAddTableComponent implements OnInit, OnChanges {
 
   loading = true;
 
+  alertVisivel = false;
+  alertMensagem = '';
+  alertTitulo = '';
+  alertTipo: 'success' | 'error' | 'warning' = 'error';
+
+  confirmVisivel = false;
+  confirmTitulo = 'Confirmação';
+  confirmMensagem = '';
+  confirmUserId: number | null = null;
+
   constructor(private workshopService: WorkshopsService) {}
 
   ngOnInit(): void {}
@@ -35,6 +47,27 @@ export class UserWorkshopAddTableComponent implements OnInit, OnChanges {
         this.loadUsers();
       }
     }
+  }
+
+  mostrarErro(msg: string) {
+    this.alertTitulo = 'Erro';
+    this.alertTipo = 'error';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
+
+  mostrarAviso(msg: string) {
+    this.alertTitulo = 'Atenção';
+    this.alertTipo = 'warning';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
+  }
+
+  mostrarSucesso(msg: string) {
+    this.alertTitulo = 'Sucesso';
+    this.alertTipo = 'success';
+    this.alertMensagem = msg;
+    this.alertVisivel = true;
   }
 
   loadUsers() {
@@ -51,6 +84,7 @@ export class UserWorkshopAddTableComponent implements OnInit, OnChanges {
         },
         error: (err) => {
           console.error('Erro ao carregar usuários:', err);
+          this.mostrarErro('Erro ao carregar usuários.');
           this.loading = false;
         }
       });
@@ -62,17 +96,36 @@ export class UserWorkshopAddTableComponent implements OnInit, OnChanges {
     this.loadUsers();
   }
 
+  confirmarVinculo(userId: number, userName: string) {
+    this.confirmUserId = userId;
+    this.confirmMensagem = `Tem certeza que deseja adicionar o usuário "${userName}" à oficina?`;
+    this.confirmVisivel = true;
+  }
+
+  onConfirmar() {
+    if (!this.confirmUserId) return;
+
+    this.vincularUsuario(this.confirmUserId);
+    this.confirmVisivel = false;
+    this.confirmUserId = null;
+  }
+
+  onCancelar() {
+    this.confirmVisivel = false;
+    this.confirmUserId = null;
+  }
+
   vincularUsuario(userId: number) {
-    this.workshopService.linkUserToWorkshop(this.workshopId, userId)
+    this.workshopService
+      .linkUserToWorkshop(this.workshopId, userId)
       .subscribe({
         next: () => {
-          alert("✅ Usuário adicionado à oficina!");
-          this.loadUsers(); // recarrega após vínculo ✅
+          this.mostrarSucesso('Usuário adicionado à oficina!');
+          this.loadUsers();
         },
-        error: err => {
-          console.error("Erro ao vincular usuário:", err);
-          alert("❌ Falha ao adicionar usuário.");
+        error: () => {
+          this.mostrarErro('Falha ao adicionar usuário.');
         }
-    });
+      });
   }
 }

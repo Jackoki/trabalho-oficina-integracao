@@ -15,9 +15,6 @@
       />
     </div>
 
-    <div *ngIf="addError" class="error">{{ addError }}</div>
-    <div *ngIf="addSuccess" class="success">{{ addSuccess }}</div>
-
     <div class="buttons">
       <button type="button" class="voltar" (click)="voltar()">Voltar</button>
       <button type="submit" class="confirmar" [disabled]="isLoading">

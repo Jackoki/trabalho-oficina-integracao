@@ -8,11 +8,12 @@ import { CommonModule } from '@angular/common';
   templateUrl: './alert-dialog.component.html',
   styleUrls: ['./alert-dialog.component.scss']
 })
+
 export class AlertDialogComponent {
   @Input() visivel: boolean = false;
   @Input() titulo: string = 'Alerta';
   @Input() mensagem: string = '';
-  @Input() tipo: 'success' | 'error' | 'warning' = 'error'; // para mudar o tema
+  @Input() tipo: 'success' | 'error' | 'warning' = 'error';
 
   @Output() fechar = new EventEmitter<void>();
 

@@ -41,10 +41,6 @@ public class SchoolService {
         School school = schoolRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Escola não encontrada"));
 
-        if (!userRepository.findBySchool(school).isEmpty()) {
-            throw new IllegalArgumentException("Não é possível deletar a escola: existem usuários vinculados.");
-        }
-
         schoolRepository.delete(school);
     }
 
