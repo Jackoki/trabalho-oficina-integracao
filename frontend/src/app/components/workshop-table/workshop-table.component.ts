@@ -5,6 +5,7 @@ import { Auth, User } from '../../services/auth';
 import { Router, RouterModule } from '@angular/router';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { CertificateService } from '../../services/CertificateService';
 
 @Component({
   selector: 'app-workshop-table',
@@ -39,6 +40,7 @@ export class WorkshopTableComponent implements OnInit {
 
   constructor(
     private workshopsService: WorkshopsService,
+    private certificateService: CertificateService,
     public auth: Auth,
     private router: Router
   ) {}
@@ -175,9 +177,33 @@ export class WorkshopTableComponent implements OnInit {
   }
 
   viewCertificate(workshop: Workshop) {
-    console.log('Ver certificado:', workshop);
-  }
+    this.auth.currentUser$.subscribe(user => {
+      if (!user) return;
 
+      this.certificateService.getCertificate(user.id, workshop.id).subscribe({
+        next: (blob) => {
+          const url = window.URL.createObjectURL(blob);
+          window.open(url, '_blank');
+        },
+        error: (err) => {
+          if (err.error instanceof Blob) {
+            const reader = new FileReader();
+
+            reader.onload = () => {
+              const text = reader.result as string;
+              this.mostrarErro(text || "Não foi possível gerar o certificado. Oficina não finalizada ou aluno com menos de 75% de presença");
+            };
+
+            reader.readAsText(err.error);
+            return;
+          }
+
+          const backendMessage =  err?.error?.message || err?.error || "Não foi possível gerar o certificado.";
+          this.mostrarErro(backendMessage);
+        }
+      });
+    });
+  }
 
   deleteWorkshop(workshop: Workshop) {
     this.abrirConfirmacao(
