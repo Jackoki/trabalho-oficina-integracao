@@ -145,4 +145,14 @@ ng serve
 O frontend estará disponível em: http://localhost:4200
 Para os testes do front-end rode npm test
 
-
+# 👀 Telas do Sistema
+![Tela 1](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/1.png)
+![Tela 2](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/2.png)
+![Tela 3](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/3.png)
+![Tela 4](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/4.png)
+![Tela 5](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/5.png)
+![Tela 6](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/6.png)
+![Tela 7](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/7.png)
+![Tela 8](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/8.png)
+![Tela 9](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/9.png)
+![Tela 10](https://raw.githubusercontent.com/Jackoki/trabalho-oficina-integracao/refs/heads/main/readme_images/10.png)
